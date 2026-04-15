@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MSA Scheduler — Montgomery Sports Association</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a9e72;
+    --green-dark: #0f6e50;
+    --green-light: #e6f7f1;
+    --green-mid: #9ee0c8;
+    --amber: #f59e0b;
+    --amber-light: #fef3c7;
+    --red: #ef4444;
+    --red-light: #fee2e2;
+    --blue: #3b82f6;
+    --blue-light: #eff6ff;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --coral: #f97316;
+    --coral-light: #fff7ed;
+    --bg: #f7f6f3;
+    --surface: #ffffff;
+    --border: #e8e5e0;
+    --border-strong: #ccc8c0;
+    --text: #1a1916;
+    --text-secondary: #6b6860;
+    --text-tertiary: #a09e9a;
+    --radius: 10px;
+    --radius-lg: 14px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+    --shadow-lg: 0 12px 32px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; }
+
+  /* TOPBAR */
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 100; }
+  .logo { font-size: 16px; font-weight: 600; letter-spacing: -0.3px; display: flex; align-items: center; gap: 10px; }
+  .logo-icon { width: 28px; height: 28px; background: var(--green); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+  .logo-icon svg { width: 16px; height: 16px; fill: white; }
+  .logo span { color: var(--green); }
+  .nav { display: flex; gap: 2px; background: var(--bg); border-radius: var(--radius); padding: 3px; border: 1px solid var(--border); }
+  .nav-tab { padding: 6px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--text-secondary); transition: all 0.15s; border: none; background: none; font-family: inherit; display: flex; align-items: center; gap: 6px; }
+  .nav-tab .badge-count { background: var(--amber); color: white; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 10px; display: none; }
+  .nav-tab .badge-count.show { display: inline-block; }
+  .nav-tab:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+  .nav-tab.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
+  .date-chip { font-size: 12px; font-weight: 500; color: var(--text-secondary); font-family: 'DM Mono', monospace; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 5px 12px; }
+
+  /* LAYOUT */
+  .main { max-width: 1000px; margin: 0 auto; padding: 24px 20px; }
+  .view { display: none; }
+  .view.active { display: block; }
+  .schedule-grid { display: grid; grid-template-columns: 268px 1fr; gap: 16px; align-items: start; }
+  .panel-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 10px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); }
+
+  /* COACH POOL */
+  .coach-pool { padding: 12px; }
+  .coach-chip { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 6px; cursor: grab; background: var(--surface); transition: all 0.15s; user-select: none; }
+  .coach-chip:last-child { margin-bottom: 0; }
+  .coach-chip:hover { border-color: var(--green); box-shadow: 0 0 0 3px rgba(26,158,114,0.08); }
+  .coach-chip:active { cursor: grabbing; }
+  .coach-chip.dragging { opacity: 0.35; transform: scale(0.97); }
+  .avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+  .av-green  { background: var(--green-light);  color: var(--green-dark); }
+  .av-blue   { background: var(--blue-light);   color: #1d4ed8; }
+  .av-purple { background: var(--purple-light); color: #6d28d9; }
+  .av-coral  { background: var(--coral-light);  color: #c2410c; }
+  .av-amber  { background: var(--amber-light);  color: #b45309; }
+  .av-red    { background: var(--red-light);    color: #b91c1c; }
+  .coach-details { flex: 1; min-width: 0; }
+  .coach-name  { font-size: 13px; font-weight: 600; }
+  .coach-sport { font-size: 11px; color: var(--text-secondary); margin-top: 1px; }
+  .drag-handle { color: var(--text-tertiary); font-size: 14px; flex-shrink: 0; }
+  .pool-empty  { padding: 16px 10px; text-align: center; color: var(--text-tertiary); font-size: 12px; font-style: italic; }
+
+  /* SCHOOL CARDS */
+  .school-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 10px; box-shadow: var(--shadow); transition: border-color 0.15s; }
+  .school-card:last-child { margin-bottom: 0; }
+  .school-card.drop-active { border-color: var(--green); box-shadow: 0 0 0 3px rgba(26,158,114,0.1); }
+
+  .school-header { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .school-name { font-size: 13px; font-weight: 600; }
+  .school-sub  { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+
+  .sport-pill { font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+  .pill-basketball { background: var(--blue-light);   color: #1d4ed8; }
+  .pill-soccer     { background: var(--green-light);  color: var(--green-dark); }
+  .pill-football   { background: var(--coral-light);  color: #c2410c; }
+  .pill-tennis     { background: var(--purple-light); color: #6d28d9; }
+  .pill-baseball   { background: var(--amber-light);  color: #b45309; }
+
+  /* DROP ZONE — the big target the coach is dragged onto */
+  .school-drop-zone { border: 2px dashed var(--border); border-radius: var(--radius); margin: 10px 12px 4px; padding: 11px; text-align: center; font-size: 12px; color: var(--text-tertiary); font-style: italic; transition: all 0.15s; cursor: default; }
+  .school-drop-zone.over { border-color: var(--green); background: var(--green-light); color: var(--green-dark); font-style: normal; font-weight: 500; }
+
+  /* PROGRAM LIST beneath each school */
+  .program-list { padding: 4px 12px 12px; }
+  .program-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: var(--radius); border: 1px solid var(--border); margin-top: 6px; }
+  .prog-info { min-width: 130px; }
+  .prog-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+  .prog-time  { font-size: 10px; color: var(--text-tertiary); font-family: 'DM Mono', monospace; margin-top: 1px; }
+  .prog-chips { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; align-items: center; }
+  .prog-hint  { font-size: 11px; color: var(--text-tertiary); font-style: italic; }
+
+  .assigned-chip { display: flex; align-items: center; gap: 5px; background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 3px 8px 3px 5px; font-size: 11px; font-weight: 500; animation: popIn 0.2s ease; }
+  @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .sm-av { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 7px; font-weight: 700; flex-shrink: 0; }
+  .remove-x { cursor: pointer; color: var(--text-tertiary); font-size: 14px; line-height: 1; margin-left: 1px; transition: color 0.1s; }
+  .remove-x:hover { color: var(--red); }
+
+  /* BOTTOM BAR */
+  .bottom-bar { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding: 14px 18px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow); }
+  .stats { display: flex; gap: 24px; }
+  .stat-block { text-align: center; }
+  .stat-num { font-size: 22px; font-weight: 600; font-family: 'DM Mono', monospace; }
+  .stat-lbl { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); margin-top: 1px; }
+  .send-btn { background: var(--green); color: white; border: none; border-radius: var(--radius); padding: 11px 24px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.15s; display: flex; align-items: center; gap: 8px; }
+  .send-btn:hover:not(:disabled) { background: var(--green-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .send-btn:disabled { background: var(--border); color: var(--text-tertiary); cursor: not-allowed; transform: none; }
+  .send-btn svg { width: 16px; height: 16px; fill: white; }
+
+  /* ── PROGRAM PICKER MODAL ── */
+  .picker-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
+  .picker-backdrop.show { display: flex; }
+  .picker-modal { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); width: 100%; max-width: 390px; box-shadow: var(--shadow-lg); animation: modalIn 0.2s ease; overflow: hidden; }
+  @keyframes modalIn { from { opacity: 0; transform: translateY(-12px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+  .picker-header { padding: 16px 18px 14px; border-bottom: 1px solid var(--border); }
+  .picker-eyebrow { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-tertiary); margin-bottom: 4px; }
+  .picker-title   { font-size: 15px; font-weight: 600; }
+  .picker-sub     { font-size: 12px; color: var(--text-secondary); margin-top: 3px; }
+
+  .picker-coach-row { display: flex; align-items: center; gap: 10px; padding: 11px 18px; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .picker-coach-name  { font-size: 13px; font-weight: 600; }
+  .picker-coach-sport { font-size: 11px; color: var(--text-secondary); }
+  .assigning-label { font-size: 11px; color: var(--text-tertiary); margin-left: auto; white-space: nowrap; }
+
+  .picker-body { padding: 10px; }
+
+  .program-option { display: flex; align-items: center; justify-content: space-between; padding: 12px 13px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 6px; cursor: pointer; transition: all 0.15s; }
+  .program-option:last-child { margin-bottom: 0; }
+  .program-option:hover { border-color: var(--green); background: var(--green-light); }
+  .program-option:hover .prog-opt-name { color: var(--green-dark); }
+  .program-option.is-disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+
+  .prog-opt-name { font-size: 13px; font-weight: 600; }
+  .prog-opt-time { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+  .prog-spots { font-size: 11px; color: var(--text-tertiary); font-family: 'DM Mono', monospace; white-space: nowrap; }
+  .prog-spots.is-full { color: var(--red); }
+
+  .picker-cancel { width: calc(100% - 20px); margin: 0 10px 10px; padding: 9px; background: none; border: 1px solid var(--border); border-radius: var(--radius); font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; color: var(--text-secondary); transition: all 0.15s; }
+  .picker-cancel:hover { border-color: var(--border-strong); color: var(--text); }
+
+  /* SMS MODAL */
+  .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 300; align-items: flex-start; justify-content: center; padding-top: 80px; }
+  .modal-backdrop.show { display: flex; }
+  .modal { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 22px; width: 100%; max-width: 440px; box-shadow: var(--shadow-lg); animation: modalIn 0.2s ease; max-height: 80vh; display: flex; flex-direction: column; }
+  .modal-head { font-size: 15px; font-weight: 600; margin-bottom: 16px; flex-shrink: 0; }
+  .modal-body { overflow-y: auto; flex: 1; }
+  .sms-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .sms-item:last-child { border-bottom: none; }
+  .sms-av { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+  .sms-coach { font-size: 12px; font-weight: 600; }
+  .sms-phone { font-size: 10px; color: var(--text-tertiary); font-family: 'DM Mono', monospace; }
+  .sms-bubble { background: var(--bg); border-radius: 10px 10px 10px 3px; padding: 7px 10px; font-size: 11px; line-height: 1.5; color: var(--text-secondary); margin-top: 5px; border: 1px solid var(--border); }
+  .sms-status { display: flex; align-items: center; gap: 5px; font-size: 10px; margin-top: 5px; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .dot-sending { background: var(--amber); }
+  .dot-sent    { background: var(--green); }
+  .modal-close { width: 100%; margin-top: 14px; padding: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; font-size: 13px; font-weight: 500; font-family: inherit; color: var(--text); transition: all 0.15s; flex-shrink: 0; }
+  .modal-close:hover { border-color: var(--border-strong); }
+
+  /* COACHES TAB */
+  .coaches-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .page-title { font-size: 18px; font-weight: 600; }
+  .page-sub   { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+  .add-btn { display: flex; align-items: center; gap: 6px; background: var(--green); color: white; border: none; border-radius: var(--radius); padding: 9px 18px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+  .add-btn:hover { background: var(--green-dark); }
+  .add-form { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 16px; box-shadow: var(--shadow-md); animation: slideDown 0.2s ease; }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+  .form-title { font-size: 14px; font-weight: 600; margin-bottom: 14px; }
+  .form-row { display: grid; gap: 10px; margin-bottom: 10px; }
+  .form-row.two { grid-template-columns: 1fr 1fr; }
+  .field label { display: block; font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 5px; }
+  .field input, .field select { width: 100%; padding: 8px 11px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 13px; font-family: inherit; color: var(--text); background: var(--surface); outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+  .field input:focus, .field select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(26,158,114,0.1); }
+  .form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; }
+  .btn-ghost { background: none; border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 16px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; color: var(--text-secondary); transition: all 0.15s; }
+  .btn-ghost:hover { border-color: var(--border-strong); color: var(--text); }
+  .btn-save { background: var(--green); color: white; border: none; border-radius: var(--radius); padding: 8px 20px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+  .btn-save:hover { background: var(--green-dark); }
+  .search-wrap { position: relative; margin-bottom: 10px; }
+  .search-wrap input { width: 100%; padding: 9px 12px 9px 36px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--surface); outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+  .search-wrap input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(26,158,114,0.1); }
+  .search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-tertiary); }
+  .roster-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border); transition: background 0.1s; }
+  .roster-row:last-child { border-bottom: none; }
+  .roster-row:hover { background: var(--bg); }
+  .roster-info { flex: 1; min-width: 0; }
+  .roster-name { font-size: 13px; font-weight: 600; }
+  .roster-meta { font-size: 11px; color: var(--text-secondary); margin-top: 2px; font-family: 'DM Mono', monospace; }
+  .roster-actions { display: flex; align-items: center; gap: 8px; }
+  .avail-toggle { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; cursor: pointer; border: none; font-family: inherit; transition: all 0.15s; }
+  .avail-yes { background: var(--green-light); color: var(--green-dark); }
+  .avail-yes:hover { background: var(--green-mid); }
+  .avail-no  { background: var(--border); color: var(--text-tertiary); }
+  .avail-no:hover { background: var(--border-strong); }
+  .del-btn { background: none; border: 1px solid var(--border); border-radius: var(--radius); padding: 4px 10px; font-size: 11px; font-weight: 500; cursor: pointer; font-family: inherit; color: var(--text-secondary); transition: all 0.15s; }
+  .del-btn:hover { border-color: var(--red); color: var(--red); }
+
+  /* CONFIRMATIONS */
+  .conf-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--border); transition: background 0.1s; }
+  .conf-row:last-child { border-bottom: none; }
+  .conf-row:hover { background: var(--bg); }
+  .conf-left { display: flex; align-items: center; gap: 12px; }
+  .conf-name   { font-size: 13px; font-weight: 600; }
+  .conf-detail { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+  .status-pill { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+  .pill-confirmed { background: var(--green-light); color: var(--green-dark); }
+  .pill-pending   { background: var(--amber-light); color: #b45309; }
+  .pill-notsent   { background: var(--bg); color: var(--text-tertiary); border: 1px solid var(--border); }
+  .empty-state { padding: 32px 20px; text-align: center; color: var(--text-tertiary); font-size: 13px; font-style: italic; }
+
+  /* TOAST */
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #1a1916; color: white; padding: 10px 20px; border-radius: var(--radius); font-size: 13px; font-weight: 500; z-index: 400; transition: transform 0.3s ease; white-space: nowrap; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 680px) {
+    .schedule-grid { grid-template-columns: 1fr; }
+    .form-row.two { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+    </div>
+    MSA <span>Scheduler</span>
+  </div>
+
+  <div class="nav">
+    <button class="nav-tab active" onclick="switchTab('schedule')"><span>Schedule</span></button>
+    <button class="nav-tab" onclick="switchTab('coaches')"><span>Coaches</span></button>
+    <button class="nav-tab" onclick="switchTab('confirm')">
+      <span>Confirmations</span>
+      <span class="badge-count" id="pending-badge">0</span>
+    </button>
+  </div>
+
+  <div class="date-chip" id="date-display"></div>
+</div>
+
+<div class="main">
+
+  <!-- SCHEDULE VIEW -->
+  <div class="view active" id="view-schedule">
+    <div class="schedule-grid">
+      <div>
+        <div class="panel-label">Available coaches</div>
+        <div class="card">
+          <div class="coach-pool" id="coach-pool"></div>
+        </div>
+      </div>
+      <div>
+        <div class="panel-label">Tomorrow's schools</div>
+        <div id="school-list"></div>
+      </div>
+    </div>
+    <div class="bottom-bar">
+      <div class="stats">
+        <div class="stat-block"><div class="stat-num" id="stat-a">0</div><div class="stat-lbl">Assigned</div></div>
+        <div class="stat-block"><div class="stat-num" id="stat-u">0</div><div class="stat-lbl">Unassigned</div></div>
+        <div class="stat-block"><div class="stat-num" id="stat-c">0</div><div class="stat-lbl">Confirmed</div></div>
+      </div>
+      <button class="send-btn" id="send-btn" onclick="sendAssignments()" disabled>
+        <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+        Send all assignments
+      </button>
+    </div>
+  </div>
+
+  <!-- COACHES VIEW -->
+  <div class="view" id="view-coaches">
+    <div class="coaches-header">
+      <div>
+        <div class="page-title">Coach roster</div>
+        <div class="page-sub"><span id="roster-count">0</span> coaches · drag to schedule board to assign</div>
+      </div>
+      <button class="add-btn" onclick="showForm()">+ Add coach</button>
+    </div>
+    <div id="add-form-wrap"></div>
+    <div class="search-wrap">
+      <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search by name or sport..." id="search-input" oninput="renderRoster(this.value)">
+    </div>
+    <div class="card"><div id="roster-list"></div></div>
+  </div>
+
+  <!-- CONFIRMATIONS VIEW -->
+  <div class="view" id="view-confirm">
+    <div style="margin-bottom:16px">
+      <div class="page-title">Confirmation status</div>
+      <div class="page-sub">Live view of who has confirmed their assignment</div>
+    </div>
+    <div class="card"><div id="confirm-list"></div></div>
+  </div>
+
+</div>
+
+<!-- ── PROGRAM PICKER MODAL ── -->
+<div class="picker-backdrop" id="picker-backdrop">
+  <div class="picker-modal">
+    <div class="picker-header">
+      <div class="picker-eyebrow">Assign coach to program</div>
+      <div class="picker-title" id="picker-school-name"></div>
+      <div class="picker-sub" id="picker-school-sub"></div>
+    </div>
+    <div class="picker-coach-row">
+      <div class="avatar" id="picker-av"></div>
+      <div>
+        <div class="picker-coach-name" id="picker-coach-name"></div>
+        <div class="picker-coach-sport" id="picker-coach-sport"></div>
+      </div>
+      <div class="assigning-label">pick a class →</div>
+    </div>
+    <div class="picker-body" id="picker-body"></div>
+    <button class="picker-cancel" onclick="closePicker()">Cancel</button>
+  </div>
+</div>
+
+<!-- ── SMS MODAL ── -->
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">Sending assignments via SMS</div>
+    <div class="modal-body" id="modal-body"></div>
+    <button class="modal-close" onclick="closeModal()">Done — view confirmations →</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const AV_COLORS = ['av-green','av-blue','av-purple','av-coral','av-amber','av-red'];
+const SPORTS    = ['Basketball','Soccer','Football','Tennis','Baseball','Volleyball','Lacrosse'];
+const SPORT_PILL = {
+  Basketball:'pill-basketball', Soccer:'pill-soccer', Football:'pill-football',
+  Tennis:'pill-tennis', Baseball:'pill-baseball', Volleyball:'pill-soccer', Lacrosse:'pill-soccer'
+};
+
+/* Each school has multiple programs */
+let schools = [
+  { id:'s1', name:'Thurgood Marshall ES', sport:'Basketball', programs:[
+    {id:'p1a', label:'Grades K–2',  time:'3:00–4:00 PM', max:1},
+    {id:'p1b', label:'Grades 3–4',  time:'4:00–5:00 PM', max:1},
+    {id:'p1c', label:'Grades 5–6',  time:'5:00–6:00 PM', max:2},
+  ]},
+  { id:'s2', name:'Walt Whitman HS', sport:'Soccer', programs:[
+    {id:'p2a', label:'JV Training',      time:'3:30–5:00 PM', max:1},
+    {id:'p2b', label:'Varsity Training', time:'5:00–6:30 PM', max:2},
+  ]},
+  { id:'s3', name:'Rockville HS', sport:'Football', programs:[
+    {id:'p3a', label:'Fundamentals', time:'3:00–4:30 PM', max:1},
+    {id:'p3b', label:'Advanced',     time:'4:30–6:00 PM', max:1},
+    {id:'p3c', label:'Conditioning', time:'6:00–7:00 PM', max:1},
+  ]},
+  { id:'s4', name:'Bethesda ES', sport:'Tennis', programs:[
+    {id:'p4a', label:'Beginners',    time:'3:30–4:30 PM', max:1},
+    {id:'p4b', label:'Intermediate', time:'4:30–5:30 PM', max:1},
+  ]},
+  { id:'s5', name:'Richard Montgomery HS', sport:'Baseball', programs:[
+    {id:'p5a', label:'Pitching Clinic', time:'3:00–4:30 PM', max:1},
+    {id:'p5b', label:'Batting Clinic',  time:'4:30–6:00 PM', max:1},
+    {id:'p5c', label:'Fielding Clinic', time:'6:00–7:00 PM', max:1},
+  ]},
+];
+
+let coaches = [
+  {id:'c1', name:'Marcus J.',  initials:'MJ', sport:'Basketball', phone:'(301) 555-0101', av:'av-blue',   available:true},
+  {id:'c2', name:'Priya S.',   initials:'PS', sport:'Soccer',     phone:'(301) 555-0102', av:'av-green',  available:true},
+  {id:'c3', name:'Derek W.',   initials:'DW', sport:'Football',   phone:'(301) 555-0103', av:'av-coral',  available:true},
+  {id:'c4', name:'Alicia T.',  initials:'AT', sport:'Tennis',     phone:'(301) 555-0104', av:'av-purple', available:true},
+  {id:'c5', name:'James R.',   initials:'JR', sport:'Baseball',   phone:'(301) 555-0105', av:'av-amber',  available:true},
+  {id:'c6', name:'Sofia M.',   initials:'SM', sport:'Soccer',     phone:'(301) 555-0106', av:'av-green',  available:false},
+];
+
+/* assignments: { programId: [coachId, ...] } */
+let assignments   = {};
+let confirmations = {};
+let sent       = false;
+let nextId     = 7;
+let dragging   = null;
+let formVisible = false;
+let pickerCoachId  = null;
+let pickerSchoolId = null;
+
+/* ── HELPERS ── */
+function availableCoaches() { return coaches.filter(c => c.available); }
+function assignedIds()      { return Object.values(assignments).flat(); }
+function poolCoaches()      { const a = assignedIds(); return availableCoaches().filter(c => !a.includes(c.id)); }
+function mkInitials(n)      { return n.trim().split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function avColor(i)         { return AV_COLORS[i % AV_COLORS.length]; }
+function getCoach(id)       { return coaches.find(c => c.id === id); }
+function getSchool(id)      { return schools.find(s => s.id === id); }
+function getProgramInfo(pid){ for(const s of schools){ const p=s.programs.find(p=>p.id===pid); if(p) return {school:s, program:p}; } return null; }
+function progCount(pid)     { return (assignments[pid]||[]).length; }
+
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+/* ── INIT ── */
+function init() {
+  const d = new Date(); d.setDate(d.getDate()+1);
+  document.getElementById('date-display').textContent =
+    d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+  renderPool(); renderSchools(); updateStats(); renderRoster();
+}
+
+/* ── COACH POOL ── */
+function renderPool() {
+  const pool = poolCoaches();
+  document.getElementById('coach-pool').innerHTML = pool.length === 0
+    ? '<div class="pool-empty">All available coaches assigned</div>'
+    : pool.map(c => `
+        <div class="coach-chip" draggable="true" id="chip-${c.id}"
+          ondragstart="onDragStart(event,'${c.id}')" ondragend="onDragEnd()">
+          <div class="avatar ${c.av}">${c.initials}</div>
+          <div class="coach-details">
+            <div class="coach-name">${c.name}</div>
+            <div class="coach-sport">${c.sport}</div>
+          </div>
+          <div class="drag-handle">⠿</div>
+        </div>`).join('');
+}
+
+/* ── SCHOOLS ── */
+function renderSchools() {
+  document.getElementById('school-list').innerHTML = schools.map(s => {
+    const pill = SPORT_PILL[s.sport] || 'pill-soccer';
+    const programRows = s.programs.map(p => {
+      const chips = (assignments[p.id]||[]).map(cid => {
+        const c = getCoach(cid);
+        return `<div class="assigned-chip">
+          <div class="sm-av ${c.av}">${c.initials}</div>
+          <span>${c.name}</span>
+          <span class="remove-x" onclick="removeAssignment('${p.id}','${c.id}')">×</span>
+        </div>`;
+      }).join('');
+      const count = progCount(p.id);
+      const full  = count >= p.max;
+      return `<div class="program-row">
+        <div class="prog-info">
+          <div class="prog-label">${p.label}</div>
+          <div class="prog-time">${p.time}</div>
+        </div>
+        <div class="prog-chips">
+          ${chips || `<span class="prog-hint">${full ? 'Full' : 'No coach yet'}</span>`}
+        </div>
+      </div>`;
+    }).join('');
+
+    return `<div class="school-card" id="scard-${s.id}">
+      <div class="school-header">
+        <div>
+          <div class="school-name">${s.name}</div>
+          <div class="school-sub">${s.programs.length} program${s.programs.length!==1?'s':''} · ${s.sport}</div>
+        </div>
+        <div class="sport-pill ${pill}">${s.sport}</div>
+      </div>
+      <div class="school-drop-zone" id="dropzone-${s.id}"
+        ondragover="onSchoolDragOver(event,'${s.id}')"
+        ondragleave="onSchoolDragLeave('${s.id}')"
+        ondrop="onSchoolDrop(event,'${s.id}')">
+        Drop a coach here to choose their program
+      </div>
+      <div class="program-list">${programRows}</div>
+    </div>`;
+  }).join('');
+}
+
+function removeAssignment(pid, cid) {
+  assignments[pid] = (assignments[pid]||[]).filter(x => x !== cid);
+  if (!assignments[pid].length) delete assignments[pid];
+  renderPool(); renderSchools(); updateStats();
+}
+
+/* ── STATS ── */
+function updateStats() {
+  const a = assignedIds();
+  document.getElementById('stat-a').textContent = a.length;
+  document.getElementById('stat-u').textContent = availableCoaches().length - a.length;
+  document.getElementById('stat-c').textContent = Object.values(confirmations).filter(v=>v==='confirmed').length;
+  document.getElementById('send-btn').disabled = a.length === 0;
+  const pending = Object.values(confirmations).filter(v=>v==='pending').length;
+  const badge = document.getElementById('pending-badge');
+  badge.textContent = pending;
+  badge.classList.toggle('show', sent && pending > 0);
+}
+
+/* ── DRAG ── */
+function onDragStart(e, id) { dragging=id; setTimeout(()=>document.getElementById('chip-'+id)?.classList.add('dragging'),0); }
+function onDragEnd()        { document.querySelectorAll('.coach-chip').forEach(el=>el.classList.remove('dragging')); dragging=null; }
+function onSchoolDragOver(e, sid)   { e.preventDefault(); document.getElementById('dropzone-'+sid)?.classList.add('over'); document.getElementById('scard-'+sid)?.classList.add('drop-active'); }
+function onSchoolDragLeave(sid)     { document.getElementById('dropzone-'+sid)?.classList.remove('over'); document.getElementById('scard-'+sid)?.classList.remove('drop-active'); }
+function onSchoolDrop(e, sid)       { e.preventDefault(); onSchoolDragLeave(sid); if(!dragging) return; openPicker(dragging, sid); }
+
+/* ── PROGRAM PICKER ── */
+function openPicker(coachId, schoolId) {
+  pickerCoachId  = coachId;
+  pickerSchoolId = schoolId;
+  const c = getCoach(coachId);
+  const s = getSchool(schoolId);
+
+  document.getElementById('picker-school-name').textContent = s.name;
+  document.getElementById('picker-school-sub').textContent  = `Which class should ${c.name.split(' ')[0]} teach tomorrow?`;
+  document.getElementById('picker-coach-name').textContent  = c.name;
+  document.getElementById('picker-coach-sport').textContent = c.sport;
+  const av = document.getElementById('picker-av');
+  av.className   = 'avatar ' + c.av;
+  av.textContent = c.initials;
+
+  document.getElementById('picker-body').innerHTML = s.programs.map(p => {
+    const count   = progCount(p.id);
+    const full    = count >= p.max;
+    const already = (assignments[p.id]||[]).includes(coachId);
+    const disabled = full || already;
+    let spotsText;
+    if (already)     spotsText = 'already here';
+    else if (full)   spotsText = 'full';
+    else             spotsText = `${count}/${p.max} filled`;
+
+    return `<div class="program-option ${disabled ? 'is-disabled' : ''}"
+        onclick="${disabled ? '' : `assignToProgram('${p.id}')`}">
+      <div>
+        <div class="prog-opt-name">${p.label}</div>
+        <div class="prog-opt-time">${p.time}</div>
+      </div>
+      <div class="prog-spots ${full ? 'is-full' : ''}">${spotsText}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('picker-backdrop').classList.add('show');
+}
+
+function assignToProgram(pid) {
+  if (!assignments[pid]) assignments[pid] = [];
+  if (!assignments[pid].includes(pickerCoachId)) assignments[pid].push(pickerCoachId);
+  const c    = getCoach(pickerCoachId);
+  const info = getProgramInfo(pid);
+  closePicker();
+  renderPool(); renderSchools(); updateStats();
+  showToast(`${c.name} → ${info.program.label} at ${info.school.name}`);
+}
+
+function closePicker() {
+  document.getElementById('picker-backdrop').classList.remove('show');
+  pickerCoachId = pickerSchoolId = null;
+}
+
+/* ── SEND SMS ── */
+function sendAssignments() {
+  const all = Object.entries(assignments).flatMap(([pid,cids])=>cids.map(cid=>({pid,cid})));
+  if (!all.length) return;
+
+  document.getElementById('modal-body').innerHTML = all.map(({pid,cid})=>{
+    const info = getProgramInfo(pid);
+    const c    = getCoach(cid);
+    return `<div class="sms-item">
+      <div class="sms-av ${c.av}">${c.initials}</div>
+      <div style="flex:1">
+        <div class="sms-coach">${c.name} <span class="sms-phone">${c.phone}</span></div>
+        <div class="sms-bubble">"Hi ${c.name.split(' ')[0]}! Tomorrow: ${info.school.name} · ${info.program.label} · ${info.program.time}. Reply YES to confirm."</div>
+        <div class="sms-status" id="st-${cid}${pid}">
+          <div class="dot dot-sending"></div><span style="color:#b45309">Sending...</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('modal-backdrop').classList.add('show');
+  sent = true;
+
+  all.forEach(({pid,cid},i)=>{
+    setTimeout(()=>{
+      const el = document.getElementById('st-'+cid+pid);
+      if(el) el.innerHTML='<div class="dot dot-sent"></div><span style="color:var(--green-dark)">Sent</span>';
+      setTimeout(()=>{
+        const confirmed = Math.random() > 0.3;
+        confirmations[cid+pid] = confirmed ? 'confirmed' : 'pending';
+        if(el) el.innerHTML = confirmed
+          ? '<div class="dot dot-sent"></div><span style="color:var(--green-dark)">Confirmed ✓</span>'
+          : '<div class="dot dot-sending"></div><span style="color:#b45309">No reply yet</span>';
+        updateStats();
+      }, 800+Math.random()*1400);
+    }, 350+i*400);
+  });
+}
+
+function closeModal() {
+  document.getElementById('modal-backdrop').classList.remove('show');
+  switchTab('confirm');
+}
+
+/* ── CONFIRMATIONS ── */
+function renderConfirmations() {
+  const all = Object.entries(assignments).flatMap(([pid,cids])=>cids.map(cid=>({pid,cid})));
+  const list = document.getElementById('confirm-list');
+  if (!all.length) { list.innerHTML='<div class="empty-state">No assignments sent yet.</div>'; return; }
+  list.innerHTML = all.map(({pid,cid})=>{
+    const info   = getProgramInfo(pid);
+    const c      = getCoach(cid);
+    const status = confirmations[cid+pid];
+    const pill   = sent
+      ? (status==='confirmed'?'<span class="status-pill pill-confirmed">Confirmed</span>':'<span class="status-pill pill-pending">Pending</span>')
+      : '<span class="status-pill pill-notsent">Not sent</span>';
+    return `<div class="conf-row">
+      <div class="conf-left">
+        <div class="avatar ${c.av}">${c.initials}</div>
+        <div>
+          <div class="conf-name">${c.name}</div>
+          <div class="conf-detail">${info.school.name} · ${info.program.label} · ${info.program.time}</div>
+        </div>
+      </div>
+      ${pill}
+    </div>`;
+  }).join('');
+}
+
+/* ── COACH MANAGEMENT ── */
+function renderRoster(filter='') {
+  const q = (filter||'').toLowerCase();
+  const filtered = coaches.filter(c=>c.name.toLowerCase().includes(q)||c.sport.toLowerCase().includes(q));
+  document.getElementById('roster-count').textContent = coaches.length;
+  const list = document.getElementById('roster-list');
+  if (!filtered.length) { list.innerHTML='<div class="empty-state">No coaches found.</div>'; return; }
+  list.innerHTML = filtered.map(c=>`
+    <div class="roster-row">
+      <div class="avatar ${c.av}">${c.initials}</div>
+      <div class="roster-info">
+        <div class="roster-name">${c.name}</div>
+        <div class="roster-meta">${c.sport} · ${c.phone}</div>
+      </div>
+      <div class="roster-actions">
+        <button class="avail-toggle ${c.available?'avail-yes':'avail-no'}" onclick="toggleAvail('${c.id}')">
+          ${c.available?'Available':'Unavailable'}
+        </button>
+        <button class="del-btn" onclick="deleteCoach('${c.id}')">Remove</button>
+      </div>
+    </div>`).join('');
+}
+
+function showForm() {
+  if (formVisible) return;
+  formVisible = true;
+  document.getElementById('add-form-wrap').innerHTML = `
+    <div class="add-form">
+      <div class="form-title">Add new coach</div>
+      <div class="form-row two">
+        <div class="field"><label>First name</label><input id="f-first" type="text" placeholder="Marcus" autofocus></div>
+        <div class="field"><label>Last name / initial</label><input id="f-last" type="text" placeholder="Johnson"></div>
+      </div>
+      <div class="form-row two">
+        <div class="field"><label>Sport specialty</label><select id="f-sport">${SPORTS.map(s=>`<option>${s}</option>`).join('')}</select></div>
+        <div class="field"><label>Phone number</label><input id="f-phone" type="text" placeholder="(301) 555-0100"></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-ghost" onclick="cancelForm()">Cancel</button>
+        <button class="btn-save" onclick="addCoach()">Add coach</button>
+      </div>
+    </div>`;
+}
+
+function cancelForm() { formVisible=false; document.getElementById('add-form-wrap').innerHTML=''; }
+
+function addCoach() {
+  const first = document.getElementById('f-first').value.trim();
+  const last  = document.getElementById('f-last').value.trim();
+  const sport = document.getElementById('f-sport').value;
+  const phone = document.getElementById('f-phone').value.trim() || '(no phone)';
+  if (!first) { document.getElementById('f-first').focus(); return; }
+  const name = last ? `${first} ${last.charAt(0)}.` : first;
+  coaches.push({id:'c'+nextId++, name, sport, phone, initials:mkInitials(name), av:avColor(coaches.length), available:true});
+  cancelForm();
+  renderRoster(document.getElementById('search-input').value);
+  renderPool(); updateStats();
+  showToast(`${name} added to roster`);
+}
+
+function deleteCoach(id) {
+  Object.keys(assignments).forEach(pid=>{
+    assignments[pid]=(assignments[pid]||[]).filter(x=>x!==id);
+    if(!assignments[pid].length) delete assignments[pid];
+  });
+  const c = getCoach(id);
+  coaches = coaches.filter(x=>x.id!==id);
+  renderRoster(document.getElementById('search-input').value);
+  renderPool(); renderSchools(); updateStats();
+  if(c) showToast(`${c.name} removed`);
+}
+
+function toggleAvail(id) {
+  const c = getCoach(id); if(!c) return;
+  c.available = !c.available;
+  if(!c.available){
+    Object.keys(assignments).forEach(pid=>{
+      assignments[pid]=(assignments[pid]||[]).filter(x=>x!==id);
+      if(!assignments[pid].length) delete assignments[pid];
+    });
+  }
+  renderRoster(document.getElementById('search-input').value);
+  renderPool(); renderSchools(); updateStats();
+  showToast(`${c.name} marked ${c.available?'available':'unavailable'}`);
+}
+
+/* ── TABS ── */
+function switchTab(tab) {
+  ['schedule','coaches','confirm'].forEach((t,i)=>{
+    document.getElementById('view-'+t).classList.toggle('active', t===tab);
+    document.querySelectorAll('.nav-tab')[i].classList.toggle('active', t===tab);
+  });
+  if(tab==='confirm') renderConfirmations();
+  if(tab==='coaches') renderRoster(document.getElementById('search-input')?.value||'');
+}
+
+init();
+</script>
+</body>
+</html>
