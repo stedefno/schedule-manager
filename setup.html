@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EZScheduler — Organization Setup</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand:#1a9e72;--brand-dark:#0f6e50;--brand-light:#e6f7f1;--brand-mid:#9ee0c8;
+    --bg:#f7f6f3;--surface:#ffffff;
+    --border:#e8e5e0;--border-strong:#ccc8c0;
+    --text:#1a1916;--text-secondary:#6b6860;--text-tertiary:#a09e9a;
+    --radius:10px;--radius-lg:14px;
+    --shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md:0 4px 12px rgba(0,0,0,0.08),0 2px 4px rgba(0,0,0,0.04);
+    --shadow-lg:0 12px 32px rgba(0,0,0,0.12),0 4px 8px rgba(0,0,0,0.06);
+    --red:#ef4444;--red-light:#fee2e2;
+    --amber:#f59e0b;--amber-light:#fef3c7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;display:flex;flex-direction:column;}
+
+  /* ── PAGE SHELL ── */
+  .page-header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+  .ez-logo{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:600;}
+  .ez-logo-icon{width:26px;height:26px;background:var(--brand);border-radius:7px;display:flex;align-items:center;justify-content:center;}
+  .ez-logo-icon svg{width:14px;height:14px;fill:white;}
+  .ez-logo span{color:var(--brand);}
+  .setup-badge{font-size:11px;font-weight:600;color:var(--text-tertiary);background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:3px 10px;}
+  .progress-strip{height:3px;background:var(--border);flex-shrink:0;}
+  .progress-fill{height:100%;background:var(--brand);transition:width 0.35s ease;border-radius:0 2px 2px 0;}
+
+  /* ── STEP TRACK ── */
+  .step-track{display:flex;align-items:center;justify-content:center;padding:18px 0 0;gap:0;flex-wrap:wrap;}
+  .step-node{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:500;color:var(--text-tertiary);padding:4px 8px;border-radius:20px;}
+  .step-node.active{color:var(--brand);font-weight:700;}
+  .step-node.done{color:var(--brand-dark);}
+  .step-num{width:18px;height:18px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;}
+  .step-node.done .step-num{background:var(--brand);border-color:var(--brand);color:white;font-size:10px;}
+  .step-divider{width:16px;height:1px;background:var(--border);margin:0 1px;flex-shrink:0;}
+
+  /* ── WIZARD LAYOUT ── */
+  .wizard-body{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:24px 20px 60px;overflow-y:auto;}
+  .wizard-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow-lg);width:100%;max-width:580px;overflow:hidden;}
+  .card-hd{padding:26px 34px 18px;}
+  .card-eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--brand);margin-bottom:6px;}
+  .card-title{font-size:21px;font-weight:600;letter-spacing:-0.4px;line-height:1.2;}
+  .card-sub{font-size:13px;color:var(--text-secondary);margin-top:4px;line-height:1.5;}
+  .card-body{padding:0 34px 22px;}
+  .card-body-scroll{padding:0 34px 22px;max-height:460px;overflow-y:auto;}
+  .card-footer{padding:16px 34px 26px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg);gap:12px;flex-shrink:0;}
+
+  /* ── FORM ELEMENTS ── */
+  .sf-row{display:grid;gap:12px;margin-bottom:14px;}
+  .sf-row.two{grid-template-columns:1fr 1fr;}
+  .sf-row.three{grid-template-columns:1fr 1fr 1fr;}
+  .sf-row:last-child{margin-bottom:0;}
+  .sf-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-secondary);margin-bottom:5px;}
+  .sf-hint{font-size:11px;color:var(--text-tertiary);margin-top:4px;line-height:1.4;}
+  .sf-input{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px;font-family:inherit;color:var(--text);background:var(--surface);outline:none;transition:border-color 0.15s,box-shadow 0.15s;}
+  .sf-input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(26,158,114,0.1);}
+  .sf-input::placeholder{color:var(--text-tertiary);}
+
+  /* ── COLOR SWATCHES ── */
+  .swatch-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+  .swatch{width:28px;height:28px;border-radius:7px;cursor:pointer;border:2px solid transparent;transition:transform 0.1s,border-color 0.1s;flex-shrink:0;}
+  .swatch:hover{transform:scale(1.1);}
+  .swatch.sel{border-color:var(--text);transform:scale(1.08);box-shadow:0 0 0 3px rgba(0,0,0,0.1);}
+  .custom-color-row{display:flex;align-items:center;gap:8px;margin-top:4px;}
+  .custom-color-input{width:40px;height:30px;border-radius:7px;border:1.5px solid var(--border);cursor:pointer;padding:2px;background:var(--surface);}
+
+  /* ── LOGO PREVIEW ── */
+  .logo-preview-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;margin-top:12px;}
+  .lpv-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-tertiary);margin-bottom:8px;}
+  .lpv-inner{display:flex;align-items:center;gap:10px;}
+  .lpv-icon{width:28px;height:28px;border-radius:7px;background:var(--brand);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .lpv-icon svg{width:14px;height:14px;fill:white;}
+  .lpv-name{font-size:14px;font-weight:600;letter-spacing:-0.3px;}
+  .lpv-name span{color:var(--brand);}
+  .lpv-tagline{font-size:10px;color:var(--text-tertiary);margin-top:1px;}
+
+  /* ── SCHOOLS STEP ── */
+  .school-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+  .school-row{display:flex;align-items:center;gap:8px;}
+  .school-row input{flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px;font-family:inherit;outline:none;background:var(--surface);color:var(--text);}
+  .school-row input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(26,158,114,0.1);}
+  .school-row input::placeholder{color:var(--text-tertiary);}
+  .rm-row-btn{width:30px;height:30px;border-radius:7px;border:1px solid var(--border);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-tertiary);font-size:15px;line-height:1;flex-shrink:0;transition:all 0.12s;}
+  .rm-row-btn:hover{border-color:var(--red);color:var(--red);background:var(--red-light);}
+  .add-school-btn{display:flex;align-items:center;gap:6px;width:100%;padding:9px 12px;background:none;border:1.5px dashed var(--border);border-radius:var(--radius);font-size:13px;font-weight:500;color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:all 0.12s;}
+  .add-school-btn:hover{border-color:var(--brand);color:var(--brand);}
+
+  /* ── COORDINATOR CARDS ── */
+  .coord-card{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:12px;}
+  .coord-card:last-child{margin-bottom:0;}
+  .coord-card-hd{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface);border-bottom:1px solid var(--border);}
+  .coord-card-title{font-size:12px;font-weight:700;color:var(--text-secondary);}
+  .coord-card-rm{font-size:11px;color:var(--text-tertiary);background:none;border:1px solid var(--border);border-radius:6px;padding:3px 9px;cursor:pointer;font-family:inherit;transition:all 0.12s;}
+  .coord-card-rm:hover{border-color:var(--red);color:var(--red);}
+  .coord-card-body{padding:12px 14px;}
+  .coord-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+  .coord-field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-secondary);margin-bottom:4px;}
+  .coord-field input{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none;background:var(--surface);color:var(--text);}
+  .coord-field input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(26,158,114,0.1);}
+  .coord-field input::placeholder{color:var(--text-tertiary);}
+  /* School assignment section */
+  .coord-schools-section{border-top:1px dashed var(--border);padding-top:11px;margin-top:4px;}
+  .coord-schools-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-secondary);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+  .coord-schools-label span{font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-tertiary);font-size:10px;}
+  .school-assign-grid{display:flex;flex-wrap:wrap;gap:6px;}
+  .school-toggle{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);font-size:12px;font-weight:500;color:var(--text-secondary);cursor:pointer;user-select:none;transition:all 0.12s;}
+  .school-toggle:hover{border-color:var(--brand-mid);}
+  .school-toggle.on{background:var(--brand-light);border-color:var(--brand);color:var(--brand-dark);}
+  .school-toggle-check{width:14px;height:14px;border-radius:4px;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;transition:all 0.1s;}
+  .school-toggle.on .school-toggle-check{background:var(--brand);border-color:var(--brand);color:white;}
+  .no-schools-hint{font-size:12px;color:var(--text-tertiary);font-style:italic;}
+  .add-coord-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:10px;background:none;border:1.5px dashed var(--border);border-radius:var(--radius-lg);font-size:13px;font-weight:600;color:var(--brand);cursor:pointer;font-family:inherit;transition:all 0.12s;margin-top:4px;}
+  .add-coord-btn:hover{border-color:var(--brand);background:var(--brand-light);}
+
+  /* ── ACTIVITY CATEGORIES ── */
+  .cat-scroll{max-height:320px;overflow-y:auto;padding-right:2px;}
+  .cat-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:10px;}
+  .cat-card:last-child{margin-bottom:0;}
+  .cat-hd{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg);border-bottom:1px solid var(--border);}
+  .cat-name-input{font-size:13px;font-weight:600;background:none;border:none;outline:none;font-family:inherit;color:var(--text);flex:1;min-width:0;}
+  .cat-name-input:focus{color:var(--brand);}
+  .cat-rm-btn{font-size:11px;color:var(--text-tertiary);background:none;border:none;cursor:pointer;padding:3px 6px;border-radius:5px;font-family:inherit;flex-shrink:0;line-height:1;}
+  .cat-rm-btn:hover{color:var(--red);background:var(--red-light);}
+  .cat-chips{padding:9px 11px;display:flex;flex-wrap:wrap;gap:5px;min-height:38px;align-items:center;}
+  .cat-chip{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;background:var(--brand-light);border:1px solid var(--brand-mid);font-size:12px;font-weight:500;color:var(--brand-dark);}
+  .cat-chip-rm{cursor:pointer;font-size:13px;line-height:1;opacity:0.55;margin-left:2px;}
+  .cat-chip-rm:hover{opacity:1;color:var(--red);}
+  .cat-add-row{display:flex;align-items:center;gap:6px;padding:6px 10px 9px;border-top:1px dashed var(--border);}
+  .cat-add-input{flex:1;padding:5px 8px;border:1px solid var(--border);border-radius:7px;font-size:12px;font-family:inherit;outline:none;background:var(--surface);}
+  .cat-add-input:focus{border-color:var(--brand);}
+  .cat-add-btn{font-size:11px;font-weight:600;background:var(--brand);color:white;border:none;border-radius:7px;padding:5px 12px;cursor:pointer;font-family:inherit;white-space:nowrap;}
+  .cat-add-btn:hover{background:var(--brand-dark);}
+  .add-cat-row{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:10px;background:none;border:1.5px dashed var(--border);border-radius:var(--radius-lg);font-size:13px;font-weight:500;color:var(--text-secondary);cursor:pointer;font-family:inherit;margin-top:10px;}
+  .add-cat-row:hover{border-color:var(--brand);color:var(--brand);}
+
+  /* ── REVIEW ── */
+  .review-section{margin-bottom:16px;}
+  .review-section:last-child{margin-bottom:0;}
+  .review-hd{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-tertiary);padding-bottom:5px;border-bottom:1px solid var(--border);margin-bottom:8px;}
+  .review-row{display:flex;justify-content:space-between;align-items:flex-start;padding:4px 0;gap:16px;}
+  .review-key{font-size:12px;color:var(--text-secondary);flex-shrink:0;}
+  .review-val{font-size:12px;font-weight:600;text-align:right;}
+  .review-chips{display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end;}
+  .review-chip{font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;background:var(--brand-light);color:var(--brand-dark);}
+  .review-chip-sm{font-size:10px;font-weight:500;padding:2px 7px;border-radius:10px;background:var(--bg);color:var(--text-secondary);border:1px solid var(--border);}
+  .review-color-dot{width:12px;height:12px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:middle;}
+  .review-coord-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;margin-bottom:8px;}
+  .review-coord-name{font-size:13px;font-weight:600;margin-bottom:3px;}
+  .review-coord-meta{font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+  .review-coord-schools{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;}
+
+  /* ── BUTTONS ── */
+  .btn-back{background:none;border:1.5px solid var(--border);border-radius:var(--radius);padding:8px 18px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;color:var(--text-secondary);}
+  .btn-back:hover{border-color:var(--border-strong);color:var(--text);}
+  .btn-next{background:var(--brand);color:white;border:none;border-radius:var(--radius);padding:9px 24px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.15s;display:flex;align-items:center;gap:7px;}
+  .btn-next:hover{background:var(--brand-dark);transform:translateY(-1px);box-shadow:var(--shadow-md);}
+  .btn-launch{background:var(--brand);color:white;border:none;border-radius:var(--radius);padding:10px 26px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.15s;display:flex;align-items:center;gap:8px;}
+  .btn-launch:hover{background:var(--brand-dark);transform:translateY(-1px);box-shadow:var(--shadow-md);}
+  .btn-launch svg{width:16px;height:16px;fill:white;}
+
+  /* ── ALREADY SET UP ── */
+  .already-screen{display:none;flex:1;align-items:center;justify-content:center;padding:40px 20px;}
+  .already-screen.show{display:flex;}
+  .already-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow-lg);max-width:420px;width:100%;padding:36px;text-align:center;}
+  .already-icon{width:52px;height:52px;background:var(--brand-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+  .already-icon svg{width:24px;height:24px;stroke:var(--brand);fill:none;stroke-width:2;}
+  .already-title{font-size:20px;font-weight:600;margin-bottom:6px;}
+  .already-sub{font-size:13px;color:var(--text-secondary);line-height:1.5;}
+  .already-org{font-size:18px;font-weight:600;color:var(--brand);margin:12px 0;}
+  .already-actions{display:flex;flex-direction:column;gap:10px;margin-top:22px;}
+  .btn-go{background:var(--brand);color:white;border:none;border-radius:var(--radius);padding:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;width:100%;}
+  .btn-go:hover{background:var(--brand-dark);}
+  .btn-redo{background:none;border:1px solid var(--border);border-radius:var(--radius);padding:11px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;color:var(--text-secondary);}
+  .btn-redo:hover{border-color:var(--border-strong);color:var(--text);}
+
+  @media(max-width:600px){
+    .card-hd,.card-body,.card-body-scroll,.card-footer{padding-left:20px;padding-right:20px;}
+    .sf-row.two,.sf-row.three,.coord-fields{grid-template-columns:1fr;}
+    .step-node span{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="ez-logo">
+    <div class="ez-logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg></div>
+    EZ<span>Scheduler</span>
+  </div>
+  <div class="setup-badge">New account setup</div>
+</div>
+<div class="progress-strip"><div class="progress-fill" id="progress-fill" style="width:16.7%"></div></div>
+
+<!-- Already set up state -->
+<div class="already-screen" id="already-screen">
+  <div class="already-card">
+    <div class="already-icon"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+    <div class="already-title">You're already set up</div>
+    <div class="already-sub">This browser has an existing account configured for:</div>
+    <div class="already-org" id="already-org-name"></div>
+    <div class="already-sub">Head straight to the scheduler, or redo setup to change your settings.</div>
+    <div class="already-actions">
+      <button class="btn-go" onclick="goToScheduler()">Open scheduler →</button>
+      <button class="btn-redo" onclick="startFresh()">Redo setup from scratch</button>
+    </div>
+  </div>
+</div>
+
+<!-- Wizard -->
+<div id="wizard-wrap" style="display:none;flex-direction:column;flex:1">
+  <div class="step-track" id="step-track"></div>
+  <div class="wizard-body">
+    <div class="wizard-card" id="wizard-card"></div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY   = 'ezscheduler_config';
+const SCHEDULER_URL = 'scheduler.html';
+
+/* ── PRESET COLORS ── */
+const PRESETS = [
+  {name:'Forest',  hex:'#1a9e72',dark:'#0f6e50',light:'#e6f7f1',mid:'#9ee0c8'},
+  {name:'Cobalt',  hex:'#2563eb',dark:'#1d4ed8',light:'#eff6ff',mid:'#93c5fd'},
+  {name:'Violet',  hex:'#7c3aed',dark:'#6d28d9',light:'#f5f3ff',mid:'#c4b5fd'},
+  {name:'Crimson', hex:'#dc2626',dark:'#b91c1c',light:'#fee2e2',mid:'#fca5a5'},
+  {name:'Amber',   hex:'#d97706',dark:'#b45309',light:'#fef3c7',mid:'#fcd34d'},
+  {name:'Rose',    hex:'#e11d48',dark:'#be123c',light:'#fff1f2',mid:'#fda4af'},
+  {name:'Teal',    hex:'#0891b2',dark:'#0e7490',light:'#ecfeff',mid:'#67e8f9'},
+  {name:'Slate',   hex:'#475569',dark:'#334155',light:'#f1f5f9',mid:'#94a3b8'},
+];
+
+/* ── STEP METADATA ── */
+const STEP_LABELS = ['Identity','Schools','Coordinators','Activities','Pay & SMS','Review'];
+const TOTAL = 6;
+
+/* ── STATE ── */
+let step = 1;
+let selPreset = 0;
+
+// Step 1 — identity
+let d = {
+  orgName:'', shortName:'', tagline:'powered by EZScheduler',
+  brandColor: PRESETS[0], customColor:'',
+  timezone:'America/New_York',
+  defaultPayRate:35, confirmWindow:3, smsSender:'',
+};
+
+// Step 2 — schools
+let schools = [
+  {id:'sch1', name:''},
+];
+let nextSchoolId = 10;
+
+// Step 3 — coordinators (array, each has school assignments)
+let coordinatorList = [
+  { id:'cl1', firstName:'', lastName:'', phone:'', email:'', schoolIds:[] }
+];
+let nextCoordLocalId = 10;
+
+// Step 4 — activity categories
+let cats = [
+  {id:'ac1', name:'Team Sports',          activities:['Basketball','Soccer','Football','Baseball','Softball','Volleyball','Lacrosse']},
+  {id:'ac2', name:'Racket & Court',       activities:['Tennis','Badminton','Pickleball','Squash']},
+  {id:'ac3', name:'Individual Sports',    activities:['Swimming','Track & Field','Gymnastics','Wrestling','Golf']},
+  {id:'ac4', name:'Fitness & Enrichment', activities:['Strength Training','Yoga','Dance','Cheerleading','Martial Arts']},
+];
+let nextCatId = 10;
+
+/* ══ BOOT ══ */
+(function boot() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (raw && !location.search.includes('redo')) {
+    try {
+      const cfg = JSON.parse(raw);
+      document.getElementById('already-org-name').textContent = cfg.orgName || 'Your organization';
+      document.getElementById('already-screen').classList.add('show');
+      return;
+    } catch(e) {}
+  }
+  showWizard();
+})();
+
+function showWizard() {
+  document.getElementById('wizard-wrap').style.display = 'flex';
+  renderStep();
+}
+function goToScheduler() { window.location.href = SCHEDULER_URL; }
+function startFresh() {
+  localStorage.removeItem(STORAGE_KEY);
+  document.getElementById('already-screen').classList.remove('show');
+  showWizard();
+}
+
+/* ══ STEP TRACK ══ */
+function renderTrack() {
+  document.getElementById('step-track').innerHTML = STEP_LABELS.map((s,i) => {
+    const n=i+1, done=n<step, active=n===step;
+    return `${i>0?'<div class="step-divider"></div>':''}<div class="step-node ${active?'active':done?'done':''}"><div class="step-num">${done?'✓':n}</div><span>${s}</span></div>`;
+  }).join('');
+  document.getElementById('progress-fill').style.width = `${step/TOTAL*100}%`;
+}
+
+/* ══ RENDER STEP ══ */
+function renderStep() {
+  renderTrack();
+  const card = document.getElementById('wizard-card');
+  const fn = [null, s1, s2, s3, s4, s5, s6][step];
+  card.innerHTML = fn();
+  if (step === 1) { hookSwatches(); updateLogoPreview(); bindS1(); }
+  if (step === 5) setTimeout(updateSmsPreview, 30);
+}
+
+/* ══ STEP 1: IDENTITY ══ */
+function s1() {
+  return `<div class="card-hd">
+    <div class="card-eyebrow">Step 1 of 6 — Identity</div>
+    <div class="card-title">Your organization</div>
+    <div class="card-sub">How the app will be branded for coordinators and coaches.</div>
+  </div>
+  <div class="card-body">
+    <div class="sf-row two">
+      <div><label class="sf-label">Organization name</label><input class="sf-input" id="s1-org" type="text" value="${d.orgName}" placeholder="Montgomery Sports Association" autofocus></div>
+      <div><label class="sf-label">Short name <span style="font-weight:400;text-transform:none;font-size:10px">(up to 6 chars)</span></label><input class="sf-input" id="s1-short" type="text" value="${d.shortName}" placeholder="MSA" maxlength="6" style="text-transform:uppercase"></div>
+    </div>
+    <div class="sf-row">
+      <div><label class="sf-label">Tagline</label><input class="sf-input" id="s1-tagline" type="text" value="${d.tagline}" placeholder="powered by EZScheduler"></div>
+    </div>
+    <div class="sf-row">
+      <div>
+        <label class="sf-label">Brand color</label>
+        <div class="swatch-row" id="swatch-row"></div>
+        <div class="custom-color-row">
+          <input class="custom-color-input" type="color" id="s1-custom" value="${d.brandColor?.hex||d.customColor||'#1a9e72'}">
+          <span style="font-size:12px;color:var(--text-secondary)">Custom color</span>
+        </div>
+      </div>
+    </div>
+    <div class="logo-preview-box">
+      <div class="lpv-label">Preview</div>
+      <div class="lpv-inner">
+        <div class="lpv-icon" id="lpv-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg></div>
+        <div><div class="lpv-name" id="lpv-name"></div><div class="lpv-tagline" id="lpv-tagline"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer"><div></div><button class="btn-next" onclick="next()">Continue <span style="opacity:0.7">→</span></button></div>`;
+}
+function bindS1() {
+  document.getElementById('s1-org').addEventListener('input', e => { d.orgName = e.target.value; updateLogoPreview(); });
+  document.getElementById('s1-short').addEventListener('input', e => { d.shortName = e.target.value.slice(0,6).toUpperCase(); e.target.value = d.shortName; updateLogoPreview(); });
+  document.getElementById('s1-tagline').addEventListener('input', e => { d.tagline = e.target.value; updateLogoPreview(); });
+  document.getElementById('s1-custom').addEventListener('input', e => { d.customColor = e.target.value; d.brandColor = null; selPreset = -1; hookSwatches(); applyPreview(e.target.value); updateLogoPreview(); });
+}
+function hookSwatches() {
+  const row = document.getElementById('swatch-row'); if (!row) return;
+  row.innerHTML = PRESETS.map((p,i) => `<div class="swatch ${i===selPreset?'sel':''}" style="background:${p.hex}" title="${p.name}" onclick="pickPreset(${i})"></div>`).join('');
+}
+function pickPreset(i) {
+  selPreset = i; d.brandColor = PRESETS[i]; d.customColor = '';
+  hookSwatches(); applyPreview(PRESETS[i].hex); updateLogoPreview();
+  const inp = document.getElementById('s1-custom'); if (inp) inp.value = PRESETS[i].hex;
+}
+function applyPreview(hex) {
+  const p = d.brandColor || { hex, dark:dk(hex), light:lt(hex), mid:lt(hex,0.5) };
+  const r = document.documentElement;
+  r.style.setProperty('--brand',p.hex); r.style.setProperty('--brand-dark',p.dark);
+  r.style.setProperty('--brand-light',p.light); r.style.setProperty('--brand-mid',p.mid);
+}
+function dk(h){try{const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return`rgb(${Math.max(0,r-40)},${Math.max(0,g-40)},${Math.max(0,b-40)})`;}catch{return h;}}
+function lt(h,a=0.88){try{const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return`rgb(${Math.round(r+(255-r)*a)},${Math.round(g+(255-g)*a)},${Math.round(b+(255-b)*a)})`;}catch{return h;}}
+function updateLogoPreview() {
+  const name = (document.getElementById('s1-short')?.value || d.shortName || 'ORG').toUpperCase();
+  const tag  = document.getElementById('s1-tagline')?.value ?? d.tagline;
+  const hex  = d.brandColor?.hex || d.customColor || '#1a9e72';
+  const icon = document.getElementById('lpv-icon');  if(icon) icon.style.background = hex;
+  const nm   = document.getElementById('lpv-name');   if(nm)   nm.innerHTML = `${name} <span style="color:${hex}">Scheduler</span>`;
+  const tgl  = document.getElementById('lpv-tagline');if(tgl)  tgl.textContent = tag;
+}
+
+/* ══ STEP 2: SCHOOLS ══ */
+function s2() {
+  return `<div class="card-hd">
+    <div class="card-eyebrow">Step 2 of 6 — Schools</div>
+    <div class="card-title">Partner schools</div>
+    <div class="card-sub">Add every school you run programs at. You'll assign coordinators to these in the next step.</div>
+  </div>
+  <div class="card-body">
+    <div class="school-list" id="school-list">${buildSchoolRows()}</div>
+    <button class="add-school-btn" onclick="addSchoolRow()">+ Add school</button>
+  </div>
+  <div class="card-footer"><button class="btn-back" onclick="prev()">← Back</button><button class="btn-next" onclick="next()">Continue <span style="opacity:0.7">→</span></button></div>`;
+}
+function buildSchoolRows() {
+  return schools.map(s => `
+    <div class="school-row" id="sr-${s.id}">
+      <input type="text" value="${s.name}" placeholder="e.g. Thurgood Marshall Elementary" onchange="updateSchoolName('${s.id}',this.value)" oninput="updateSchoolName('${s.id}',this.value)">
+      <button class="rm-row-btn" onclick="removeSchoolRow('${s.id}')" title="Remove school">×</button>
+    </div>`).join('');
+}
+function refreshSchoolList() { const el = document.getElementById('school-list'); if(el) el.innerHTML = buildSchoolRows(); }
+function addSchoolRow() {
+  schools.push({ id:'sch'+nextSchoolId++, name:'' });
+  refreshSchoolList();
+  // Focus the new input
+  const inputs = document.querySelectorAll('.school-row input');
+  if(inputs.length) inputs[inputs.length-1].focus();
+}
+function removeSchoolRow(id) {
+  if(schools.length <= 1) { schools[0].name = ''; refreshSchoolList(); return; }
+  schools = schools.filter(s => s.id !== id);
+  // Remove this school from all coordinator assignments
+  coordinatorList.forEach(c => { c.schoolIds = c.schoolIds.filter(sid => sid !== id); });
+  refreshSchoolList();
+}
+function updateSchoolName(id, name) {
+  const s = schools.find(s => s.id === id); if(s) s.name = name;
+}
+function saveSchoolsFromDOM() {
+  // Read current input values into schools array before navigating away
+  schools.forEach(s => {
+    const inp = document.getElementById('sr-'+s.id)?.querySelector('input');
+    if(inp) s.name = inp.value.trim();
+  });
+  // Remove empty entries (but keep at least one)
+  const nonEmpty = schools.filter(s => s.name);
+  if(nonEmpty.length) schools = nonEmpty;
+}
+
+/* ══ STEP 3: COORDINATORS ══ */
+function s3() {
+  const namedSchools = schools.filter(s => s.name);
+  return `<div class="card-hd">
+    <div class="card-eyebrow">Step 3 of 6 — Coordinators</div>
+    <div class="card-title">Lead coordinators</div>
+    <div class="card-sub">Add everyone who manages assignments. Assign each coordinator to the schools they oversee.</div>
+  </div>
+  <div class="card-body-scroll">
+    <div id="coord-list">${buildCoordCards(namedSchools)}</div>
+    <button class="add-coord-btn" onclick="addCoord()">+ Add another coordinator</button>
+  </div>
+  <div class="card-footer"><button class="btn-back" onclick="prev()">← Back</button><button class="btn-next" onclick="next()">Continue <span style="opacity:0.7">→</span></button></div>`;
+}
+function buildCoordCards(namedSchools) {
+  return coordinatorList.map((c, i) => `
+    <div class="coord-card" id="cc-${c.id}">
+      <div class="coord-card-hd">
+        <div class="coord-card-title">Coordinator ${i+1}</div>
+        ${coordinatorList.length > 1 ? `<button class="coord-card-rm" onclick="removeCoord('${c.id}')">Remove</button>` : ''}
+      </div>
+      <div class="coord-card-body">
+        <div class="coord-fields">
+          <div class="coord-field"><label>First name</label><input type="text" id="cf-first-${c.id}" value="${c.firstName}" placeholder="Jordan" ${i===0?'autofocus':''}></div>
+          <div class="coord-field"><label>Last name</label><input type="text" id="cf-last-${c.id}" value="${c.lastName}" placeholder="Williams"></div>
+          <div class="coord-field"><label>Phone number</label><input type="tel" id="cf-phone-${c.id}" value="${c.phone}" placeholder="(301) 555-0000"></div>
+          <div class="coord-field"><label>Email address</label><input type="email" id="cf-email-${c.id}" value="${c.email}" placeholder="coordinator@org.com"></div>
+        </div>
+        <div class="coord-schools-section">
+          <div class="coord-schools-label">Schools this coordinator oversees <span>(select all that apply)</span></div>
+          ${namedSchools.length
+            ? `<div class="school-assign-grid">${namedSchools.map(s=>`
+                <div class="school-toggle ${c.schoolIds.includes(s.id)?'on':''}" onclick="toggleSchoolAssign('${c.id}','${s.id}',this)">
+                  <span class="school-toggle-check">${c.schoolIds.includes(s.id)?'✓':''}</span>
+                  ${s.name}
+                </div>`).join('')}</div>`
+            : `<div class="no-schools-hint">No schools added yet — go back to Step 2 to add them.</div>`
+          }
+        </div>
+      </div>
+    </div>`).join('');
+}
+function refreshCoordList() {
+  const namedSchools = schools.filter(s => s.name);
+  const el = document.getElementById('coord-list'); if(el) el.innerHTML = buildCoordCards(namedSchools);
+}
+function addCoord() {
+  saveCoordsFromDOM();
+  coordinatorList.push({ id:'cl'+nextCoordLocalId++, firstName:'', lastName:'', phone:'', email:'', schoolIds:[] });
+  refreshCoordList();
+  // Scroll to new card & focus
+  const cards = document.querySelectorAll('.coord-card');
+  if(cards.length) { cards[cards.length-1].scrollIntoView({behavior:'smooth',block:'nearest'}); const inp=cards[cards.length-1].querySelector('input');if(inp)setTimeout(()=>inp.focus(),200); }
+}
+function removeCoord(id) {
+  saveCoordsFromDOM();
+  coordinatorList = coordinatorList.filter(c => c.id !== id);
+  refreshCoordList();
+}
+function toggleSchoolAssign(coordId, schoolId, el) {
+  const c = coordinatorList.find(c => c.id === coordId); if(!c) return;
+  if(c.schoolIds.includes(schoolId)) {
+    c.schoolIds = c.schoolIds.filter(s => s !== schoolId);
+    el.classList.remove('on');
+    el.querySelector('.school-toggle-check').textContent = '';
+  } else {
+    c.schoolIds.push(schoolId);
+    el.classList.add('on');
+    el.querySelector('.school-toggle-check').textContent = '✓';
+  }
+}
+function saveCoordsFromDOM() {
+  coordinatorList.forEach(c => {
+    c.firstName = document.getElementById(`cf-first-${c.id}`)?.value.trim() || c.firstName;
+    c.lastName  = document.getElementById(`cf-last-${c.id}`)?.value.trim()  || c.lastName;
+    c.phone     = document.getElementById(`cf-phone-${c.id}`)?.value.trim() || c.phone;
+    c.email     = document.getElementById(`cf-email-${c.id}`)?.value.trim() || c.email;
+  });
+}
+
+/* ══ STEP 4: ACTIVITIES ══ */
+function s4() {
+  return `<div class="card-hd">
+    <div class="card-eyebrow">Step 4 of 6 — Activities</div>
+    <div class="card-title">Sports &amp; activities</div>
+    <div class="card-sub">Organize your offerings into categories. These populate every sport selector in the app. Remove what you don't offer, add what's missing.</div>
+  </div>
+  <div class="card-body">
+    <div class="cat-scroll" id="cat-list">${buildCatList()}</div>
+    <button class="add-cat-row" onclick="addCat()">+ Add category</button>
+  </div>
+  <div class="card-footer"><button class="btn-back" onclick="prev()">← Back</button><button class="btn-next" onclick="next()">Continue <span style="opacity:0.7">→</span></button></div>`;
+}
+function buildCatList() {
+  return cats.map(c => `
+    <div class="cat-card" id="cat-${c.id}">
+      <div class="cat-hd">
+        <input class="cat-name-input" type="text" value="${c.name}" onchange="renameCat('${c.id}',this.value)">
+        <button class="cat-rm-btn" onclick="rmCat('${c.id}')">✕</button>
+      </div>
+      <div class="cat-chips" id="cc-${c.id}">
+        ${c.activities.map(a=>`<span class="cat-chip">${a}<span class="cat-chip-rm" onclick="rmAct('${c.id}','${a.replace(/'/g,"\\'")}')">×</span></span>`).join('')}
+        ${!c.activities.length?'<span style="font-size:11px;color:var(--text-tertiary);font-style:italic">No activities yet</span>':''}
+      </div>
+      <div class="cat-add-row">
+        <input class="cat-add-input" type="text" id="ci-${c.id}" placeholder="Add activity…" onkeydown="if(event.key==='Enter')addAct('${c.id}')">
+        <button class="cat-add-btn" onclick="addAct('${c.id}')">Add</button>
+      </div>
+    </div>`).join('');
+}
+function refreshCats() { const el=document.getElementById('cat-list'); if(el) el.innerHTML=buildCatList(); }
+function renameCat(id,name){ const c=cats.find(c=>c.id===id); if(c)c.name=name; }
+function rmCat(id){ if(cats.length<=1){alert('Keep at least one category.');return;} cats=cats.filter(c=>c.id!==id); refreshCats(); }
+function addAct(id){ const inp=document.getElementById(`ci-${id}`);if(!inp)return;const name=inp.value.trim();if(!name)return;const c=cats.find(c=>c.id===id);if(!c||c.activities.includes(name))return;c.activities.push(name);inp.value='';refreshCats(); }
+function rmAct(id,act){ const c=cats.find(c=>c.id===id);if(!c)return;c.activities=c.activities.filter(a=>a!==act);refreshCats(); }
+function addCat(){ const id='ac'+nextCatId++;cats.push({id,name:'New Category',activities:[]});refreshCats();setTimeout(()=>{const inp=document.getElementById(`cat-${id}`)?.querySelector('.cat-name-input');if(inp){inp.focus();inp.select();}},40); }
+
+/* ══ STEP 5: PAY & SMS ══ */
+function s5() {
+  const sender = d.smsSender || (coordinatorList[0]?.firstName ? `${coordinatorList[0].firstName} @ ${d.shortName||'MSA'}` : (d.shortName||'MSA Scheduler'));
+  return `<div class="card-hd">
+    <div class="card-eyebrow">Step 5 of 6 — Pay &amp; SMS</div>
+    <div class="card-title">Defaults &amp; messaging</div>
+    <div class="card-sub">Set the default pay rate for new coaches and how SMS assignments are signed.</div>
+  </div>
+  <div class="card-body">
+    <div class="sf-row two">
+      <div>
+        <label class="sf-label">Default pay rate per session</label>
+        <div style="position:relative">
+          <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-secondary)">$</span>
+          <input class="sf-input" id="s5-pay" type="number" value="${d.defaultPayRate}" min="1" step="1" style="padding-left:24px">
+        </div>
+        <div class="sf-hint">Individual coach rates can override this.</div>
+      </div>
+      <div>
+        <label class="sf-label">SMS confirmation window</label>
+        <div style="position:relative">
+          <input class="sf-input" id="s5-window" type="number" value="${d.confirmWindow}" min="1" max="72" step="1">
+          <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--text-secondary);font-size:12px">hrs</span>
+        </div>
+        <div class="sf-hint">After this window, unanswered texts flag as pending.</div>
+      </div>
+    </div>
+    <div class="sf-row">
+      <div>
+        <label class="sf-label">SMS sender name</label>
+        <input class="sf-input" id="s5-sender" type="text" value="${sender}" placeholder="Jordan @ MSA" oninput="updateSmsPreview()">
+        <div class="sf-hint">Shown at the end of every assignment text.</div>
+      </div>
+    </div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:13px 15px;margin-top:4px">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-tertiary);margin-bottom:7px">SMS preview</div>
+      <div style="background:white;border-radius:10px 10px 10px 3px;padding:8px 12px;font-size:12px;line-height:1.6;color:var(--text-secondary);border:1px solid var(--border)" id="sms-preview"></div>
+    </div>
+  </div>
+  <div class="card-footer"><button class="btn-back" onclick="prev()">← Back</button><button class="btn-next" onclick="next()">Review setup <span style="opacity:0.7">→</span></button></div>`;
+}
+function updateSmsPreview() {
+  const sender = document.getElementById('s5-sender')?.value || d.smsSender || 'MSA';
+  const el = document.getElementById('sms-preview');
+  if(el) el.textContent = `"Hi Marcus! Tomorrow: Thurgood Marshall ES · Grades K–2 · 3:00–4:00 PM. Reply YES to confirm. — ${sender}"`;
+}
+
+/* ══ STEP 6: REVIEW ══ */
+function s6() {
+  const color = d.brandColor?.hex || d.customColor || '#1a9e72';
+  const namedSchools = schools.filter(s => s.name);
+  const totalActs = cats.reduce((n,c)=>n+c.activities.length,0);
+
+  const schoolMap = {};
+  namedSchools.forEach(s => { schoolMap[s.id] = s.name; });
+
+  const coordCards = coordinatorList.filter(c => c.firstName).map(c => {
+    const assignedSchools = c.schoolIds.map(id => schoolMap[id]).filter(Boolean);
+    return `<div class="review-coord-card">
+      <div class="review-coord-name">${c.firstName} ${c.lastName}</div>
+      <div class="review-coord-meta">${[c.phone,c.email].filter(Boolean).join(' · ')}</div>
+      ${assignedSchools.length ? `<div class="review-coord-schools">${assignedSchools.map(n=>`<span class="review-chip-sm">${n}</span>`).join('')}</div>` : ''}
+    </div>`;
+  }).join('') || '<div style="font-size:12px;color:var(--text-tertiary);font-style:italic">No coordinators added</div>';
+
+  return `<div class="card-hd">
+    <div class="card-eyebrow">Step 6 of 6 — Review</div>
+    <div class="card-title">Ready to launch 🚀</div>
+    <div class="card-sub">Your settings will be saved locally and applied every time you open the scheduler.</div>
+  </div>
+  <div class="card-body-scroll" style="max-height:400px">
+    <div class="review-section">
+      <div class="review-hd">Identity</div>
+      <div class="review-row"><span class="review-key">Organization</span><span class="review-val">${d.orgName||'—'}</span></div>
+      <div class="review-row"><span class="review-key">Short name</span><span class="review-val">${d.shortName||'—'}</span></div>
+      <div class="review-row"><span class="review-key">Tagline</span><span class="review-val" style="font-weight:400;color:var(--text-secondary)">${d.tagline||'—'}</span></div>
+      <div class="review-row"><span class="review-key">Brand color</span><span class="review-val"><span class="review-color-dot" style="background:${color}"></span>${d.brandColor?.name||'Custom'}</span></div>
+    </div>
+    <div class="review-section">
+      <div class="review-hd">Partner schools (${namedSchools.length})</div>
+      <div class="review-chips">${namedSchools.map(s=>`<span class="review-chip">${s.name}</span>`).join('')||'<span style="font-size:11px;color:var(--text-tertiary);font-style:italic">None added</span>'}</div>
+    </div>
+    <div class="review-section">
+      <div class="review-hd">Coordinators (${coordinatorList.filter(c=>c.firstName).length})</div>
+      ${coordCards}
+    </div>
+    <div class="review-section">
+      <div class="review-hd">Activities — ${cats.length} categories · ${totalActs} total</div>
+      ${cats.map(c=>`<div class="review-row" style="align-items:flex-start;padding:6px 0"><span class="review-key" style="padding-top:2px;white-space:nowrap;min-width:100px">${c.name}</span><div class="review-chips">${c.activities.map(a=>`<span class="review-chip">${a}</span>`).join('')||'<span style="font-size:11px;color:var(--text-tertiary);font-style:italic">None</span>'}</div></div>`).join('')}
+    </div>
+    <div class="review-section">
+      <div class="review-hd">Pay &amp; SMS</div>
+      <div class="review-row"><span class="review-key">Default pay rate</span><span class="review-val">$${d.defaultPayRate}/session</span></div>
+      <div class="review-row"><span class="review-key">Confirmation window</span><span class="review-val">${d.confirmWindow} hours</span></div>
+      <div class="review-row"><span class="review-key">SMS sender</span><span class="review-val" style="font-weight:400">${d.smsSender||d.shortName||'—'}</span></div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <button class="btn-back" onclick="prev()">← Back</button>
+    <button class="btn-launch" onclick="launch()"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Launch Scheduler</button>
+  </div>`;
+}
+
+/* ══ NAVIGATION ══ */
+function next() { save(); if(step<TOTAL){step++;renderStep();} if(step===5)setTimeout(updateSmsPreview,30); }
+function prev() { if(step>1){step--;renderStep();} if(step===5)setTimeout(updateSmsPreview,30); }
+
+function save() {
+  if(step===1) {
+    d.orgName   = document.getElementById('s1-org')?.value.trim()   || d.orgName;
+    d.shortName = document.getElementById('s1-short')?.value.trim().toUpperCase() || d.shortName;
+    d.tagline   = document.getElementById('s1-tagline')?.value ?? d.tagline;
+  } else if(step===2) {
+    saveSchoolsFromDOM();
+  } else if(step===3) {
+    saveCoordsFromDOM();
+  } else if(step===5) {
+    d.defaultPayRate = parseInt(document.getElementById('s5-pay')?.value)||35;
+    d.confirmWindow  = parseInt(document.getElementById('s5-window')?.value)||3;
+    d.smsSender      = document.getElementById('s5-sender')?.value.trim()||d.shortName||'MSA';
+  }
+}
+
+/* ══ LAUNCH ══ */
+function launch() {
+  save();
+  const config = {
+    ...d,
+    schools:     JSON.parse(JSON.stringify(schools.filter(s=>s.name))),
+    coordinators: JSON.parse(JSON.stringify(coordinatorList)),
+    activityCategories: JSON.parse(JSON.stringify(cats)),
+    savedAt: new Date().toISOString(),
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+  window.location.href = SCHEDULER_URL;
+}
+</script>
+</body>
+</html>
