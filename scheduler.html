@@ -659,7 +659,7 @@
   </div>
   <div class="nav">
     <button class="nav-tab active" onclick="switchTab('schedule')"><span>Schedule</span></button>
-    <button class="nav-tab" onclick="switchTab('coaches')"><span>Coaches</span></button>
+    <button class="nav-tab" onclick="switchTab('coaches')"><span id="nav-coaches-tab">Coaches</span></button>
     <button class="nav-tab" onclick="switchTab('confirm')">
       <span>Confirmations</span><span class="badge-count" id="pending-badge">0</span>
     </button>
@@ -668,7 +668,7 @@
   <div class="topbar-right">
     <button class="coach-portal-btn" onclick="openPortal()">
       <svg viewBox="0 0 24 24" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      Coach Portal
+      <span id="portal-btn-text">Coach Portal</span>
     </button>
     <div class="date-chip" id="date-display"></div>
     <button class="icon-btn" onclick="openSettings()" title="Organization settings">
@@ -687,7 +687,7 @@
   <div class="view active" id="view-schedule">
     <div class="schedule-grid">
       <div>
-        <div class="panel-label">Available coaches</div>
+        <div class="panel-label" id="pool-panel-label">Available coaches</div>
         <div class="card"><div class="coach-pool" id="coach-pool"></div></div>
       </div>
       <div>
@@ -733,8 +733,8 @@
   <!-- COACHES -->
   <div class="view" id="view-coaches">
     <div class="coaches-header">
-      <div><div class="page-title">Coach roster</div><div class="page-sub"><span id="roster-count">0</span> coaches · drag to schedule board to assign</div></div>
-      <button class="add-btn" onclick="showForm()">+ Add coach</button>
+      <div><div class="page-title" id="coaches-tab-title">Coach roster</div><div class="page-sub" id="coaches-tab-sub"><span id="roster-count">0</span> coaches · drag to schedule board to assign</div></div>
+      <button class="add-btn" id="add-worker-btn" onclick="showForm()">+ Add coach</button>
     </div>
     <div id="add-form-wrap"></div>
     <div class="search-wrap">
@@ -815,7 +815,7 @@
 <div class="picker-backdrop" id="picker-backdrop">
   <div class="picker-modal">
     <div class="picker-header">
-      <div class="picker-eyebrow">Assign coach to program</div>
+      <div class="picker-eyebrow" id="picker-eyebrow">Assign worker to shift</div>
       <div class="picker-title" id="picker-school-name"></div>
       <div class="picker-sub" id="picker-school-sub"></div>
     </div>
@@ -861,7 +861,7 @@
   <div class="overlay-topbar">
     <button class="overlay-back-btn" onclick="closePortal()">← Back</button>
     <div class="logo"><div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg></div><div class="logo-text"><div class="logo-name" id="portal-logo-name">MSA <span>Coach Portal</span></div><div class="logo-tagline">powered by EZScheduler</div></div></div>
-    <div class="overlay-badge">Coaches only</div>
+    <div class="overlay-badge" id="portal-badge-text">Coaches only</div>
   </div>
   <div style="overflow-y:auto;flex:1">
   <div class="portal-main">
@@ -912,7 +912,7 @@
 <div class="overlay-page" id="season-page">
   <div class="overlay-topbar">
     <button class="overlay-back-btn" onclick="closeSeasonEdit()">← Back to schedule</button>
-    <div class="logo"><div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg></div><div class="logo-text"><div class="logo-name">MSA <span>Season Manager</span></div><div class="logo-tagline">powered by EZScheduler</div></div></div>
+    <div class="logo"><div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg></div><div class="logo-text"><div class="logo-name" id="season-manager-logo">MSA <span>Season Manager</span></div><div class="logo-tagline">powered by EZScheduler</div></div></div>
     <div class="overlay-badge">Season management</div>
   </div>
   <div class="season-layout">
@@ -949,6 +949,17 @@ const BRAND_PRESETS=[
   {name:'Teal',    hex:'#0891b2',dark:'#0e7490',light:'#ecfeff',mid:'#67e8f9'},
   {name:'Slate',   hex:'#475569',dark:'#334155',light:'#f1f5f9',mid:'#94a3b8'},
 ];
+
+/* ══ VERTICAL CONFIG ══ */
+const VERTICAL_CONFIG={
+  sports:      {worker:'Coach',     workers:'Coaches',    site:'School',   sites:'Schools',   shift:'Program',  shifts:'Programs', skill:'Sport specialty',  manager:'Coordinator', managers:'Coordinators', payModel:'per-session',payUnit:'session', subBench:'Sub bench',  primary:'Primary',  portalLabel:'Coach Portal',   portalBadge:'Coaches only',  siteContactLabel:'School contact',  coordLabel:'School coordinator',  addSiteLabel:'Add school',   sitePlaceholder:'Lincoln Elementary',         skillLabel:'Sport / activity',  addWorkerTitle:'Add new coach',         workerSearch:'Search by name or sport...',   poolEmpty:'All available coaches assigned',   poolNoPrimary:'No primary coaches available', schedTomorrow:"Tomorrow's schools",schedWeek:'This week',showCertifications:false,showDressCode:false},
+  construction:{worker:'Worker',    workers:'Workers',    site:'Jobsite',  sites:'Jobsites',  shift:'Shift',    shifts:'Shifts',   skill:'Trade',            manager:'Manager',     managers:'Managers',     payModel:'hourly',     payUnit:'hr',      subBench:'On-call',    primary:'Full-time',portalLabel:'Worker Portal',  portalBadge:'Workers only',  siteContactLabel:'Site supervisor', coordLabel:'Jobsite manager',     addSiteLabel:'Add jobsite',  sitePlaceholder:'Riverside Tower — Floor 3',  skillLabel:'Trade / cert',      addWorkerTitle:'Add new worker',        workerSearch:'Search by name or trade...',   poolEmpty:'All available workers assigned',   poolNoPrimary:'No primary workers available', schedTomorrow:"Tomorrow's jobsites",schedWeek:'This week',showCertifications:true, showDressCode:false},
+  events:      {worker:'Staff',     workers:'Staff',      site:'Venue',    sites:'Venues',    shift:'Role',     shifts:'Roles',    skill:'Role specialty',   manager:'Coordinator', managers:'Coordinators', payModel:'hourly',     payUnit:'hr',      subBench:'On-call',    primary:'Regular',  portalLabel:'Staff Portal',   portalBadge:'Staff only',    siteContactLabel:'Event contact',   coordLabel:'Venue coordinator',   addSiteLabel:'Add venue',    sitePlaceholder:'Capitol Ballroom — Main Hall',skillLabel:'Role type',         addWorkerTitle:'Add new staff member',  workerSearch:'Search by name or role...',    poolEmpty:'All available staff assigned',     poolNoPrimary:'No regular staff available',   schedTomorrow:"Tomorrow's venues",  schedWeek:'This week',showCertifications:false,showDressCode:true},
+  healthcare:  {worker:'Caregiver', workers:'Caregivers', site:'Location', sites:'Locations', shift:'Visit',    shifts:'Visits',   skill:'Care specialty',   manager:'Coordinator', managers:'Coordinators', payModel:'hourly',     payUnit:'hr',      subBench:'On-call',    primary:'Regular',  portalLabel:'Caregiver Portal',portalBadge:'Caregivers only',siteContactLabel:'Location contact',coordLabel:'Location coordinator',addSiteLabel:'Add location', sitePlaceholder:'Sunrise Assisted Living — Wing B',skillLabel:'Care specialty',  addWorkerTitle:'Add new caregiver',     workerSearch:'Search by name or specialty...',poolEmpty:'All available caregivers assigned', poolNoPrimary:'No regular caregivers available',schedTomorrow:"Tomorrow's locations",schedWeek:'This week',showCertifications:true, showDressCode:false},
+  tutoring:    {worker:'Tutor',     workers:'Tutors',     site:'Center',   sites:'Centers',   shift:'Session',  shifts:'Sessions', skill:'Subject specialty', manager:'Coordinator', managers:'Coordinators', payModel:'per-session',payUnit:'session', subBench:'Sub bench',  primary:'Primary',  portalLabel:'Tutor Portal',   portalBadge:'Tutors only',   siteContactLabel:'Center contact',  coordLabel:'Center coordinator',  addSiteLabel:'Add center',   sitePlaceholder:'Bethesda Learning Center',   skillLabel:'Subject',           addWorkerTitle:'Add new tutor',         workerSearch:'Search by name or subject...',  poolEmpty:'All available tutors assigned',    poolNoPrimary:'No primary tutors available',  schedTomorrow:"Tomorrow's centers", schedWeek:'This week',showCertifications:false,showDressCode:false},
+};
+/* Helper: read from current org's vertical, fallback to sports */
+function V(key){ return (VERTICAL_CONFIG[ORG_CFG?.vertical]||VERTICAL_CONFIG.sports)[key]; }
 const SPORT_PILL={Basketball:'pill-basketball',Soccer:'pill-soccer',Football:'pill-football',Tennis:'pill-tennis',Baseball:'pill-baseball'};
 const SPORT_EMOJI={Basketball:'🏀',Soccer:'⚽',Football:'🏈',Tennis:'🎾',Baseball:'⚾',Volleyball:'🏐',Lacrosse:'🥍'};
 const SPORT_ICON={Basketball:'icon-basketball',Soccer:'icon-soccer',Football:'icon-football',Tennis:'icon-tennis',Baseball:'icon-baseball'};
@@ -1175,7 +1186,7 @@ function init(){
 function saveDailyNote(val){dailyNote=val;persist();}
 
 function applyOrgConfig(){
-  if(!ORG_CFG||!ORG_CFG.setupComplete)return;
+  if(!ORG_CFG||!ORG_CFG.orgName)return; // only skip if truly no config
   // Brand colors
   const bc=ORG_CFG.brandColor;
   if(bc){
@@ -1187,7 +1198,7 @@ function applyOrgConfig(){
   const abbr=ORG_CFG.shortName||'ORG';
   const logoName=document.getElementById('logo-name');if(logoName)logoName.innerHTML=`${abbr} <span>Scheduler</span>`;
   const logoTag=document.getElementById('logo-tagline');if(logoTag)logoTag.textContent=ORG_CFG.tagline||'powered by EZScheduler';
-  const portalLogo=document.getElementById('portal-logo-name');if(portalLogo)portalLogo.innerHTML=`${abbr} <span>Coach Portal</span>`;
+  const portalLogo=document.getElementById('portal-logo-name');if(portalLogo)portalLogo.innerHTML=`${abbr} <span>${V('portalLabel')}</span>`;
   document.title=`${abbr} Scheduler`;
   // Activity categories from setup
   if(ORG_CFG.activityCategories?.length)activityCategories=[...ORG_CFG.activityCategories];
@@ -1196,6 +1207,28 @@ function applyOrgConfig(){
   if(ORG_CFG.smsSender)smsSender=ORG_CFG.smsSender;
   else if(ORG_CFG.coordinators?.[0]?.firstName)smsSender=`${ORG_CFG.coordinators[0].firstName} @ ${abbr}`;
   else smsSender=abbr;
+
+  // ── Apply vertical labels to DOM ──
+  const el=id=>document.getElementById(id);
+  // Nav & topbar
+  const portalBtn=document.getElementById('portal-btn-text');if(portalBtn)portalBtn.textContent=V('portalLabel');
+  const navCoaches=document.getElementById('nav-coaches-tab');if(navCoaches)navCoaches.textContent=V('workers');
+  // Pool panel
+  const poolLbl=document.getElementById('pool-panel-label');if(poolLbl)poolLbl.textContent=`Available ${V('workers').toLowerCase()}`;
+  // Schedule panel
+  const schedLbl=document.getElementById('schedule-panel-label');if(schedLbl)schedLbl.textContent=V('schedTomorrow');
+  // Coaches tab
+  const ctTitle=document.getElementById('coaches-tab-title');if(ctTitle)ctTitle.textContent=`${V('worker')} roster`;
+  const ctSub=document.getElementById('coaches-tab-sub');if(ctSub)ctSub.innerHTML=`<span id="roster-count">0</span> ${V('workers').toLowerCase()} · drag to schedule board to assign`;
+  const addBtn=document.getElementById('add-worker-btn');if(addBtn)addBtn.textContent=`+ Add ${V('worker').toLowerCase()}`;
+  // Search placeholder
+  const srch=document.getElementById('search-input');if(srch)srch.placeholder=V('workerSearch');
+  // Portal badge
+  const pbadge=document.getElementById('portal-badge-text');if(pbadge)pbadge.textContent=V('portalBadge');
+  const pLogoName=document.getElementById('portal-logo-name');if(pLogoName)pLogoName.innerHTML=`${abbr} <span>${V('portalLabel')}</span>`;
+  // Season manager overlay logo
+  const pickerEyebrow=document.getElementById('picker-eyebrow');if(pickerEyebrow)pickerEyebrow.textContent=`Assign ${V('worker').toLowerCase()} to ${V('shift').toLowerCase()}`;
+  const smLogo=document.getElementById('season-manager-logo');if(smLogo)smLogo.innerHTML=`${abbr} <span>Season Manager</span>`;
   // Build coordinators list from setup data (new multi-coordinator format)
   if(ORG_CFG.coordinators?.length){
     const schoolMap={};
@@ -1255,15 +1288,15 @@ function applyOrgConfig(){
 /* ══ POOL ══ */
 function renderPool(){
   const pool=poolCoaches(),subs=subCoaches();let html='';
-  if(!pool.length&&!subs.length){html='<div class="pool-empty">All available coaches assigned</div>';}
+  if(!pool.length&&!subs.length){html=`<div class="pool-empty">${V('poolEmpty')}</div>`;}
   else{
     html=pool.length?pool.map(c=>{
       const tomorrow=getTomorrowDayName();
       const hasAvail=c.weeklyAvailability&&Object.keys(c.weeklyAvailability).length>0;
       const availTag=hasAvail?`<div class="avail-indicator" title="Availability set for ${tomorrow}">✓</div>`:'';
       return`<div class="coach-chip" draggable="true" id="chip-${c.id}" ondragstart="onDragStart(event,'${c.id}')" ondragend="onDragEnd()"><div class="avatar ${c.av}">${c.initials}</div><div class="coach-details"><div class="coach-name">${c.name}</div><div class="coach-sport">${c.sport}</div></div>${availTag}${relBadgeHtml(c,'dot')}<div class="drag-handle">⠿</div></div>`;
-    }).join(''):'<div class="pool-empty" style="padding:8px 4px;font-size:11px">No primary coaches available</div>';
-    if(subs.length){html+=`<div class="sub-divider"><div class="sub-section-label"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/><line x1="20" y1="8" x2="20" y2="14"/></svg>Sub bench</div>`;html+=subs.map(c=>{
+    }).join(''):`<div class="pool-empty" style="padding:8px 4px;font-size:11px">${V('poolNoPrimary')}</div>`;
+    if(subs.length){html+=`<div class="sub-divider"><div class="sub-section-label"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/><line x1="20" y1="8" x2="20" y2="14"/></svg>${V('subBench')}</div>`;html+=subs.map(c=>{
       const tomorrow=getTomorrowDayName();
       const hasAvail=c.weeklyAvailability&&Object.keys(c.weeklyAvailability).length>0;
       const availTag=hasAvail?`<div class="avail-indicator" title="Availability set">✓</div>`:'';
@@ -1321,7 +1354,7 @@ function setScheduleView(v){
   document.getElementById('sv-tomorrow')?.classList.toggle('act',v==='tomorrow');
   document.getElementById('sv-week')?.classList.toggle('act',v==='week');
   const lbl=document.getElementById('schedule-panel-label');
-  if(lbl)lbl.textContent=v==='tomorrow'?"Tomorrow's schools":"This week";
+  if(lbl)lbl.textContent=v==='tomorrow'?V('schedTomorrow'):V('schedWeek');
   renderSchools();
 }
 
@@ -1356,19 +1389,19 @@ function renderWeekView(){
         return`<div class="wk-prog-row${hasConflict?' has-conflict':''}">
           <div class="wk-prog-label">${p.label}</div>
           <div class="wk-prog-time">${p.time}</div>
-          ${hasConflict?`<div class="wk-conflict-tag">⚠ Coach conflict</div>`:''}
-          <div class="wk-prog-chips">${chips||`<span class="prog-hint" style="font-size:10px">${full?'Full':'No coach'}</span>`}</div>
+          ${hasConflict?`<div class="wk-conflict-tag">⚠ ${V('worker')} conflict</div>`:''}
+          <div class="wk-prog-chips">${chips||`<span class="prog-hint" style="font-size:10px">${full?'Full':`No ${V('worker').toLowerCase()}`}</span>`}</div>
         </div>`;
       }).join('');
       return`<div class="wk-school"><div class="wk-school-name">${school.name}</div>${progRows}</div>`;
-    }).join(''):`<div class="wk-empty">No programs</div>`;
+    }).join(''):`<div class="wk-empty">No ${V('shifts').toLowerCase()}</div>`;
 
     return`<div class="wk-col${isToday?' wk-today':''}" ondragover="onWeekDragOver(event,'${day}')" ondragleave="onWeekDragLeave(event)" ondrop="onWeekDrop(event,'${day}')">
       <div class="wk-col-hd">
         <div class="wk-day-name">${dayLabel} <span style="font-weight:400;color:var(--text-tertiary)">${dateStr}</span></div>
         ${dayConflictCount>0?`<div class="wk-conflict-badge">⚠ ${dayConflictCount} conflict${dayConflictCount!==1?'s':''}</div>`:''}
       </div>
-      <div class="wk-col-body">${schoolsHtml}<div class="wk-drop-hint">Drop a coach here</div></div>
+      <div class="wk-col-body">${schoolsHtml}<div class="wk-drop-hint">Drop a ${V('worker').toLowerCase()} here</div></div>
     </div>`;
   }).join('');
 
@@ -1381,7 +1414,7 @@ function onWeekDrop(e,day){
   e.preventDefault();e.currentTarget.classList.remove('wk-col-over');
   if(!dragging)return;
   const daySchools=getSchools().filter(s=>s.programs.some(p=>p.days.includes(day)));
-  if(!daySchools.length){showToast('No programs on '+day);return;}
+  if(!daySchools.length){showToast(`No ${V('shifts').toLowerCase()} on `+day);return;}
   openPickerForDay(dragging,day);
 }
 
@@ -1417,7 +1450,7 @@ function renderSchools(){
   }
   const tomorrow=getTomorrowDayName(),list=document.getElementById('school-list');
   const filtered=getSchools().map(s=>({...s,programs:s.programs.filter(p=>p.days.includes(tomorrow))})).filter(s=>s.programs.length>0);
-  if(!filtered.length){list.innerHTML=`<div class="card" style="padding:32px;text-align:center;color:var(--text-tertiary);font-size:13px;font-style:italic">No programs scheduled for ${tomorrow}.</div>`;return;}
+  if(!filtered.length){list.innerHTML=`<div class="card" style="padding:32px;text-align:center;color:var(--text-tertiary);font-size:13px;font-style:italic">No ${V('shifts').toLowerCase()} scheduled for ${tomorrow}.</div>`;return;}
   list.innerHTML=filtered.map(s=>{
     const pill=sportPillClass(s.sport);
     const rows=s.programs.map(p=>{
@@ -1440,14 +1473,14 @@ function renderSchools(){
       <div class="school-header">
         <div>
           <div class="school-name-text">${s.name}</div>
-          <div class="school-sub">${s.programs.length} program${s.programs.length!==1?'s':''} today · ${s.sport}${s.contactName?` · 📞 ${s.contactName}`:''}</div>
+          <div class="school-sub">${s.programs.length} ${V('shift').toLowerCase()}${s.programs.length!==1?'s':''} today · ${s.sport}${s.contactName?` · 📞 ${s.contactName}`:''}</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
           ${studentHeader}
           <div class="sport-pill ${pill}">${s.sport}</div>
         </div>
       </div>
-      <div class="school-drop-zone" id="dropzone-${s.id}" ondragover="onSchoolDragOver(event,'${s.id}')" ondragleave="onSchoolDragLeave('${s.id}')" ondrop="onSchoolDrop(event,'${s.id}')">Drop a coach here to assign to a program</div>
+      <div class="school-drop-zone" id="dropzone-${s.id}" ondragover="onSchoolDragOver(event,'${s.id}')" ondragleave="onSchoolDragLeave('${s.id}')" ondrop="onSchoolDrop(event,'${s.id}')">Drop a ${V('worker').toLowerCase()} here to assign to a ${V('shift').toLowerCase()}</div>
       <div class="program-list">${rows}</div>
       ${coverageBar}
     </div>`;
@@ -1475,7 +1508,7 @@ function onDragEnd(){document.querySelectorAll('.coach-chip').forEach(el=>el.cla
 function onSchoolDragOver(e,sid){e.preventDefault();document.getElementById('dropzone-'+sid)?.classList.add('over');document.getElementById('scard-'+sid)?.classList.add('drop-active');}
 function onSchoolDragLeave(sid){document.getElementById('dropzone-'+sid)?.classList.remove('over');document.getElementById('scard-'+sid)?.classList.remove('drop-active');}
 function onSchoolDrop(e,sid){e.preventDefault();onSchoolDragLeave(sid);if(!dragging)return;openPicker(dragging,sid);}
-function openPicker(coachId,schoolId){pickerCoachId=coachId;pickerSchoolId=schoolId;const c=getCoach(coachId);const s=getSchool(schoolId);const tomorrow=getTomorrowDayName();const todayProgs=s.programs.filter(p=>p.days.includes(tomorrow));document.getElementById('picker-school-name').textContent=s.name;document.getElementById('picker-school-sub').textContent=`Which class should ${c.name.split(' ')[0]} teach tomorrow?`;document.getElementById('picker-coach-name').textContent=c.name;document.getElementById('picker-coach-sport').textContent=c.sport;const av=document.getElementById('picker-av');av.className='avatar '+c.av;av.textContent=c.initials;const sportMatch=c.sport===s.sport;document.getElementById('picker-body').innerHTML=todayProgs.map(p=>{
+function openPicker(coachId,schoolId){pickerCoachId=coachId;pickerSchoolId=schoolId;const c=getCoach(coachId);const s=getSchool(schoolId);const tomorrow=getTomorrowDayName();const todayProgs=s.programs.filter(p=>p.days.includes(tomorrow));document.getElementById('picker-school-name').textContent=s.name;document.getElementById('picker-school-sub').textContent=`Which ${V('shift').toLowerCase()} should ${c.name.split(' ')[0]} cover tomorrow?`;document.getElementById('picker-coach-name').textContent=c.name;document.getElementById('picker-coach-sport').textContent=c.sport;const av=document.getElementById('picker-av');av.className='avatar '+c.av;av.textContent=c.initials;const sportMatch=c.sport===s.sport;document.getElementById('picker-body').innerHTML=todayProgs.map(p=>{
     const count=progCount(p.id);const full=count>=p.max;const already=(assignments[p.id]||[]).includes(coachId);
     const disabled=full||already;
     const matchClass=(!disabled&&sportMatch)?'sport-match':'';
@@ -1486,7 +1519,7 @@ function openPicker(coachId,schoolId){pickerCoachId=coachId;pickerSchoolId=schoo
   }).join('');document.getElementById('picker-backdrop').classList.add('show');}
 function assignToProgram(pid){if(!assignments[pid])assignments[pid]=[];if(!assignments[pid].includes(pickerCoachId))assignments[pid].push(pickerCoachId);const c=getCoach(pickerCoachId);const info=getProgramInfo(pid);closePicker();persist();renderPool();renderSchools();updateStats();showToast(`${c.name} → ${info.program.label} at ${info.school.name}`);}
 function closePicker(){document.getElementById('picker-backdrop').classList.remove('show');pickerCoachId=pickerSchoolId=null;}
-function sendAssignments(){const all=Object.entries(assignments).flatMap(([pid,cids])=>cids.map(cid=>({pid,cid})));if(!all.length)return;document.getElementById('modal-body').innerHTML=all.map(({pid,cid})=>{const info=getProgramInfo(pid);const c=getCoach(cid);const contactLine=info.school.contactName?` School contact: ${info.school.contactName}${info.school.contactPhone?' ('+info.school.contactPhone+')':''}.`:'';return`<div class="sms-item"><div class="sms-av ${c.av}">${c.initials}</div><div style="flex:1"><div class="sms-coach">${c.name} <span class="sms-phone">${c.phone}</span></div><div class="sms-bubble">"Hi ${c.name.split(' ')[0]}! Tomorrow: ${info.school.name} · ${info.program.label} · ${info.program.time}.${contactLine} Reply YES to confirm. — ${smsSender}"</div><div class="sms-status" id="st-${cid}${pid}"><div class="dot dot-sending"></div><span style="color:#b45309">Sending...</span></div></div></div>`;}).join('');document.getElementById('modal-backdrop').classList.add('show');sent=true;persist();all.forEach(({pid,cid},i)=>{setTimeout(()=>{const el=document.getElementById('st-'+cid+pid);if(el)el.innerHTML='<div class="dot dot-sent"></div><span style="color:var(--brand-dark)">Sent</span>';setTimeout(()=>{const confirmed=Math.random()>0.3;confirmations[cid+pid]=confirmed?'confirmed':'pending';if(confirmed){sessionLog.push({id:'sl'+sessionLogNext++,coachId:cid,date:todayStr(),pid,status:'completed',paid:false});const c=getCoach(cid);if(c)c.stats.confirmed++;}persist();const el2=document.getElementById('st-'+cid+pid);if(el2)el2.innerHTML=confirmed?'<div class="dot dot-sent"></div><span style="color:var(--brand-dark)">Confirmed ✓</span>':'<div class="dot dot-sending"></div><span style="color:#b45309">No reply yet</span>';updateStats();renderPortalConfirmations();},800+Math.random()*1400);},350+i*400);});}
+function sendAssignments(){const all=Object.entries(assignments).flatMap(([pid,cids])=>cids.map(cid=>({pid,cid})));if(!all.length)return;document.getElementById('modal-body').innerHTML=all.map(({pid,cid})=>{const info=getProgramInfo(pid);const c=getCoach(cid);const contactLine=info.school.contactName?` ${V('siteContactLabel')}: ${info.school.contactName}${info.school.contactPhone?' ('+info.school.contactPhone+')':''}.`:'';return`<div class="sms-item"><div class="sms-av ${c.av}">${c.initials}</div><div style="flex:1"><div class="sms-coach">${c.name} <span class="sms-phone">${c.phone}</span></div><div class="sms-bubble">"Hi ${c.name.split(' ')[0]}! Tomorrow: ${info.school.name} · ${info.program.label} · ${info.program.time}.${contactLine} Reply YES to confirm. — ${smsSender}"</div><div class="sms-status" id="st-${cid}${pid}"><div class="dot dot-sending"></div><span style="color:#b45309">Sending...</span></div></div></div>`;}).join('');document.getElementById('modal-backdrop').classList.add('show');sent=true;persist();all.forEach(({pid,cid},i)=>{setTimeout(()=>{const el=document.getElementById('st-'+cid+pid);if(el)el.innerHTML='<div class="dot dot-sent"></div><span style="color:var(--brand-dark)">Sent</span>';setTimeout(()=>{const confirmed=Math.random()>0.3;confirmations[cid+pid]=confirmed?'confirmed':'pending';if(confirmed){sessionLog.push({id:'sl'+sessionLogNext++,coachId:cid,date:todayStr(),pid,status:'completed',paid:false});const c=getCoach(cid);if(c)c.stats.confirmed++;}persist();const el2=document.getElementById('st-'+cid+pid);if(el2)el2.innerHTML=confirmed?'<div class="dot dot-sent"></div><span style="color:var(--brand-dark)">Confirmed ✓</span>':'<div class="dot dot-sending"></div><span style="color:#b45309">No reply yet</span>';updateStats();renderPortalConfirmations();},800+Math.random()*1400);},350+i*400);});}
 function closeModal(){document.getElementById('modal-backdrop').classList.remove('show');renderPayroll();switchTab('confirm');}
 function renderConfirmations(){const all=Object.entries(assignments).flatMap(([pid,cids])=>cids.map(cid=>({pid,cid})));const list=document.getElementById('confirm-list');if(!all.length){list.innerHTML='<div class="empty-state">No assignments sent yet.</div>';return;}list.innerHTML=all.map(({pid,cid})=>{const info=getProgramInfo(pid);const c=getCoach(cid);const status=confirmations[cid+pid];const pill=sent?(status==='confirmed'?'<span class="status-pill pill-confirmed">Confirmed</span>':'<span class="status-pill pill-pending">Pending</span>'):'<span class="status-pill pill-notsent">Not sent</span>';const ir=sent&&status==='confirmed'?`<div class="incident-row"><span class="incident-label">Log incident:</span><button class="incident-btn inc-noshow" onclick="logIncident('${cid}','${pid}','no-show')">No-show</button><button class="incident-btn inc-latecancel" onclick="logIncident('${cid}','${pid}','late-cancel')">Late cancel</button></div>`:'';return`<div class="roster-row"><div class="conf-row" style="border:none;padding-bottom:0"><div class="conf-left"><div class="avatar ${c.av}">${c.initials}</div><div><div class="conf-name">${c.name} ${relBadgeHtml(c)}</div><div class="conf-detail">${info.school.name} · ${info.program.label} · ${info.program.time}</div></div></div>${pill}</div>${ir}</div>`;}).join('');}
 function logIncident(coachId,pid,type){const c=getCoach(coachId);if(!c)return;if(type==='no-show')c.stats.noShows++;else c.stats.lateCancels++;const ex=sessionLog.find(s=>s.coachId===coachId&&s.pid===pid&&s.date===todayStr());if(ex)ex.status=type;else sessionLog.push({id:'sl'+sessionLogNext++,coachId,date:todayStr(),pid,status:type,paid:false});persist();renderConfirmations();renderPayroll();renderRoster(document.getElementById('search-input')?.value||'');showToast(`${c.name} — ${type==='no-show'?'No-show':'Late cancel'} logged`);}
@@ -1494,10 +1527,16 @@ function openBroadcast(pid,removedCid){broadcastPid=pid;broadcastRemovedCid=remo
 function sendBroadcast(){if(broadcastFired)return;broadcastFired=true;document.getElementById('broadcast-send-btn').disabled=true;const assigned=assignedIds();const candidates=coaches.filter(c=>c.available&&!assigned.includes(c.id)&&c.id!==broadcastRemovedCid);if(!candidates.length){showToast('No available coaches');closeBroadcast();return;}candidates.forEach((c,i)=>setTimeout(()=>{const el=document.getElementById('bco-st-'+c.id);if(el){el.className='bco-status bco-sending';el.textContent='Text sent...';}},300+i*250));const winner=candidates.find(c=>c.isSub)||candidates[Math.floor(Math.random()*candidates.length)];setTimeout(()=>{candidates.filter(c=>c.id!==winner.id).forEach(c=>{const el=document.getElementById('bco-st-'+c.id);if(el){el.className='bco-status bco-waiting';el.textContent='No reply';}});const el=document.getElementById('bco-st-'+winner.id);if(el){el.className='bco-status bco-replied';el.textContent='✓ Replied YES';}document.getElementById('broadcast-actions').style.display='none';document.getElementById('broadcast-winner-wrap').innerHTML=`<div class="broadcast-winner-banner"><div class="broadcast-winner-icon"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="broadcast-winner-text">${winner.name} is confirmed!</div><button class="broadcast-winner-btn" onclick="acceptBroadcastWinner('${winner.id}')">Assign them →</button></div>`;},1200+candidates.length*200);}
 function acceptBroadcastWinner(winnerId){if(broadcastRemovedCid)removeAssignment(broadcastPid,broadcastRemovedCid);if(!assignments[broadcastPid])assignments[broadcastPid]=[];assignments[broadcastPid].push(winnerId);const info=getProgramInfo(broadcastPid);const c=getCoach(winnerId);closeBroadcast();persist();renderPool();renderSchools();updateStats();showToast(`${c.name} assigned to ${info.program.label}`);}
 function closeBroadcast(){document.getElementById('broadcast-backdrop').classList.remove('show');broadcastPid=broadcastRemovedCid=null;broadcastFired=false;}
-function renderRoster(filter=''){const q=(filter||'').toLowerCase();const filtered=coaches.filter(c=>c.name.toLowerCase().includes(q)||c.sport.toLowerCase().includes(q));document.getElementById('roster-count').textContent=coaches.length;const list=document.getElementById('roster-list');if(!filtered.length){list.innerHTML='<div class="empty-state">No coaches found.</div>';return;}list.innerHTML=filtered.map(c=>{const total=c.stats.confirmed+c.stats.noShows+c.stats.lateCancels;const relInfo=relScore(c)!==null?`${c.stats.confirmed}✓ ${c.stats.noShows}✗ ${c.stats.lateCancels}⚠ over ${total} sessions`:'No sessions logged yet';const portalTag=c.fromPortal?`<span class="portal-badge">Via portal</span>`:'';return`<div class="roster-row"><div class="roster-main"><div class="avatar ${c.av}">${c.initials}</div><div class="roster-info"><div class="roster-name">${c.name}${portalTag}</div><div class="roster-meta">${c.sport} · ${c.phone} · $${c.payRate}/session</div></div><div class="roster-actions">${relBadgeHtml(c)}<button class="avail-toggle ${c.available?'avail-yes':'avail-no'}" onclick="toggleAvail('${c.id}')">${c.available?'Available':'Unavailable'}</button><button class="sub-toggle ${c.isSub?'sub-on':'sub-off'}" onclick="toggleSub('${c.id}')">${c.isSub?'Sub':'Primary'}</button><button class="del-btn" onclick="deleteCoach('${c.id}')">Remove</button></div></div><div class="incident-row" style="background:transparent"><span class="incident-label">Reliability:</span><span style="font-size:11px;color:var(--text-secondary)">${relInfo}</span></div>${c.notes?`<div style="padding:0 16px 10px;font-size:11px;color:var(--text-secondary);font-style:italic">${c.notes}</div>`:''}</div>`;}).join('');}
-function showForm(){if(formVisible)return;formVisible=true;document.getElementById('add-form-wrap').innerHTML=`<div class="add-form"><div class="form-title">Add new coach</div><div class="form-row two"><div class="field"><label>First name</label><input id="f-first" type="text" placeholder="Marcus" autofocus></div><div class="field"><label>Last name / initial</label><input id="f-last" type="text" placeholder="Johnson"></div></div><div class="form-row three"><div class="field"><label>Sport specialty</label><select id="f-sport"><option value="">— Select —</option>${getActivityOptions()}</select></div><div class="field"><label>Phone number</label><input id="f-phone" type="text" placeholder="(301) 555-0100"></div><div class="field"><label>Pay rate ($/session)</label><input id="f-pay" type="number" placeholder="${DEFAULT_PAY}" min="0"></div></div><div class="form-row two"><div class="field"><label>Notes (optional)</label><input id="f-notes" type="text" placeholder="Any relevant info..."></div><div class="field"><label>Role</label><select id="f-sub"><option value="0">Primary coach</option><option value="1">Sub bench</option></select></div></div><div class="form-actions"><button class="btn-ghost" onclick="cancelForm()">Cancel</button><button class="btn-save" onclick="addCoach()">Add coach</button></div></div>`;}
+function renderRoster(filter=''){const q=(filter||'').toLowerCase();const filtered=coaches.filter(c=>c.name.toLowerCase().includes(q)||c.sport.toLowerCase().includes(q));document.getElementById('roster-count').textContent=coaches.length;const list=document.getElementById('roster-list');if(!filtered.length){list.innerHTML=`<div class="empty-state">No ${V('workers').toLowerCase()} found.</div>`;return;}const isHourly=V('payModel')==='hourly';list.innerHTML=filtered.map(c=>{const total=c.stats.confirmed+c.stats.noShows+c.stats.lateCancels;const relInfo=relScore(c)!==null?`${c.stats.confirmed}✓ ${c.stats.noShows}✗ ${c.stats.lateCancels}⚠ over ${total} sessions`:'No sessions logged yet';const portalTag=c.fromPortal?`<span class="portal-badge">Via portal</span>`:'';const certTag=c.certification?`<span class="portal-badge" style="background:var(--amber-light);color:#b45309">${c.certification}</span>`:'';const payDisplay=isHourly?`$${c.payRate}/hr`:`$${c.payRate}/session`;return`<div class="roster-row"><div class="roster-main"><div class="avatar ${c.av}">${c.initials}</div><div class="roster-info"><div class="roster-name">${c.name}${portalTag}${certTag}</div><div class="roster-meta">${c.sport} · ${c.phone} · ${payDisplay}</div></div><div class="roster-actions">${relBadgeHtml(c)}<button class="avail-toggle ${c.available?'avail-yes':'avail-no'}" onclick="toggleAvail('${c.id}')">${c.available?'Available':'Unavailable'}</button><button class="sub-toggle ${c.isSub?'sub-on':'sub-off'}" onclick="toggleSub('${c.id}')">${c.isSub?V('subBench'):V('primary')}</button><button class="del-btn" onclick="deleteCoach('${c.id}')">Remove</button></div></div><div class="incident-row" style="background:transparent"><span class="incident-label">Reliability:</span><span style="font-size:11px;color:var(--text-secondary)">${relInfo}</span></div>${c.notes?`<div style="padding:0 16px 10px;font-size:11px;color:var(--text-secondary);font-style:italic">${c.notes}</div>`:''}</div>`;}).join('');}
+function showForm(){
+  if(formVisible)return;formVisible=true;
+  const isHourly=V('payModel')==='hourly';
+  const certField=V('showCertifications')?`<div class="field"><label>Certification / license</label><input id="f-cert" type="text" placeholder="e.g. OSHA-30, Master Electrician"></div>`:'';
+  const dressField=V('showDressCode')?`<div class="field"><label>Dress code</label><input id="f-dress" type="text" placeholder="e.g. Black shirt, black pants"></div>`:'';
+  document.getElementById('add-form-wrap').innerHTML=`<div class="add-form"><div class="form-title">${V('addWorkerTitle')}</div><div class="form-row two"><div class="field"><label>First name</label><input id="f-first" type="text" placeholder="Marcus" autofocus></div><div class="field"><label>Last name / initial</label><input id="f-last" type="text" placeholder="Johnson"></div></div><div class="form-row three"><div class="field"><label>${V('skill')}</label><select id="f-sport"><option value="">— Select —</option>${getActivityOptions()}</select></div><div class="field"><label>Phone number</label><input id="f-phone" type="text" placeholder="(301) 555-0100"></div><div class="field"><label>Pay rate (${isHourly?'$/hr':'$/session'})</label><input id="f-pay" type="number" placeholder="${DEFAULT_PAY}" min="0" step="${isHourly?'0.25':'1'}"></div></div>${certField||dressField?`<div class="form-row two">${certField}${dressField}</div>`:''}  <div class="form-row two"><div class="field"><label>Notes (optional)</label><input id="f-notes" type="text" placeholder="Any relevant info..."></div><div class="field"><label>Role</label><select id="f-sub"><option value="0">${V('primary')} ${V('worker').toLowerCase()}</option><option value="1">${V('subBench')}</option></select></div></div><div class="form-actions"><button class="btn-ghost" onclick="cancelForm()">Cancel</button><button class="btn-save" onclick="addCoach()">Add ${V('worker').toLowerCase()}</button></div></div>`;
+}
 function cancelForm(){formVisible=false;document.getElementById('add-form-wrap').innerHTML='';}
-function addCoach(){const first=document.getElementById('f-first').value.trim();const last=document.getElementById('f-last').value.trim();const sport=document.getElementById('f-sport').value;const phone=document.getElementById('f-phone').value.trim()||'(no phone)';const payRate=parseInt(document.getElementById('f-pay').value)||DEFAULT_PAY;const notes=document.getElementById('f-notes').value.trim();const isSub=document.getElementById('f-sub').value==='1';if(!first){document.getElementById('f-first').focus();return;}const name=last?`${first} ${last.charAt(0)}.`:first;coaches.push({id:'c'+nextId++,name,sport,phone,initials:mkInitials(name),av:avColor(coaches.length),available:true,isSub,payRate,stats:{confirmed:0,noShows:0,lateCancels:0},notes});cancelForm();persist();renderRoster(document.getElementById('search-input').value);renderPool();updateStats();populatePayrollFilters();showToast(`${name} added`);}
+function addCoach(){const first=document.getElementById('f-first').value.trim();const last=document.getElementById('f-last').value.trim();const sport=document.getElementById('f-sport').value;const phone=document.getElementById('f-phone').value.trim()||'(no phone)';const payRate=parseFloat(document.getElementById('f-pay').value)||DEFAULT_PAY;const notes=document.getElementById('f-notes').value.trim();const isSub=document.getElementById('f-sub').value==='1';const certification=document.getElementById('f-cert')?.value.trim()||'';const dressCode=document.getElementById('f-dress')?.value.trim()||'';if(!first){document.getElementById('f-first').focus();return;}const name=last?`${first} ${last.charAt(0)}.`:first;coaches.push({id:'c'+nextId++,name,sport,phone,initials:mkInitials(name),av:avColor(coaches.length),available:true,isSub,payRate,certification,dressCode,stats:{confirmed:0,noShows:0,lateCancels:0},notes});cancelForm();persist();renderRoster(document.getElementById('search-input').value);renderPool();updateStats();populatePayrollFilters();showToast(`${name} added`);}
 function deleteCoach(id){Object.keys(assignments).forEach(pid=>{assignments[pid]=(assignments[pid]||[]).filter(x=>x!==id);if(!assignments[pid].length)delete assignments[pid];});const c=getCoach(id);coaches=coaches.filter(x=>x.id!==id);persist();renderRoster(document.getElementById('search-input').value);renderPool();renderSchools();updateStats();populatePayrollFilters();if(c)showToast(`${c.name} removed`);}
 function toggleAvail(id){const c=getCoach(id);if(!c)return;c.available=!c.available;if(c.available)c.fromPortal=false;if(!c.available){Object.keys(assignments).forEach(pid=>{assignments[pid]=(assignments[pid]||[]).filter(x=>x!==id);if(!assignments[pid].length)delete assignments[pid];});}persist();renderRoster(document.getElementById('search-input').value);renderPool();renderSchools();updateStats();showToast(`${c.name} marked ${c.available?'available':'unavailable'}`);}
 function toggleSub(id){const c=getCoach(id);if(!c)return;c.isSub=!c.isSub;persist();renderRoster(document.getElementById('search-input').value);renderPool();showToast(`${c.name} moved to ${c.isSub?'sub bench':'primary roster'}`);}
@@ -1691,7 +1730,7 @@ function renderPayroll(){
     `<div class="pay-card"><div class="pay-card-num">$${earned.toLocaleString()}</div><div class="pay-card-lbl">Total earned</div><div class="pay-card-sub">Across ${coaches.length} coaches</div></div>`+
     `<div class="pay-card paid-out"><div class="pay-card-num">$${paid.toLocaleString()}</div><div class="pay-card-lbl">Paid out</div><div class="pay-card-sub">${sessionLog.filter(s=>s.paid).length} sessions</div></div>`+
     `<div class="pay-card outstanding"><div class="pay-card-num">$${owed.toLocaleString()}</div><div class="pay-card-lbl">Outstanding</div><div class="pay-card-sub">${sessionLog.filter(s=>s.status==='completed'&&!s.paid).length} sessions pending</div></div>`+
-    `<div class="pay-card" style="border-color:var(--brand-light,#e6f7f1)"><div class="pay-card-num" style="font-size:18px">$${DEFAULT_PAY}<span style="font-size:11px;font-weight:400;color:var(--text-tertiary)">/session</span></div><div class="pay-card-lbl">Default rate</div><div class="pay-card-sub">Set in org setup</div></div>`;
+    `<div class="pay-card" style="border-color:var(--brand-light,#e6f7f1)"><div class="pay-card-num" style="font-size:18px">$${DEFAULT_PAY}<span style="font-size:11px;font-weight:400;color:var(--text-tertiary)">/${V('payUnit')}</span></div><div class="pay-card-lbl">Default rate</div><div class="pay-card-sub">Set in org setup</div></div>`;
 
   /* ── Filtered log ── */
   let log=[...sessionLog].sort((a,b)=>b.date.localeCompare(a.date));
@@ -1889,8 +1928,8 @@ function createSeason(){const name=document.getElementById('ns-name').value.trim
 function renderSeasonDetail(){const s=getEditSeason();const detail=document.getElementById('season-detail');if(!s){detail.innerHTML='<div class="season-placeholder">Select a season</div>';return;}detail.innerHTML=`<div class="season-detail-hd"><div><div class="season-detail-name">${s.name}</div><div class="season-detail-period">${s.period} · ${s.schools.length} school${s.schools.length!==1?'s':''}</div></div><div style="display:flex;align-items:center;gap:10px">${!s.current?`<button class="btn-xs-save" onclick="setCurrentSeason('${s.id}')">Set as current</button>`:'<span style="font-size:11px;font-weight:600;color:var(--brand-dark)">✓ Active season</span>'}<div class="view-toggle"><button class="vtbtn ${detailView==='school'?'act':''}" onclick="setDetailView('school')">By School</button><button class="vtbtn ${detailView==='day'?'act':''}" onclick="setDetailView('day')">By Day</button></div></div></div>${detailView==='school'?renderBySchool(s):renderByDay(s)}`;}
 function setDetailView(v){detailView=v;renderSeasonDetail();}
 function setCurrentSeason(id){seasons.forEach(s=>s.current=s.id===id);assignments={};confirmations={};sent=false;persist();showToast(`${getEditSeason().name} set as current season`);renderSeasonList();renderSeasonDetail();}
-function renderBySchool(season){return`<div class="se-school-list">${season.schools.map(school=>renderSchoolCard(season.id,school)).join('')}<div class="add-school-card" id="add-school-section-${season.id}"><button class="add-school-trigger" onclick="showAddSchoolForm('${season.id}')">+ Add school</button><div id="add-school-form-wrap-${season.id}"></div></div></div>`;}
-function renderSchoolCard(seasonId,school){const pill=sportPillClass(school.sport);const programs=school.programs.map(p=>renderProgRow(seasonId,school.id,p)).join('');const fo=openProgForms[school.id];const contactBar=`<div class="se-contact-bar"><span class="se-contact-label">📞 Contact</span><input class="se-contact-input se-contact-name" type="text" placeholder="School contact name" value="${school.contactName||''}" onchange="updateSchoolField('${seasonId}','${school.id}','contactName',this.value)"><input class="se-contact-input se-contact-phone" type="tel" placeholder="Contact phone" value="${school.contactPhone||''}" onchange="updateSchoolField('${seasonId}','${school.id}','contactPhone',this.value)"></div>`;return`<div class="se-school-card" id="se-sc-${school.id}"><div class="se-school-hd"><div><div class="school-name-text">${school.name}</div><div class="school-sub">${school.programs.length} program${school.programs.length!==1?'s':''} · ${school.sport}</div></div><div class="se-school-actions"><div class="sport-pill ${pill}">${school.sport}</div><button class="rm-school-btn" onclick="removeSchool('${seasonId}','${school.id}')">Remove</button></div></div>${contactBar}<div class="se-prog-list" id="se-pl-${school.id}">${programs||'<div style="padding:6px 0;font-size:12px;color:var(--text-tertiary);font-style:italic">No programs yet.</div>'}</div><div class="se-add-prog-wrap"><button class="se-add-prog-trigger" onclick="toggleProgForm('${seasonId}','${school.id}')">+ Add program</button><div id="se-pf-${school.id}">${fo?buildProgForm(seasonId,school.id):''}</div></div>${renderCoordSection(seasonId,school)}</div>`;}
+function renderBySchool(season){return`<div class="se-school-list">${season.schools.map(school=>renderSchoolCard(season.id,school)).join('')}<div class="add-school-card" id="add-school-section-${season.id}"><button class="add-school-trigger" onclick="showAddSchoolForm('${season.id}')">+ ${V('addSiteLabel')}</button><div id="add-school-form-wrap-${season.id}"></div></div></div>`;}
+function renderSchoolCard(seasonId,school){const pill=sportPillClass(school.sport);const programs=school.programs.map(p=>renderProgRow(seasonId,school.id,p)).join('');const fo=openProgForms[school.id];const contactBar=`<div class="se-contact-bar"><span class="se-contact-label">📞 ${V('siteContactLabel')}</span><input class="se-contact-input se-contact-name" type="text" placeholder="Contact name" value="${school.contactName||''}" onchange="updateSchoolField('${seasonId}','${school.id}','contactName',this.value)"><input class="se-contact-input se-contact-phone" type="tel" placeholder="Contact phone" value="${school.contactPhone||''}" onchange="updateSchoolField('${seasonId}','${school.id}','contactPhone',this.value)"></div>`;return`<div class="se-school-card" id="se-sc-${school.id}"><div class="se-school-hd"><div><div class="school-name-text">${school.name}</div><div class="school-sub">${school.programs.length} ${V('shift').toLowerCase()}${school.programs.length!==1?'s':''} · ${school.sport}</div></div><div class="se-school-actions"><div class="sport-pill ${pill}">${school.sport}</div><button class="rm-school-btn" onclick="removeSchool('${seasonId}','${school.id}')">Remove</button></div></div>${contactBar}<div class="se-prog-list" id="se-pl-${school.id}">${programs||`<div style="padding:6px 0;font-size:12px;color:var(--text-tertiary);font-style:italic">No ${V('shifts').toLowerCase()} yet.</div>`}</div><div class="se-add-prog-wrap"><button class="se-add-prog-trigger" onclick="toggleProgForm('${seasonId}','${school.id}')">+ Add ${V('shift').toLowerCase()}</button><div id="se-pf-${school.id}">${fo?buildProgForm(seasonId,school.id):''}</div></div>${renderCoordSection(seasonId,school)}</div>`;}
 function renderProgRow(seasonId,schoolId,p){
   const db=p.days.map(d=>`<span class="day-badge">${d.slice(0,3)}</span>`).join('');
   const sc=p.students?.length||0;
@@ -1914,12 +1953,12 @@ function toggleDayBtn(schoolId,i){const btn=document.getElementById(`dt-${school
 function addProgram(seasonId,schoolId){const label=document.getElementById(`pf-label-${schoolId}`)?.value.trim();const time=document.getElementById(`pf-time-${schoolId}`)?.value.trim();const max=parseInt(document.getElementById(`pf-max-${schoolId}`)?.value||'1');const days=DAYS_FULL.filter((_,i)=>document.getElementById(`dt-${schoolId}-${i}`)?.classList.contains('on'));if(!label||!time){showToast('Fill in label and time');return;}if(!days.length){showToast('Select at least one day');return;}const season=seasons.find(s=>s.id===seasonId);const school=season?.schools.find(sc=>sc.id===schoolId);if(!school)return;school.programs.push({id:'p'+nextProgId++,label,days,time,max});openProgForms[schoolId]=false;persist();renderSeasonDetail();showToast(`${label} added`);}
 function removeProg(seasonId,schoolId,progId){const season=seasons.find(s=>s.id===seasonId);const school=season?.schools.find(sc=>sc.id===schoolId);if(!school)return;school.programs=school.programs.filter(p=>p.id!==progId);persist();renderSeasonDetail();showToast('Program removed');}
 function removeSchool(seasonId,schoolId){const season=seasons.find(s=>s.id===seasonId);if(!season)return;const sc=season.schools.find(s=>s.id===schoolId);season.schools=season.schools.filter(s=>s.id!==schoolId);persist();renderSeasonDetail();if(sc)showToast(`${sc.name} removed`);}
-function showAddSchoolForm(seasonId){const wrap=document.getElementById(`add-school-form-wrap-${seasonId}`);if(!wrap)return;if(wrap.innerHTML){wrap.innerHTML='';return;}wrap.innerHTML=`<div class="add-school-form"><div class="asf-row"><div class="asf-field"><label>School name</label><input id="asf-name-${seasonId}" type="text" placeholder="Lincoln Elementary" autofocus></div><div class="asf-field"><label>Sport / activity</label><select id="asf-sport-${seasonId}"><option value="">— Select —</option>${getActivityOptions()}</select></div></div><div class="asf-actions"><button class="btn-ghost" onclick="document.getElementById('add-school-form-wrap-${seasonId}').innerHTML=''">Cancel</button><button class="btn-save" onclick="addSchool('${seasonId}')">Add school</button></div></div>`;}
+function showAddSchoolForm(seasonId){const wrap=document.getElementById(`add-school-form-wrap-${seasonId}`);if(!wrap)return;if(wrap.innerHTML){wrap.innerHTML='';return;}wrap.innerHTML=`<div class="add-school-form"><div class="asf-row"><div class="asf-field"><label>${V('site')} name</label><input id="asf-name-${seasonId}" type="text" placeholder="${V('sitePlaceholder')}" autofocus></div><div class="asf-field"><label>${V('skillLabel')}</label><select id="asf-sport-${seasonId}"><option value="">— Select —</option>${getActivityOptions()}</select></div></div><div class="asf-actions"><button class="btn-ghost" onclick="document.getElementById('add-school-form-wrap-${seasonId}').innerHTML=''">Cancel</button><button class="btn-save" onclick="addSchool('${seasonId}')">Add ${V('site').toLowerCase()}</button></div></div>`;}
 function addSchool(seasonId){const name=document.getElementById(`asf-name-${seasonId}`)?.value.trim();const sport=document.getElementById(`asf-sport-${seasonId}`)?.value||'Other';if(!name)return;const season=seasons.find(s=>s.id===seasonId);if(!season)return;season.schools.push({id:'s'+nextSchoolId++,name,sport,coordinatorId:null,programs:[]});persist();renderSeasonDetail();showToast(`${name} added`);}
 function renderByDay(season){const cols=DAYS_FULL.map((day,di)=>{const entries=[];season.schools.forEach(school=>{school.programs.filter(p=>p.days.includes(day)).forEach(p=>{entries.push({school,program:p});});});const inner=entries.length?entries.map(({school,program})=>`<div class="by-day-entry"><div class="by-day-school-name">${school.name}</div><div class="by-day-prog-name">${program.label}</div><div class="by-day-time">${program.time}</div></div>`).join(''):'<div class="by-day-none">No programs</div>';return`<div><div class="by-day-hd">${DAYS_SHORT[di]} <span style="font-size:10px;font-weight:400;color:var(--text-tertiary)">${entries.length}</span></div>${inner}</div>`;}).join('');return`<div class="by-day-wrap"><div class="by-day-grid">${cols}</div></div>`;}
 
 /* ── Coordinator section ── */
-function renderCoordSection(seasonId,school){const coord=coordinators.find(c=>c.id===school.coordinatorId)||null;const opts=`<option value="">— Unassigned —</option>`+coordinators.map(c=>`<option value="${c.id}"${c.id===school.coordinatorId?' selected':''}>${c.name}</option>`).join('');const infoHtml=coord?`<div class="se-coord-chip"><div class="avatar av-blue" style="width:26px;height:26px;font-size:8px;flex-shrink:0">${mkInitials(coord.name)}</div><div style="flex:1;min-width:0"><div class="se-coord-name">${coord.name}</div><div class="se-coord-meta">${[coord.phone,coord.email].filter(Boolean).join(' · ')}</div></div></div>`:'';const formWrap=openCoordForms[school.id]?buildCoordForm(seasonId,school.id):'';return`<div class="se-coord-section"><div class="se-coord-header"><div class="se-coord-title">📋 School coordinator</div><button class="se-coord-new-btn" onclick="toggleCoordForm('${seasonId}','${school.id}')">+ New coordinator</button></div><select class="se-coord-select" onchange="setSchoolCoordinator('${seasonId}','${school.id}',this.value)">${opts}</select>${infoHtml}<div id="se-cf-${school.id}">${formWrap}</div></div>`;}
+function renderCoordSection(seasonId,school){const coord=coordinators.find(c=>c.id===school.coordinatorId)||null;const opts=`<option value="">— Unassigned —</option>`+coordinators.map(c=>`<option value="${c.id}"${c.id===school.coordinatorId?' selected':''}>${c.name}</option>`).join('');const infoHtml=coord?`<div class="se-coord-chip"><div class="avatar av-blue" style="width:26px;height:26px;font-size:8px;flex-shrink:0">${mkInitials(coord.name)}</div><div style="flex:1;min-width:0"><div class="se-coord-name">${coord.name}</div><div class="se-coord-meta">${[coord.phone,coord.email].filter(Boolean).join(' · ')}</div></div></div>`:'';const formWrap=openCoordForms[school.id]?buildCoordForm(seasonId,school.id):'';return`<div class="se-coord-section"><div class="se-coord-header"><div class="se-coord-title">📋 ${V('coordLabel')}</div><button class="se-coord-new-btn" onclick="toggleCoordForm('${seasonId}','${school.id}')">+ New ${V('manager').toLowerCase()}</button></div><select class="se-coord-select" onchange="setSchoolCoordinator('${seasonId}','${school.id}',this.value)">${opts}</select>${infoHtml}<div id="se-cf-${school.id}">${formWrap}</div></div>`;}
 function buildCoordForm(seasonId,schoolId){return`<div class="se-coord-form"><div class="se-coord-form-row"><input id="cf-name-${schoolId}" type="text" class="se-coord-input" placeholder="Full name" autofocus><input id="cf-phone-${schoolId}" type="tel" class="se-coord-input" placeholder="Phone"><input id="cf-email-${schoolId}" type="email" class="se-coord-input" placeholder="Email (optional)"></div><div class="pf-actions"><button class="btn-xs-ghost" onclick="toggleCoordForm('${seasonId}','${schoolId}')">Cancel</button><button class="btn-xs-save" onclick="saveNewCoordinator('${seasonId}','${schoolId}')">Save &amp; assign</button></div></div>`;}
 function toggleCoordForm(seasonId,schoolId){openCoordForms[schoolId]=!openCoordForms[schoolId];const wrap=document.getElementById(`se-cf-${schoolId}`);if(!wrap)return;if(!openCoordForms[schoolId]){wrap.innerHTML='';return;}wrap.innerHTML=buildCoordForm(seasonId,schoolId);document.getElementById(`cf-name-${schoolId}`)?.focus();}
 function setSchoolCoordinator(seasonId,schoolId,coordId){const season=seasons.find(s=>s.id===seasonId);const school=season?.schools.find(sc=>sc.id===schoolId);if(!school)return;school.coordinatorId=coordId||null;renderSeasonDetail();const coord=coordinators.find(c=>c.id===coordId);if(coord)showToast(`${coord.name} assigned to ${school.name}`);else showToast('Coordinator removed');}
@@ -1968,7 +2007,7 @@ function renderSettingsContent(){
   <div class="settings-section">
     <div class="settings-section-title">Pay &amp; SMS</div>
     <div class="settings-row">
-      <div class="settings-field"><label class="settings-label">Default pay rate ($/session)</label><input class="settings-input" id="st-payrate" type="number" value="${org.defaultPayRate||35}" min="1" step="1"></div>
+      <div class="settings-field"><label class="settings-label">Default pay rate (${V('payModel')==='hourly'?'$/hr':'$/session'})</label><input class="settings-input" id="st-payrate" type="number" value="${org.defaultPayRate||35}" min="1" step="${V('payModel')==='hourly'?'0.25':'1'}"></div>
       <div class="settings-field"><label class="settings-label">Confirm window (hrs)</label><input class="settings-input" id="st-window" type="number" value="${org.confirmWindow||3}" min="1" max="72" step="1"></div>
     </div>
     <div class="settings-field"><label class="settings-label">SMS sender name</label><input class="settings-input" id="st-sender" type="text" value="${org.smsSender||smsSender||''}"></div>
