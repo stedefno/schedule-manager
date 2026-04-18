@@ -184,6 +184,25 @@
     .sf-row.two,.sf-row.three,.coord-fields{grid-template-columns:1fr;}
     .step-node span{display:none;}
   }
+
+  /* ── VALIDATION ERROR ── */
+  .step-error{display:none;align-items:center;gap:8px;background:#fef2f2;border:1px solid #fca5a5;border-radius:var(--radius);padding:10px 14px;margin:0 34px 16px;font-size:13px;color:#b91c1c;animation:slideDown 0.18s ease;}
+  .step-error.show{display:flex;}
+  .step-error svg{width:16px;height:16px;fill:#b91c1c;flex-shrink:0;}
+  .sf-input.invalid{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,0.1);}
+  @keyframes slideDown{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ── VERTICAL PICKER ── */
+  .vertical-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;}
+  .vertical-card{border:2px solid var(--border);border-radius:var(--radius-lg);padding:18px 16px;cursor:pointer;transition:all 0.15s;background:var(--surface);text-align:left;font-family:inherit;width:100%;}
+  .vertical-card:hover{border-color:var(--brand-mid);background:var(--brand-light);}
+  .vertical-card.sel{border-color:var(--brand);background:var(--brand-light);box-shadow:0 0 0 3px rgba(26,158,114,0.1);}
+  .vertical-emoji{font-size:28px;margin-bottom:10px;display:block;}
+  .vertical-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
+  .vertical-desc{font-size:11px;color:var(--text-secondary);line-height:1.4;}
+  .vertical-card.sel .vertical-name{color:var(--brand-dark);}
+  .vertical-card.sel .vertical-desc{color:var(--brand-dark);opacity:0.8;}
+  @media(max-width:480px){.vertical-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -216,13 +235,125 @@
 <div id="wizard-wrap" style="display:none;flex-direction:column;flex:1">
   <div class="step-track" id="step-track"></div>
   <div class="wizard-body">
-    <div class="wizard-card" id="wizard-card"></div>
+    <div class="wizard-card" id="wizard-card">
+      <div class="step-error" id="step-error">
+        <svg viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+        <span id="step-error-msg"></span>
+      </div>
+      <div id="step-content"></div>
+    </div>
   </div>
 </div>
 
 <script>
 const STORAGE_KEY   = 'ezscheduler_config';
 const SCHEDULER_URL = 'scheduler.html';
+
+/* ── VERTICAL CONFIGS ── */
+const VERTICAL_CONFIG = {
+  sports: {
+    label:'After-school sports', emoji:'⚽',
+    desc:'Coordinate coaches across schools, manage programs, track sessions and payroll.',
+    worker:'Coach', workers:'Coaches', site:'School', sites:'Schools',
+    shift:'Program', shifts:'Programs', skill:'Sport specialty',
+    manager:'Coordinator', managers:'Coordinators',
+    payModel:'per-session', payUnit:'session',
+    sitesStepTitle:'Partner schools',
+    sitesStepSub:'Add every school you run programs at.',
+    sitePlaceholder:'e.g. Thurgood Marshall Elementary',
+    coordSiteLabel:'Schools this coordinator oversees',
+    skillsStepTitle:'Sports & activities',
+    skillsStepSub:'Organize your offerings into categories. These populate every sport selector in the app.',
+    defaultCats:[
+      {id:'ac1',name:'Team Sports',         activities:['Basketball','Soccer','Football','Baseball','Softball','Volleyball','Lacrosse']},
+      {id:'ac2',name:'Racket & Court',      activities:['Tennis','Badminton','Pickleball','Squash']},
+      {id:'ac3',name:'Individual Sports',   activities:['Swimming','Track & Field','Gymnastics','Wrestling','Golf']},
+      {id:'ac4',name:'Fitness & Enrichment',activities:['Strength Training','Yoga','Dance','Cheerleading','Martial Arts']},
+    ],
+  },
+  construction: {
+    label:'Construction / skilled trades', emoji:'🏗️',
+    desc:'Dispatch workers to jobsites, track shifts, certifications, and hourly pay.',
+    worker:'Worker', workers:'Workers', site:'Jobsite', sites:'Jobsites',
+    shift:'Shift', shifts:'Shifts', skill:'Trade / certification',
+    manager:'Manager', managers:'Managers',
+    payModel:'hourly', payUnit:'hr',
+    sitesStepTitle:'Jobsites',
+    sitesStepSub:'Add every jobsite you staff workers at.',
+    sitePlaceholder:'e.g. Riverside Office Tower — Floor 3',
+    coordSiteLabel:'Jobsites this manager oversees',
+    skillsStepTitle:'Trades & certifications',
+    skillsStepSub:'Define the trades and skill categories your workers are organized by.',
+    defaultCats:[
+      {id:'ac1',name:'Carpentry & Framing',    activities:['Rough Framing','Finish Carpentry','Cabinet Install','Formwork']},
+      {id:'ac2',name:'Electrical',             activities:['Low Voltage','High Voltage','Panel Work','Conduit','Fire Alarm']},
+      {id:'ac3',name:'Plumbing & Pipefitting', activities:['Rough-In','Finish Plumbing','HVAC Piping','Gas Lines']},
+      {id:'ac4',name:'Concrete & Masonry',     activities:['Concrete Pour','Finishing','Block Laying','Tile','Rebar']},
+      {id:'ac5',name:'General Labor',          activities:['Site Cleanup','Material Handling','Flagging','Demolition']},
+    ],
+  },
+  events: {
+    label:'Event staffing', emoji:'🎭',
+    desc:'Staff venues with the right roles for every event — servers, security, AV, and more.',
+    worker:'Staff', workers:'Staff', site:'Venue', sites:'Venues',
+    shift:'Role', shifts:'Roles', skill:'Role specialty',
+    manager:'Coordinator', managers:'Coordinators',
+    payModel:'hourly', payUnit:'hr',
+    sitesStepTitle:'Venues',
+    sitesStepSub:'Add every venue you staff events at.',
+    sitePlaceholder:'e.g. Capitol Ballroom — Main Hall',
+    coordSiteLabel:'Venues this coordinator oversees',
+    skillsStepTitle:'Roles & specialties',
+    skillsStepSub:'Define the role categories your staff are organized by.',
+    defaultCats:[
+      {id:'ac1',name:'Food & Beverage',           activities:['Server','Bartender','Barback','Catering','Food Runner']},
+      {id:'ac2',name:'Security & Crowd Control',  activities:['Door Security','Floor Security','VIP Security','Parking']},
+      {id:'ac3',name:'Production & AV',           activities:['Sound Tech','Lighting','Video','Stage Hand','Rigging']},
+      {id:'ac4',name:'Hospitality & Guest Svcs',  activities:['Greeter','Registration','Coat Check','Concierge']},
+      {id:'ac5',name:'Logistics & Setup',         activities:['Load-In','Load-Out','Decorator','Furniture Setup']},
+    ],
+  },
+  healthcare: {
+    label:'Home care / healthcare', emoji:'🏥',
+    desc:'Coordinate aides, nurses, and therapists across patient locations and shifts.',
+    worker:'Caregiver', workers:'Caregivers', site:'Location', sites:'Locations',
+    shift:'Visit', shifts:'Visits', skill:'Care specialty',
+    manager:'Coordinator', managers:'Coordinators',
+    payModel:'hourly', payUnit:'hr',
+    sitesStepTitle:'Care locations',
+    sitesStepSub:'Add every care location or facility you staff.',
+    sitePlaceholder:'e.g. Sunrise Assisted Living — Wing B',
+    coordSiteLabel:'Locations this coordinator oversees',
+    skillsStepTitle:'Care specialties',
+    skillsStepSub:'Define the care categories and certifications your caregivers hold.',
+    defaultCats:[
+      {id:'ac1',name:'Home Care',          activities:['Personal Care','Companion Care','Medication Mgmt','Meal Prep']},
+      {id:'ac2',name:'Skilled Nursing',    activities:['RN','LPN','Wound Care','IV Therapy','Vitals']},
+      {id:'ac3',name:'Therapy',            activities:['Physical Therapy','Occupational Therapy','Speech Therapy']},
+      {id:'ac4',name:'Specialized Care',   activities:['Dementia Care','Post-Op Recovery','Pediatric','Hospice']},
+    ],
+  },
+  tutoring: {
+    label:'Tutoring / enrichment', emoji:'📚',
+    desc:'Manage tutors and instructors across learning centers, homes, and schools.',
+    worker:'Tutor', workers:'Tutors', site:'Center', sites:'Centers',
+    shift:'Session', shifts:'Sessions', skill:'Subject specialty',
+    manager:'Coordinator', managers:'Coordinators',
+    payModel:'per-session', payUnit:'session',
+    sitesStepTitle:'Learning centers & sites',
+    sitesStepSub:'Add every location where tutoring or enrichment takes place.',
+    sitePlaceholder:'e.g. Bethesda Learning Center',
+    coordSiteLabel:'Sites this coordinator oversees',
+    skillsStepTitle:'Subjects & specialties',
+    skillsStepSub:'Organize the subjects and enrichment areas your tutors cover.',
+    defaultCats:[
+      {id:'ac1',name:'Core Academics', activities:['Math','Reading','Writing','Science','History','Test Prep']},
+      {id:'ac2',name:'Languages',      activities:['Spanish','French','Mandarin','ESL','Latin']},
+      {id:'ac3',name:'STEM',           activities:['Coding','Robotics','Engineering','Data Science','3D Design']},
+      {id:'ac4',name:'Arts & Music',   activities:['Piano','Guitar','Voice','Drawing','Painting','Theater']},
+    ],
+  },
+};
 
 /* ── PRESET COLORS ── */
 const PRESETS = [
@@ -237,14 +368,18 @@ const PRESETS = [
 ];
 
 /* ── STEP METADATA ── */
-const STEP_LABELS = ['Identity','Schools','Coordinators','Activities','Pay & SMS','Review'];
-const TOTAL = 6;
+const STEP_LABELS = ['Industry','Identity','Sites','Coordinators','Skills','Pay & SMS','Review'];
+const TOTAL = 7;
 
 /* ── STATE ── */
 let step = 1;
 let selPreset = 0;
+let selectedVertical = 'sports'; // default
 
-// Step 1 — identity
+// Helper: get current vertical config
+function VC(key) { return (VERTICAL_CONFIG[selectedVertical]||VERTICAL_CONFIG.sports)[key]; }
+
+// Step 2 — identity (was step 1)
 let d = {
   orgName:'', shortName:'', tagline:'powered by EZScheduler',
   brandColor: PRESETS[0], customColor:'',
@@ -252,25 +387,20 @@ let d = {
   defaultPayRate:35, confirmWindow:3, smsSender:'',
 };
 
-// Step 2 — schools
+// Step 3 — sites/schools (was step 2)
 let schools = [
   {id:'sch1', name:''},
 ];
 let nextSchoolId = 10;
 
-// Step 3 — coordinators (array, each has school assignments)
+// Step 4 — coordinators (was step 3)
 let coordinatorList = [
   { id:'cl1', firstName:'', lastName:'', phone:'', email:'', schoolIds:[] }
 ];
 let nextCoordLocalId = 10;
 
-// Step 4 — activity categories
-let cats = [
-  {id:'ac1', name:'Team Sports',          activities:['Basketball','Soccer','Football','Baseball','Softball','Volleyball','Lacrosse']},
-  {id:'ac2', name:'Racket & Court',       activities:['Tennis','Badminton','Pickleball','Squash']},
-  {id:'ac3', name:'Individual Sports',    activities:['Swimming','Track & Field','Gymnastics','Wrestling','Golf']},
-  {id:'ac4', name:'Fitness & Enrichment', activities:['Strength Training','Yoga','Dance','Cheerleading','Martial Arts']},
-];
+// Step 5 — activity categories (was step 4) — populated when vertical is chosen
+let cats = JSON.parse(JSON.stringify(VERTICAL_CONFIG.sports.defaultCats));
 let nextCatId = 10;
 
 /* ══ BOOT ══ */
@@ -300,7 +430,14 @@ function startFresh() {
 
 /* ══ STEP TRACK ══ */
 function renderTrack() {
-  document.getElementById('step-track').innerHTML = STEP_LABELS.map((s,i) => {
+  const labels = [STEP_LABELS[0], ...STEP_LABELS.slice(1,6).map((l,i) => {
+    // Rename dynamic labels based on vertical
+    if(i===1) return VC('sites'); // Sites
+    if(i===2) return VC('managers'); // Coordinators
+    if(i===3) return 'Skills';
+    return l;
+  }), 'Review'];
+  document.getElementById('step-track').innerHTML = labels.map((s,i) => {
     const n=i+1, done=n<step, active=n===step;
     return `${i>0?'<div class="step-divider"></div>':''}<div class="step-node ${active?'active':done?'done':''}"><div class="step-num">${done?'✓':n}</div><span>${s}</span></div>`;
   }).join('');
@@ -310,19 +447,95 @@ function renderTrack() {
 /* ══ RENDER STEP ══ */
 function renderStep() {
   renderTrack();
-  const card = document.getElementById('wizard-card');
-  const fn = [null, s1, s2, s3, s4, s5, s6][step];
-  card.innerHTML = fn();
-  if (step === 1) { hookSwatches(); updateLogoPreview(); bindS1(); }
-  if (step === 5) setTimeout(updateSmsPreview, 30);
+  clearError();
+  const fn = [null, s1, s2, s3, s4, s5, s6, s7][step];
+  document.getElementById('step-content').innerHTML = fn();
+  if (step === 2) { hookSwatches(); updateLogoPreview(); bindS1(); }
+  if (step === 6) setTimeout(updateSmsPreview, 30);
 }
 
-/* ══ STEP 1: IDENTITY ══ */
+/* ── Error display ── */
+function showError(msg) {
+  const el = document.getElementById('step-error');
+  const msgEl = document.getElementById('step-error-msg');
+  if(el && msgEl) { msgEl.textContent = msg; el.classList.add('show'); el.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+}
+function clearError() {
+  const el = document.getElementById('step-error');
+  if(el) el.classList.remove('show');
+  document.querySelectorAll('.sf-input.invalid,.coord-field input.invalid,.school-row input.invalid').forEach(e => e.classList.remove('invalid'));
+}
+
+/* ── Per-step validation ── */
+function validate() {
+  clearError();
+  if(step === 2) {
+    const org = document.getElementById('s1-org')?.value.trim();
+    const sn  = document.getElementById('s1-short')?.value.trim();
+    if(!org){ document.getElementById('s1-org')?.classList.add('invalid'); showError('Organization name is required.'); return false; }
+    if(!sn) { document.getElementById('s1-short')?.classList.add('invalid'); showError('Short name is required.'); return false; }
+  }
+  if(step === 3) {
+    saveSchoolsFromDOM();
+    if(!schools.filter(s=>s.name).length){
+      document.querySelector('.school-row input')?.classList.add('invalid');
+      showError(`Add at least one ${VC('site').toLowerCase()} before continuing.`);
+      return false;
+    }
+  }
+  if(step === 4) {
+    saveCoordsFromDOM();
+    const c = coordinatorList[0];
+    if(!c.firstName){ document.getElementById(`cf-first-${c.id}`)?.classList.add('invalid'); showError(`${VC('manager')} first name is required.`); return false; }
+    if(!c.phone)    { document.getElementById(`cf-phone-${c.id}`)?.classList.add('invalid'); showError(`A phone number is required for the primary ${VC('manager').toLowerCase()}.`); return false; }
+  }
+  if(step === 5) {
+    if(!cats.reduce((n,c)=>n+c.activities.length,0)){ showError('Add at least one skill or activity before continuing.'); return false; }
+  }
+  if(step === 6) {
+    const pay = parseFloat(document.getElementById('s5-pay')?.value);
+    const win = parseInt(document.getElementById('s5-window')?.value);
+    const snd = document.getElementById('s5-sender')?.value.trim();
+    if(!pay||pay<=0){ document.getElementById('s5-pay')?.classList.add('invalid'); showError('Please enter a valid default pay rate.'); return false; }
+    if(!win||win<1) { document.getElementById('s5-window')?.classList.add('invalid'); showError('Confirmation window must be at least 1 hour.'); return false; }
+    if(!snd)        { document.getElementById('s5-sender')?.classList.add('invalid'); showError('SMS sender name is required.'); return false; }
+  }
+  return true;
+}
+
+/* ══ STEP 1: VERTICAL PICKER ══ */
 function s1() {
+  const vKeys = Object.keys(VERTICAL_CONFIG);
+  const cards = vKeys.map(key => {
+    const v = VERTICAL_CONFIG[key];
+    return `<button class="vertical-card ${key===selectedVertical?'sel':''}" onclick="selectVertical('${key}')">
+      <span class="vertical-emoji">${v.emoji}</span>
+      <div class="vertical-name">${v.label}</div>
+      <div class="vertical-desc">${v.desc}</div>
+    </button>`;
+  }).join('');
   return `<div class="card-hd">
-    <div class="card-eyebrow">Step 1 of 6 — Identity</div>
+    <div class="card-eyebrow">Step 1 of 7 — Industry</div>
+    <div class="card-title">What kind of business are you?</div>
+    <div class="card-sub">EZScheduler adapts its language and defaults to your industry. You can change this later.</div>
+  </div>
+  <div class="card-body">
+    <div class="vertical-grid">${cards}</div>
+  </div>
+  <div class="card-footer"><div></div><button class="btn-next" onclick="next()">Continue <span style="opacity:0.7">→</span></button></div>`;
+}
+function selectVertical(key) {
+  selectedVertical = key;
+  document.querySelectorAll('.vertical-card').forEach(el => el.classList.remove('sel'));
+  event.currentTarget.classList.add('sel');
+}
+
+/* ══ STEP 2: IDENTITY (was Step 1) ══ */
+function s2() {
+  return `<div class="card-hd">
+    <div class="card-eyebrow">Step 2 of 7 — Identity</div>
     <div class="card-title">Your organization</div>
-    <div class="card-sub">How the app will be branded for coordinators and coaches.</div>
+    <div class="card-sub">How the app will be branded for ${VC('managers').toLowerCase()} and ${VC('workers').toLowerCase()}.</div>
   </div>
   <div class="card-body">
     <div class="sf-row two">
@@ -350,7 +563,7 @@ function s1() {
       </div>
     </div>
   </div>
-  <div class="card-footer"><div></div><button class="btn-next" onclick="next()">Continue <span style="opacity:0.7">→</span></button></div>`;
+  <div class="card-footer"><button class="btn-back" onclick="prev()">← Back</button><button class="btn-next" onclick="next()">Continue <span style="opacity:0.7">→</span></button></div>`;
 }
 function bindS1() {
   document.getElementById('s1-org').addEventListener('input', e => { d.orgName = e.target.value; updateLogoPreview(); });
@@ -384,24 +597,24 @@ function updateLogoPreview() {
   const tgl  = document.getElementById('lpv-tagline');if(tgl)  tgl.textContent = tag;
 }
 
-/* ══ STEP 2: SCHOOLS ══ */
-function s2() {
+/* ══ STEP 3: SITES (was Step 2) ══ */
+function s3() {
   return `<div class="card-hd">
-    <div class="card-eyebrow">Step 2 of 6 — Schools</div>
-    <div class="card-title">Partner schools</div>
-    <div class="card-sub">Add every school you run programs at. You'll assign coordinators to these in the next step.</div>
+    <div class="card-eyebrow">Step 3 of 7 — ${VC('sites')}</div>
+    <div class="card-title">${VC('sitesStepTitle')}</div>
+    <div class="card-sub">${VC('sitesStepSub')} You'll assign ${VC('managers').toLowerCase()} to these in the next step.</div>
   </div>
   <div class="card-body">
     <div class="school-list" id="school-list">${buildSchoolRows()}</div>
-    <button class="add-school-btn" onclick="addSchoolRow()">+ Add school</button>
+    <button class="add-school-btn" onclick="addSchoolRow()">+ Add ${VC('site').toLowerCase()}</button>
   </div>
   <div class="card-footer"><button class="btn-back" onclick="prev()">← Back</button><button class="btn-next" onclick="next()">Continue <span style="opacity:0.7">→</span></button></div>`;
 }
 function buildSchoolRows() {
   return schools.map(s => `
     <div class="school-row" id="sr-${s.id}">
-      <input type="text" value="${s.name}" placeholder="e.g. Thurgood Marshall Elementary" onchange="updateSchoolName('${s.id}',this.value)" oninput="updateSchoolName('${s.id}',this.value)">
-      <button class="rm-row-btn" onclick="removeSchoolRow('${s.id}')" title="Remove school">×</button>
+      <input type="text" value="${s.name}" placeholder="${VC('sitePlaceholder')}" onchange="updateSchoolName('${s.id}',this.value)" oninput="updateSchoolName('${s.id}',this.value)">
+      <button class="rm-row-btn" onclick="removeSchoolRow('${s.id}')" title="Remove">×</button>
     </div>`).join('');
 }
 function refreshSchoolList() { const el = document.getElementById('school-list'); if(el) el.innerHTML = buildSchoolRows(); }
@@ -433,17 +646,17 @@ function saveSchoolsFromDOM() {
   if(nonEmpty.length) schools = nonEmpty;
 }
 
-/* ══ STEP 3: COORDINATORS ══ */
-function s3() {
+/* ══ STEP 4: COORDINATORS (was Step 3) ══ */
+function s4() {
   const namedSchools = schools.filter(s => s.name);
   return `<div class="card-hd">
-    <div class="card-eyebrow">Step 3 of 6 — Coordinators</div>
-    <div class="card-title">Lead coordinators</div>
-    <div class="card-sub">Add everyone who manages assignments. Assign each coordinator to the schools they oversee.</div>
+    <div class="card-eyebrow">Step 4 of 7 — ${VC('managers')}</div>
+    <div class="card-title">Lead ${VC('managers').toLowerCase()}</div>
+    <div class="card-sub">Add everyone who manages assignments. Assign each ${VC('manager').toLowerCase()} to the ${VC('sites').toLowerCase()} they oversee.</div>
   </div>
   <div class="card-body-scroll">
     <div id="coord-list">${buildCoordCards(namedSchools)}</div>
-    <button class="add-coord-btn" onclick="addCoord()">+ Add another coordinator</button>
+    <button class="add-coord-btn" onclick="addCoord()">+ Add another ${VC('manager').toLowerCase()}</button>
   </div>
   <div class="card-footer"><button class="btn-back" onclick="prev()">← Back</button><button class="btn-next" onclick="next()">Continue <span style="opacity:0.7">→</span></button></div>`;
 }
@@ -451,7 +664,7 @@ function buildCoordCards(namedSchools) {
   return coordinatorList.map((c, i) => `
     <div class="coord-card" id="cc-${c.id}">
       <div class="coord-card-hd">
-        <div class="coord-card-title">Coordinator ${i+1}</div>
+        <div class="coord-card-title">${VC('manager')} ${i+1}</div>
         ${coordinatorList.length > 1 ? `<button class="coord-card-rm" onclick="removeCoord('${c.id}')">Remove</button>` : ''}
       </div>
       <div class="coord-card-body">
@@ -462,14 +675,14 @@ function buildCoordCards(namedSchools) {
           <div class="coord-field"><label>Email address</label><input type="email" id="cf-email-${c.id}" value="${c.email}" placeholder="coordinator@org.com"></div>
         </div>
         <div class="coord-schools-section">
-          <div class="coord-schools-label">Schools this coordinator oversees <span>(select all that apply)</span></div>
+          <div class="coord-schools-label">${VC('coordSiteLabel')} <span>(select all that apply)</span></div>
           ${namedSchools.length
             ? `<div class="school-assign-grid">${namedSchools.map(s=>`
                 <div class="school-toggle ${c.schoolIds.includes(s.id)?'on':''}" onclick="toggleSchoolAssign('${c.id}','${s.id}',this)">
                   <span class="school-toggle-check">${c.schoolIds.includes(s.id)?'✓':''}</span>
                   ${s.name}
                 </div>`).join('')}</div>`
-            : `<div class="no-schools-hint">No schools added yet — go back to Step 2 to add them.</div>`
+            : `<div class="no-schools-hint">No ${VC('sites').toLowerCase()} added yet — go back to step 3 to add them.</div>`
           }
         </div>
       </div>
@@ -513,12 +726,12 @@ function saveCoordsFromDOM() {
   });
 }
 
-/* ══ STEP 4: ACTIVITIES ══ */
-function s4() {
+/* ══ STEP 5: SKILLS (was Step 4) ══ */
+function s5() {
   return `<div class="card-hd">
-    <div class="card-eyebrow">Step 4 of 6 — Activities</div>
-    <div class="card-title">Sports &amp; activities</div>
-    <div class="card-sub">Organize your offerings into categories. These populate every sport selector in the app. Remove what you don't offer, add what's missing.</div>
+    <div class="card-eyebrow">Step 5 of 7 — Skills</div>
+    <div class="card-title">${VC('skillsStepTitle')}</div>
+    <div class="card-sub">${VC('skillsStepSub')} Remove what you don't offer, add what's missing.</div>
   </div>
   <div class="card-body">
     <div class="cat-scroll" id="cat-list">${buildCatList()}</div>
@@ -550,23 +763,24 @@ function addAct(id){ const inp=document.getElementById(`ci-${id}`);if(!inp)retur
 function rmAct(id,act){ const c=cats.find(c=>c.id===id);if(!c)return;c.activities=c.activities.filter(a=>a!==act);refreshCats(); }
 function addCat(){ const id='ac'+nextCatId++;cats.push({id,name:'New Category',activities:[]});refreshCats();setTimeout(()=>{const inp=document.getElementById(`cat-${id}`)?.querySelector('.cat-name-input');if(inp){inp.focus();inp.select();}},40); }
 
-/* ══ STEP 5: PAY & SMS ══ */
-function s5() {
+/* ══ STEP 6: PAY & SMS (was Step 5) ══ */
+function s6() {
+  const isHourly = VC('payModel')==='hourly';
   const sender = d.smsSender || (coordinatorList[0]?.firstName ? `${coordinatorList[0].firstName} @ ${d.shortName||'MSA'}` : (d.shortName||'MSA Scheduler'));
   return `<div class="card-hd">
-    <div class="card-eyebrow">Step 5 of 6 — Pay &amp; SMS</div>
+    <div class="card-eyebrow">Step 6 of 7 — Pay &amp; SMS</div>
     <div class="card-title">Defaults &amp; messaging</div>
-    <div class="card-sub">Set the default pay rate for new coaches and how SMS assignments are signed.</div>
+    <div class="card-sub">Set the default pay rate for new ${VC('workers').toLowerCase()} and how SMS assignments are signed.</div>
   </div>
   <div class="card-body">
     <div class="sf-row two">
       <div>
-        <label class="sf-label">Default pay rate per session</label>
+        <label class="sf-label">Default pay rate ${isHourly?'($/hr)':'($/session)'}</label>
         <div style="position:relative">
           <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-secondary)">$</span>
-          <input class="sf-input" id="s5-pay" type="number" value="${d.defaultPayRate}" min="1" step="1" style="padding-left:24px">
+          <input class="sf-input" id="s5-pay" type="number" value="${d.defaultPayRate}" min="1" step="${isHourly?'0.25':'1'}" style="padding-left:24px">
         </div>
-        <div class="sf-hint">Individual coach rates can override this.</div>
+        <div class="sf-hint">Individual ${VC('worker').toLowerCase()} rates can override this.</div>
       </div>
       <div>
         <label class="sf-label">SMS confirmation window</label>
@@ -594,17 +808,22 @@ function s5() {
 function updateSmsPreview() {
   const sender = document.getElementById('s5-sender')?.value || d.smsSender || 'MSA';
   const el = document.getElementById('sms-preview');
-  if(el) el.textContent = `"Hi Marcus! Tomorrow: Thurgood Marshall ES · Grades K–2 · 3:00–4:00 PM. Reply YES to confirm. — ${sender}"`;
+  const workerFirst = VC('worker')==='Coach'?'Marcus':VC('worker')==='Worker'?'Carlos':VC('worker')==='Staff'?'Alicia':VC('worker');
+  const siteName = VC('site')==='School'?'Thurgood Marshall ES':VC('site')==='Jobsite'?'Riverside Tower — Floor 3':VC('site')==='Venue'?'Capitol Ballroom':schools[0]?.name||VC('site');
+  const shiftName = VC('shift')==='Program'?'Grades K–2':VC('shift')==='Shift'?'Framing Crew':VC('shift')==='Role'?'Floor Security':VC('shift');
+  const time = '7:00–3:30 PM';
+  if(el) el.textContent = `"Hi ${workerFirst}! Tomorrow: ${siteName} · ${shiftName} · ${time}. Reply YES to confirm. — ${sender}"`;
 }
 
-/* ══ STEP 6: REVIEW ══ */
-function s6() {
+/* ══ STEP 7: REVIEW (was Step 6) ══ */
+function s7() {
   const color = d.brandColor?.hex || d.customColor || '#1a9e72';
   const namedSchools = schools.filter(s => s.name);
   const totalActs = cats.reduce((n,c)=>n+c.activities.length,0);
-
   const schoolMap = {};
   namedSchools.forEach(s => { schoolMap[s.id] = s.name; });
+  const vc = VERTICAL_CONFIG[selectedVertical]||VERTICAL_CONFIG.sports;
+  const isHourly = vc.payModel === 'hourly';
 
   const coordCards = coordinatorList.filter(c => c.firstName).map(c => {
     const assignedSchools = c.schoolIds.map(id => schoolMap[id]).filter(Boolean);
@@ -616,11 +835,16 @@ function s6() {
   }).join('') || '<div style="font-size:12px;color:var(--text-tertiary);font-style:italic">No coordinators added</div>';
 
   return `<div class="card-hd">
-    <div class="card-eyebrow">Step 6 of 6 — Review</div>
+    <div class="card-eyebrow">Step 7 of 7 — Review</div>
     <div class="card-title">Ready to launch 🚀</div>
     <div class="card-sub">Your settings will be saved locally and applied every time you open the scheduler.</div>
   </div>
   <div class="card-body-scroll" style="max-height:400px">
+    <div class="review-section">
+      <div class="review-hd">Industry</div>
+      <div class="review-row"><span class="review-key">Type</span><span class="review-val">${vc.emoji} ${vc.label}</span></div>
+      <div class="review-row"><span class="review-key">Pay model</span><span class="review-val">${isHourly?'Hourly ($/hr)':'Per session ($/session)'}</span></div>
+    </div>
     <div class="review-section">
       <div class="review-hd">Identity</div>
       <div class="review-row"><span class="review-key">Organization</span><span class="review-val">${d.orgName||'—'}</span></div>
@@ -629,21 +853,21 @@ function s6() {
       <div class="review-row"><span class="review-key">Brand color</span><span class="review-val"><span class="review-color-dot" style="background:${color}"></span>${d.brandColor?.name||'Custom'}</span></div>
     </div>
     <div class="review-section">
-      <div class="review-hd">Partner schools (${namedSchools.length})</div>
+      <div class="review-hd">${vc.sites} (${namedSchools.length})</div>
       <div class="review-chips">${namedSchools.map(s=>`<span class="review-chip">${s.name}</span>`).join('')||'<span style="font-size:11px;color:var(--text-tertiary);font-style:italic">None added</span>'}</div>
     </div>
     <div class="review-section">
-      <div class="review-hd">Coordinators (${coordinatorList.filter(c=>c.firstName).length})</div>
+      <div class="review-hd">${vc.managers} (${coordinatorList.filter(c=>c.firstName).length})</div>
       ${coordCards}
     </div>
     <div class="review-section">
-      <div class="review-hd">Activities — ${cats.length} categories · ${totalActs} total</div>
+      <div class="review-hd">${vc.skillsStepTitle} — ${cats.length} categories · ${totalActs} total</div>
       ${cats.map(c=>`<div class="review-row" style="align-items:flex-start;padding:6px 0"><span class="review-key" style="padding-top:2px;white-space:nowrap;min-width:100px">${c.name}</span><div class="review-chips">${c.activities.map(a=>`<span class="review-chip">${a}</span>`).join('')||'<span style="font-size:11px;color:var(--text-tertiary);font-style:italic">None</span>'}</div></div>`).join('')}
     </div>
     <div class="review-section">
       <div class="review-hd">Pay &amp; SMS</div>
-      <div class="review-row"><span class="review-key">Default pay rate</span><span class="review-val">$${d.defaultPayRate}/session</span></div>
-      <div class="review-row"><span class="review-key">Confirmation window</span><span class="review-val">${d.confirmWindow} hours</span></div>
+      <div class="review-row"><span class="review-key">Default rate</span><span class="review-val">$${d.defaultPayRate}/${isHourly?'hr':'session'}</span></div>
+      <div class="review-row"><span class="review-key">Confirm window</span><span class="review-val">${d.confirmWindow} hours</span></div>
       <div class="review-row"><span class="review-key">SMS sender</span><span class="review-val" style="font-weight:400">${d.smsSender||d.shortName||'—'}</span></div>
     </div>
   </div>
@@ -654,19 +878,30 @@ function s6() {
 }
 
 /* ══ NAVIGATION ══ */
-function next() { save(); if(step<TOTAL){step++;renderStep();} if(step===5)setTimeout(updateSmsPreview,30); }
-function prev() { if(step>1){step--;renderStep();} if(step===5)setTimeout(updateSmsPreview,30); }
+function next() {
+  if(!validate()) return;
+  save();
+  // When leaving vertical step, load that vertical's default cats
+  if(step===1){ cats=JSON.parse(JSON.stringify(VC('defaultCats'))); nextCatId=10+cats.length; }
+  if(step<TOTAL){step++;renderStep();}
+  if(step===6)setTimeout(updateSmsPreview,30);
+}
+function prev() {
+  clearError();
+  if(step>1){step--;renderStep();}
+  if(step===6)setTimeout(updateSmsPreview,30);
+}
 
 function save() {
-  if(step===1) {
+  if(step===2) {
     d.orgName   = document.getElementById('s1-org')?.value.trim()   || d.orgName;
     d.shortName = document.getElementById('s1-short')?.value.trim().toUpperCase() || d.shortName;
     d.tagline   = document.getElementById('s1-tagline')?.value ?? d.tagline;
-  } else if(step===2) {
-    saveSchoolsFromDOM();
   } else if(step===3) {
+    saveSchoolsFromDOM();
+  } else if(step===4) {
     saveCoordsFromDOM();
-  } else if(step===5) {
+  } else if(step===6) {
     d.defaultPayRate = parseInt(document.getElementById('s5-pay')?.value)||35;
     d.confirmWindow  = parseInt(document.getElementById('s5-window')?.value)||3;
     d.smsSender      = document.getElementById('s5-sender')?.value.trim()||d.shortName||'MSA';
@@ -678,9 +913,12 @@ function launch() {
   save();
   const config = {
     ...d,
+    vertical: selectedVertical,
+    verticalConfig: VERTICAL_CONFIG[selectedVertical],
     schools:     JSON.parse(JSON.stringify(schools.filter(s=>s.name))),
     coordinators: JSON.parse(JSON.stringify(coordinatorList)),
     activityCategories: JSON.parse(JSON.stringify(cats)),
+    setupComplete: true,
     savedAt: new Date().toISOString(),
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
