@@ -280,6 +280,12 @@
   .sub-off{background:var(--bg);color:var(--text-tertiary);border:1px solid var(--border);}
   .del-btn{background:none;border:1px solid var(--border);border-radius:var(--radius);padding:4px 10px;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;color:var(--text-secondary);}
   .del-btn:hover{border-color:var(--red);color:var(--red);}
+  .restore-btn{background:none;border:1px solid var(--border);border-radius:var(--radius);padding:4px 10px;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;color:var(--brand-dark);}
+  .restore-btn:hover{border-color:var(--brand);background:var(--brand-light);}
+  .inactive-badge{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;background:#f1f5f9;color:#64748b;border:1px solid #cbd5e1;border-radius:5px;padding:2px 6px;margin-left:5px;letter-spacing:0.03em;}
+  .roster-row.is-inactive{opacity:0.55;}
+  .show-inactive-toggle{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-tertiary);cursor:pointer;padding:8px 0 2px;user-select:none;}
+  .show-inactive-toggle input{accent-color:var(--brand);cursor:pointer;}
   .incident-row{display:flex;align-items:center;gap:8px;padding:6px 16px 10px;background:var(--bg);border-top:1px dashed var(--border);}
   .incident-label{font-size:10px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.05em;}
   .incident-btn{font-size:11px;font-weight:600;padding:3px 10px;border-radius:6px;cursor:pointer;font-family:inherit;border:1px solid transparent;}
@@ -546,6 +552,10 @@
   .daily-note-label svg{width:12px;height:12px;}
   .daily-note-input{width:100%;border:none;outline:none;font-family:inherit;font-size:13px;color:var(--text);background:transparent;resize:none;min-height:52px;line-height:1.6;}
   .daily-note-input::placeholder{color:var(--text-tertiary);}
+  .daily-note-stale{display:none;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-tertiary);background:var(--bg);border-radius:6px;padding:5px 9px;margin-bottom:6px;border:1px solid var(--border);}
+  .daily-note-stale.show{display:flex;}
+  .daily-note-stale-clear{background:none;border:none;font-size:11px;color:var(--text-tertiary);cursor:pointer;font-family:inherit;padding:0;text-decoration:underline;}
+  .daily-note-stale-clear:hover{color:var(--text);}
 
   /* ── COVERAGE BAR ── */
   .coverage-bar-wrap{padding:0 14px 10px;display:flex;align-items:center;gap:8px;}
@@ -700,7 +710,7 @@
             </div>
             <button class="edit-season-trigger" onclick="openSeasonEdit()">
               <svg viewBox="0 0 24 24" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              Edit seasons
+              <span id="edit-seasons-label">Edit seasons</span>
             </button>
           </div>
         </div>
@@ -725,6 +735,11 @@
       <div class="daily-note-label">
         <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         Today's notes
+        <span id="daily-note-date-label" style="font-weight:400;text-transform:none;letter-spacing:0;margin-left:6px;"></span>
+      </div>
+      <div class="daily-note-stale" id="daily-note-stale">
+        <span id="daily-note-stale-msg"></span>
+        <button class="daily-note-stale-clear" onclick="clearDailyNote()">Clear note</button>
       </div>
       <textarea class="daily-note-input" id="daily-note-input" placeholder="Jot anything down — weather cancellations, reminders, special instructions for today..." oninput="saveDailyNote(this.value)"></textarea>
     </div>
@@ -913,15 +928,15 @@
   <div class="overlay-topbar">
     <button class="overlay-back-btn" onclick="closeSeasonEdit()">← Back to schedule</button>
     <div class="logo"><div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg></div><div class="logo-text"><div class="logo-name" id="season-manager-logo">MSA <span>Season Manager</span></div><div class="logo-tagline">powered by EZScheduler</div></div></div>
-    <div class="overlay-badge">Season management</div>
+    <div class="overlay-badge" id="season-overlay-badge">Season management</div>
   </div>
   <div class="season-layout">
     <div class="season-sidebar">
-      <div class="season-sidebar-hd"><div class="season-sidebar-title">Seasons</div><button class="new-season-btn" onclick="toggleNewSeasonForm()">+ New</button></div>
+      <div class="season-sidebar-hd"><div class="season-sidebar-title" id="season-sidebar-title">Seasons</div><button class="new-season-btn" onclick="toggleNewSeasonForm()">+ New</button></div>
       <div id="new-season-form-wrap"></div>
       <div class="season-list-wrap" id="season-list-wrap"></div>
     </div>
-    <div class="season-detail" id="season-detail"><div class="season-placeholder">Select a season to manage its schools and programs</div></div>
+    <div class="season-detail" id="season-detail"><div class="season-placeholder">Select a season to manage its sites and shifts</div></div>
   </div>
 </div>
 
@@ -952,11 +967,11 @@ const BRAND_PRESETS=[
 
 /* ══ VERTICAL CONFIG ══ */
 const VERTICAL_CONFIG={
-  sports:      {worker:'Coach',     workers:'Coaches',    site:'School',   sites:'Schools',   shift:'Program',  shifts:'Programs', skill:'Sport specialty',  manager:'Coordinator', managers:'Coordinators', payModel:'per-session',payUnit:'session', subBench:'Sub bench',  primary:'Primary',  portalLabel:'Coach Portal',   portalBadge:'Coaches only',  siteContactLabel:'School contact',  coordLabel:'School coordinator',  addSiteLabel:'Add school',   sitePlaceholder:'Lincoln Elementary',         skillLabel:'Sport / activity',  addWorkerTitle:'Add new coach',         workerSearch:'Search by name or sport...',   poolEmpty:'All available coaches assigned',   poolNoPrimary:'No primary coaches available', schedTomorrow:"Tomorrow's schools",schedWeek:'This week',showCertifications:false,showDressCode:false},
-  construction:{worker:'Worker',    workers:'Workers',    site:'Jobsite',  sites:'Jobsites',  shift:'Shift',    shifts:'Shifts',   skill:'Trade',            manager:'Manager',     managers:'Managers',     payModel:'hourly',     payUnit:'hr',      subBench:'On-call',    primary:'Full-time',portalLabel:'Worker Portal',  portalBadge:'Workers only',  siteContactLabel:'Site supervisor', coordLabel:'Jobsite manager',     addSiteLabel:'Add jobsite',  sitePlaceholder:'Riverside Tower — Floor 3',  skillLabel:'Trade / cert',      addWorkerTitle:'Add new worker',        workerSearch:'Search by name or trade...',   poolEmpty:'All available workers assigned',   poolNoPrimary:'No primary workers available', schedTomorrow:"Tomorrow's jobsites",schedWeek:'This week',showCertifications:true, showDressCode:false},
-  events:      {worker:'Staff',     workers:'Staff',      site:'Venue',    sites:'Venues',    shift:'Role',     shifts:'Roles',    skill:'Role specialty',   manager:'Coordinator', managers:'Coordinators', payModel:'hourly',     payUnit:'hr',      subBench:'On-call',    primary:'Regular',  portalLabel:'Staff Portal',   portalBadge:'Staff only',    siteContactLabel:'Event contact',   coordLabel:'Venue coordinator',   addSiteLabel:'Add venue',    sitePlaceholder:'Capitol Ballroom — Main Hall',skillLabel:'Role type',         addWorkerTitle:'Add new staff member',  workerSearch:'Search by name or role...',    poolEmpty:'All available staff assigned',     poolNoPrimary:'No regular staff available',   schedTomorrow:"Tomorrow's venues",  schedWeek:'This week',showCertifications:false,showDressCode:true},
-  healthcare:  {worker:'Caregiver', workers:'Caregivers', site:'Location', sites:'Locations', shift:'Visit',    shifts:'Visits',   skill:'Care specialty',   manager:'Coordinator', managers:'Coordinators', payModel:'hourly',     payUnit:'hr',      subBench:'On-call',    primary:'Regular',  portalLabel:'Caregiver Portal',portalBadge:'Caregivers only',siteContactLabel:'Location contact',coordLabel:'Location coordinator',addSiteLabel:'Add location', sitePlaceholder:'Sunrise Assisted Living — Wing B',skillLabel:'Care specialty',  addWorkerTitle:'Add new caregiver',     workerSearch:'Search by name or specialty...',poolEmpty:'All available caregivers assigned', poolNoPrimary:'No regular caregivers available',schedTomorrow:"Tomorrow's locations",schedWeek:'This week',showCertifications:true, showDressCode:false},
-  tutoring:    {worker:'Tutor',     workers:'Tutors',     site:'Center',   sites:'Centers',   shift:'Session',  shifts:'Sessions', skill:'Subject specialty', manager:'Coordinator', managers:'Coordinators', payModel:'per-session',payUnit:'session', subBench:'Sub bench',  primary:'Primary',  portalLabel:'Tutor Portal',   portalBadge:'Tutors only',   siteContactLabel:'Center contact',  coordLabel:'Center coordinator',  addSiteLabel:'Add center',   sitePlaceholder:'Bethesda Learning Center',   skillLabel:'Subject',           addWorkerTitle:'Add new tutor',         workerSearch:'Search by name or subject...',  poolEmpty:'All available tutors assigned',    poolNoPrimary:'No primary tutors available',  schedTomorrow:"Tomorrow's centers", schedWeek:'This week',showCertifications:false,showDressCode:false},
+  sports:      {worker:'Coach',     workers:'Coaches',    site:'School',   sites:'Schools',   shift:'Program',  shifts:'Programs', skill:'Sport specialty',  manager:'Coordinator', managers:'Coordinators', payModel:'per-session',payUnit:'session', subBench:'Sub bench',  primary:'Primary',  portalLabel:'Coach Portal',   portalBadge:'Coaches only',  siteContactLabel:'School contact',  coordLabel:'School coordinator',  addSiteLabel:'Add school',   sitePlaceholder:'Lincoln Elementary',         skillLabel:'Sport / activity',  addWorkerTitle:'Add new coach',         workerSearch:'Search by name or sport...',   poolEmpty:'All available coaches assigned',   poolNoPrimary:'No primary coaches available', schedTomorrow:"Tomorrow's schools",schedWeek:'This week',showCertifications:false,showDressCode:false, seasonNoun:'Season',  seasons:'Seasons',  editSeasonsLabel:'Edit seasons',  seasonManagerTitle:'Season Manager', newSeasonLabel:'New season', seasonPlaceholder:'Summer 2025', seasonPeriodPlaceholder:'Jun – Aug 2025'},
+  construction:{worker:'Worker',    workers:'Workers',    site:'Jobsite',  sites:'Jobsites',  shift:'Shift',    shifts:'Shifts',   skill:'Trade',            manager:'Manager',     managers:'Managers',     payModel:'hourly',     payUnit:'hr',      subBench:'On-call',    primary:'Full-time',portalLabel:'Worker Portal',  portalBadge:'Workers only',  siteContactLabel:'Site supervisor', coordLabel:'Jobsite manager',     addSiteLabel:'Add jobsite',  sitePlaceholder:'Riverside Tower — Floor 3',  skillLabel:'Trade / cert',      addWorkerTitle:'Add new worker',        workerSearch:'Search by name or trade...',   poolEmpty:'All available workers assigned',   poolNoPrimary:'No primary workers available', schedTomorrow:"Tomorrow's jobsites",schedWeek:'This week',showCertifications:true, showDressCode:false, seasonNoun:'Project', seasons:'Projects', editSeasonsLabel:'Edit projects', seasonManagerTitle:'Project Manager', newSeasonLabel:'New project', seasonPlaceholder:'Q3 Office Tower', seasonPeriodPlaceholder:'Jul – Sep 2025'},
+  events:      {worker:'Staff',     workers:'Staff',      site:'Venue',    sites:'Venues',    shift:'Role',     shifts:'Roles',    skill:'Role specialty',   manager:'Coordinator', managers:'Coordinators', payModel:'hourly',     payUnit:'hr',      subBench:'On-call',    primary:'Regular',  portalLabel:'Staff Portal',   portalBadge:'Staff only',    siteContactLabel:'Event contact',   coordLabel:'Venue coordinator',   addSiteLabel:'Add venue',    sitePlaceholder:'Capitol Ballroom — Main Hall',skillLabel:'Role type',         addWorkerTitle:'Add new staff member',  workerSearch:'Search by name or role...',    poolEmpty:'All available staff assigned',     poolNoPrimary:'No regular staff available',   schedTomorrow:"Tomorrow's venues",  schedWeek:'This week',showCertifications:false,showDressCode:true,  seasonNoun:'Season',  seasons:'Seasons',  editSeasonsLabel:'Edit seasons',  seasonManagerTitle:'Season Manager', newSeasonLabel:'New season', seasonPlaceholder:'Fall 2025', seasonPeriodPlaceholder:'Sep – Dec 2025'},
+  healthcare:  {worker:'Caregiver', workers:'Caregivers', site:'Location', sites:'Locations', shift:'Visit',    shifts:'Visits',   skill:'Care specialty',   manager:'Coordinator', managers:'Coordinators', payModel:'hourly',     payUnit:'hr',      subBench:'On-call',    primary:'Regular',  portalLabel:'Caregiver Portal',portalBadge:'Caregivers only',siteContactLabel:'Location contact',coordLabel:'Location coordinator',addSiteLabel:'Add location', sitePlaceholder:'Sunrise Assisted Living — Wing B',skillLabel:'Care specialty',  addWorkerTitle:'Add new caregiver',     workerSearch:'Search by name or specialty...',poolEmpty:'All available caregivers assigned', poolNoPrimary:'No regular caregivers available',schedTomorrow:"Tomorrow's locations",schedWeek:'This week',showCertifications:true, showDressCode:false, seasonNoun:'Quarter', seasons:'Quarters', editSeasonsLabel:'Edit quarters', seasonManagerTitle:'Schedule Manager', newSeasonLabel:'New quarter', seasonPlaceholder:'Q3 2025', seasonPeriodPlaceholder:'Jul – Sep 2025'},
+  tutoring:    {worker:'Tutor',     workers:'Tutors',     site:'Center',   sites:'Centers',   shift:'Session',  shifts:'Sessions', skill:'Subject specialty', manager:'Coordinator', managers:'Coordinators', payModel:'per-session',payUnit:'session', subBench:'Sub bench',  primary:'Primary',  portalLabel:'Tutor Portal',   portalBadge:'Tutors only',   siteContactLabel:'Center contact',  coordLabel:'Center coordinator',  addSiteLabel:'Add center',   sitePlaceholder:'Bethesda Learning Center',   skillLabel:'Subject',           addWorkerTitle:'Add new tutor',         workerSearch:'Search by name or subject...',  poolEmpty:'All available tutors assigned',    poolNoPrimary:'No primary tutors available',  schedTomorrow:"Tomorrow's centers", schedWeek:'This week',showCertifications:false,showDressCode:false, seasonNoun:'Term',    seasons:'Terms',    editSeasonsLabel:'Edit terms',    seasonManagerTitle:'Term Manager', newSeasonLabel:'New term', seasonPlaceholder:'Spring 2025', seasonPeriodPlaceholder:'Feb – Jun 2025'},
 };
 /* Helper: read from current org's vertical, fallback to sports */
 function V(key){ return (VERTICAL_CONFIG[ORG_CFG?.vertical]||VERTICAL_CONFIG.sports)[key]; }
@@ -1270,10 +1285,10 @@ function lsLoad(){try{const r=localStorage.getItem(LS_KEY);return r?JSON.parse(r
 function persist(){
   try{
     localStorage.setItem(LS_KEY,JSON.stringify({
-      seasons,coaches,coordinators,assignments,confirmations,sent,
+      seasons,coaches,coordinators,assignments,confirmations,sent,sentDate,
       sessionLog,sessionLogNext,
       nextId,nextSeasonId,nextSchoolId,nextProgId,nextCoordId,
-      dailyNote,
+      dailyNote,dailyNoteDate,
       orgDefaultPayRate: DEFAULT_PAY,
     }));
   }catch(e){console.warn('persist failed',e);}
@@ -1314,12 +1329,26 @@ let sessionLogNext= _SAVED?.sessionLogNext?? 100;
 let assignments   = _SAVED?.assignments   ?? {};
 let confirmations = _SAVED?.confirmations ?? {};
 let sent          = _SAVED?.sent          ?? false;
+let sentDate      = _SAVED?.sentDate      ?? '';
+
+/* ── Reset sent state if it's from a previous day ── */
+{
+  const _today = new Date().toISOString().split('T')[0];
+  if(sent && sentDate && sentDate !== _today){
+    sent = false;
+    sentDate = '';
+    assignments = {};
+    confirmations = {};
+  }
+}
 let nextId        = _SAVED?.nextId        ?? 19;
 let nextSeasonId  = _SAVED?.nextSeasonId  ?? 10;
 let nextSchoolId  = _SAVED?.nextSchoolId  ?? 40;
 let nextProgId    = _SAVED?.nextProgId    ?? 300;
 nextCoordId       = _SAVED?.nextCoordId   ?? 10;
 let dailyNote     = _SAVED?.dailyNote     ?? '';
+let dailyNoteDate = _SAVED?.dailyNoteDate ?? '';
+let showInactive  = false; /* Fix 6 — toggle to show/hide inactive coaches */
 /* Restore coordinators — overwrite defaults if we have saved ones */
 if(_SAVED?.coordinators?.length) coordinators = _SAVED.coordinators;
 let dragging=null,formVisible=false,pickerCoachId=null,pickerSchoolId=null;
@@ -1334,7 +1363,8 @@ let scheduleView='tomorrow'; /* 'tomorrow' | 'week' */
 function getCurrentSeason(){return seasons.find(s=>s.current)||seasons[0];}
 function getEditSeason(){return seasons.find(s=>s.id===editSeasonId);}
 function getSchools(){return getCurrentSeason().schools;}
-function availableCoaches(){return coaches.filter(c=>c.available);}
+function availableCoaches(){return coaches.filter(c=>c.available&&!c.inactive);}
+function getCoach(id){return coaches.find(c=>c.id===id);} // intentionally finds inactive too (for payroll/log lookups)
 function assignedIds(){return Object.values(assignments).flat();}
 function poolCoaches(){
   const a=assignedIds();
@@ -1351,7 +1381,6 @@ function poolCoaches(){
 function subCoaches(){const a=assignedIds();return availableCoaches().filter(c=>!a.includes(c.id)&&c.isSub);}
 function mkInitials(n){return n.trim().split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);}
 function avColor(i){return AV_COLORS[i%AV_COLORS.length];}
-function getCoach(id){return coaches.find(c=>c.id===id);}
 function getSchool(id){return getSchools().find(s=>s.id===id);}
 function getProgramInfo(pid){for(const s of getSchools()){const p=s.programs.find(p=>p.id===pid);if(p)return{school:s,program:p};}return null;}
 function progCount(pid){return(assignments[pid]||[]).length;}
@@ -1375,12 +1404,45 @@ function init(){
   persist();
   renderPool();renderSchools();updateStats();renderRoster();renderAvailGrid();renderPortalConfirmations();
   populatePayrollFilters();renderPayroll();
-  /* Restore daily note */
+  /* Restore daily note — clear if from a previous day */
+  const today=todayStr();
   const noteEl=document.getElementById('daily-note-input');
-  if(noteEl&&dailyNote)noteEl.value=dailyNote;
+  const staleEl=document.getElementById('daily-note-stale');
+  const staleMsgEl=document.getElementById('daily-note-stale-msg');
+  const dateLabelEl=document.getElementById('daily-note-date-label');
+  if(dailyNote){
+    if(dailyNoteDate && dailyNoteDate!==today){
+      // Note is from a previous day — show stale banner, keep content visible but flagged
+      if(noteEl) noteEl.value=dailyNote;
+      const ago=formatDate(dailyNoteDate);
+      if(staleMsgEl) staleMsgEl.textContent=`Note from ${ago} — still showing from last session`;
+      if(staleEl) staleEl.classList.add('show');
+      if(dateLabelEl) dateLabelEl.textContent=`· from ${ago}`;
+    } else {
+      // Same day — restore normally
+      if(noteEl) noteEl.value=dailyNote;
+      if(dailyNoteDate&&dateLabelEl) dateLabelEl.textContent=`· saved today`;
+    }
+  }
 }
 
-function saveDailyNote(val){dailyNote=val;persist();}
+function saveDailyNote(val){
+  dailyNote=val;
+  dailyNoteDate=val?todayStr():'';
+  // Update date label live
+  const lbl=document.getElementById('daily-note-date-label');
+  if(lbl) lbl.textContent=val?'· saved today':'';
+  // Hide stale banner once user edits
+  document.getElementById('daily-note-stale')?.classList.remove('show');
+  persist();
+}
+function clearDailyNote(){
+  dailyNote='';dailyNoteDate='';
+  const el=document.getElementById('daily-note-input');if(el)el.value='';
+  document.getElementById('daily-note-stale')?.classList.remove('show');
+  const lbl=document.getElementById('daily-note-date-label');if(lbl)lbl.textContent='';
+  persist();
+}
 
 function applyOrgConfig(){
   if(!ORG_CFG||!ORG_CFG.orgName)return; // only skip if truly no config
@@ -1423,9 +1485,17 @@ function applyOrgConfig(){
   // Portal badge
   const pbadge=document.getElementById('portal-badge-text');if(pbadge)pbadge.textContent=V('portalBadge');
   const pLogoName=document.getElementById('portal-logo-name');if(pLogoName)pLogoName.innerHTML=`${abbr} <span>${V('portalLabel')}</span>`;
-  // Season manager overlay logo
-  const pickerEyebrow=document.getElementById('picker-eyebrow');if(pickerEyebrow)pickerEyebrow.textContent=`Assign ${V('worker').toLowerCase()} to ${V('shift').toLowerCase()}`;
-  const smLogo=document.getElementById('season-manager-logo');if(smLogo)smLogo.innerHTML=`${abbr} <span>Season Manager</span>`;
+  // Season manager overlay labels
+  const smLogo=document.getElementById('season-manager-logo');
+  if(smLogo)smLogo.innerHTML=`${abbr} <span>${V('seasonManagerTitle')}</span>`;
+  const smBadge=document.getElementById('season-overlay-badge');
+  if(smBadge)smBadge.textContent=`${V('seasonNoun')} management`;
+  const smSidebarTitle=document.getElementById('season-sidebar-title');
+  if(smSidebarTitle)smSidebarTitle.textContent=V('seasons');
+  const editSeasonsLbl=document.getElementById('edit-seasons-label');
+  if(editSeasonsLbl)editSeasonsLbl.textContent=V('editSeasonsLabel');
+  const pickerEyebrow=document.getElementById('picker-eyebrow');
+  if(pickerEyebrow)pickerEyebrow.textContent=`Assign ${V('worker').toLowerCase()} to ${V('shift').toLowerCase()}`;
   // Build coordinators list from setup data (new multi-coordinator format)
   if(ORG_CFG.coordinators?.length){
     const schoolMap={};
@@ -1704,6 +1774,15 @@ function updateStats(){
   if(xEl)xEl.textContent=conflictCount;
   if(xBlock)xBlock.classList.toggle('has-conflict',conflictCount>0);
   document.getElementById('send-btn').disabled=a.length===0;
+  // Update send button label based on state
+  const sendBtn=document.getElementById('send-btn');
+  if(sendBtn&&a.length>0){
+    const pending=Object.values(confirmations).filter(v=>v==='pending').length;
+    const notSentYet=!sent;
+    sendBtn.innerHTML=notSentYet
+      ?'<svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>Send all assignments'
+      :`<svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>Re-send to pending (${pending})`;
+  }
   const pending=Object.values(confirmations).filter(v=>v==='pending').length;
   const badge=document.getElementById('pending-badge');
   badge.textContent=pending;badge.classList.toggle('show',sent&&pending>0);
@@ -1724,7 +1803,56 @@ function openPicker(coachId,schoolId){pickerCoachId=coachId;pickerSchoolId=schoo
   }).join('');document.getElementById('picker-backdrop').classList.add('show');}
 function assignToProgram(pid){if(!assignments[pid])assignments[pid]=[];if(!assignments[pid].includes(pickerCoachId))assignments[pid].push(pickerCoachId);const c=getCoach(pickerCoachId);const info=getProgramInfo(pid);closePicker();persist();renderPool();renderSchools();updateStats();showToast(`${c.name} → ${info.program.label} at ${info.school.name}`);}
 function closePicker(){document.getElementById('picker-backdrop').classList.remove('show');pickerCoachId=pickerSchoolId=null;}
-function sendAssignments(){const all=Object.entries(assignments).flatMap(([pid,cids])=>cids.map(cid=>({pid,cid})));if(!all.length)return;document.getElementById('modal-body').innerHTML=all.map(({pid,cid})=>{const info=getProgramInfo(pid);const c=getCoach(cid);const contactLine=info.school.contactName?` ${V('siteContactLabel')}: ${info.school.contactName}${info.school.contactPhone?' ('+info.school.contactPhone+')':''}.`:'';return`<div class="sms-item"><div class="sms-av ${c.av}">${c.initials}</div><div style="flex:1"><div class="sms-coach">${c.name} <span class="sms-phone">${c.phone}</span></div><div class="sms-bubble">"Hi ${c.name.split(' ')[0]}! Tomorrow: ${info.school.name} · ${info.program.label} · ${info.program.time}.${contactLine} Reply YES to confirm. — ${smsSender}"</div><div class="sms-status" id="st-${cid}${pid}"><div class="dot dot-sending"></div><span style="color:#b45309">Sending...</span></div></div></div>`;}).join('');document.getElementById('modal-backdrop').classList.add('show');sent=true;persist();all.forEach(({pid,cid},i)=>{setTimeout(()=>{const el=document.getElementById('st-'+cid+pid);if(el)el.innerHTML='<div class="dot dot-sent"></div><span style="color:var(--brand-dark)">Sent</span>';setTimeout(()=>{const confirmed=Math.random()>0.3;confirmations[cid+pid]=confirmed?'confirmed':'pending';if(confirmed){sessionLog.push({id:'sl'+sessionLogNext++,coachId:cid,date:todayStr(),pid,status:'completed',paid:false});const c=getCoach(cid);if(c)c.stats.confirmed++;}persist();const el2=document.getElementById('st-'+cid+pid);if(el2)el2.innerHTML=confirmed?'<div class="dot dot-sent"></div><span style="color:var(--brand-dark)">Confirmed ✓</span>':'<div class="dot dot-sending"></div><span style="color:#b45309">No reply yet</span>';updateStats();renderPortalConfirmations();},800+Math.random()*1400);},350+i*400);});}
+function sendAssignments(){
+  const all=Object.entries(assignments).flatMap(([pid,cids])=>cids.map(cid=>({pid,cid})));
+  if(!all.length)return;
+
+  // If already sent, warn before re-sending
+  if(sent){
+    const alreadyConfirmed=all.filter(({pid,cid})=>confirmations[cid+pid]==='confirmed').length;
+    const msg=alreadyConfirmed>0
+      ? `Assignments were already sent. ${alreadyConfirmed} coach${alreadyConfirmed!==1?'es have':' has'} already confirmed — re-sending will skip them and only contact coaches who haven't replied yet. Continue?`
+      : 'Assignments were already sent. Re-send to all coaches who haven\'t replied yet?';
+    if(!confirm(msg))return;
+  }
+
+  // Only send to coaches who haven't already confirmed
+  const toSend=sent ? all.filter(({pid,cid})=>confirmations[cid+pid]!=='confirmed') : all;
+  if(!toSend.length){showToast('All assigned coaches have already confirmed.');return;}
+
+  document.getElementById('modal-body').innerHTML=toSend.map(({pid,cid})=>{
+    const info=getProgramInfo(pid);const c=getCoach(cid);
+    const contactLine=info.school.contactName?` ${V('siteContactLabel')}: ${info.school.contactName}${info.school.contactPhone?' ('+info.school.contactPhone+')':''}.`:'';
+    return`<div class="sms-item"><div class="sms-av ${c.av}">${c.initials}</div><div style="flex:1"><div class="sms-coach">${c.name} <span class="sms-phone">${c.phone}</span></div><div class="sms-bubble">"Hi ${c.name.split(' ')[0]}! Tomorrow: ${info.school.name} · ${info.program.label} · ${info.program.time}.${contactLine} Reply YES to confirm. — ${smsSender}"</div><div class="sms-status" id="st-${cid}${pid}"><div class="dot dot-sending"></div><span style="color:#b45309">Sending...</span></div></div></div>`;
+  }).join('');
+  document.getElementById('modal-backdrop').classList.add('show');
+  sent=true;sentDate=todayStr();persist();
+
+  toSend.forEach(({pid,cid},i)=>{
+    setTimeout(()=>{
+      const el=document.getElementById('st-'+cid+pid);
+      if(el)el.innerHTML='<div class="dot dot-sent"></div><span style="color:var(--brand-dark)">Sent</span>';
+      setTimeout(()=>{
+        const confirmed=Math.random()>0.3;
+        confirmations[cid+pid]=confirmed?'confirmed':'pending';
+        if(confirmed){
+          // Only add session log entry if one doesn't already exist for this coach+program+day
+          const alreadyLogged=sessionLog.some(s=>s.coachId===cid&&s.pid===pid&&s.date===todayStr());
+          if(!alreadyLogged){
+            sessionLog.push({id:'sl'+sessionLogNext++,coachId:cid,date:todayStr(),pid,status:'completed',paid:false});
+            const c=getCoach(cid);if(c)c.stats.confirmed++;
+          }
+        }
+        persist();
+        const el2=document.getElementById('st-'+cid+pid);
+        if(el2)el2.innerHTML=confirmed
+          ?'<div class="dot dot-sent"></div><span style="color:var(--brand-dark)">Confirmed ✓</span>'
+          :'<div class="dot dot-sending"></div><span style="color:#b45309">No reply yet</span>';
+        updateStats();renderPortalConfirmations();
+      },800+Math.random()*1400);
+    },350+i*400);
+  });
+}
 function closeModal(){document.getElementById('modal-backdrop').classList.remove('show');renderPayroll();switchTab('confirm');}
 function renderConfirmations(){const all=Object.entries(assignments).flatMap(([pid,cids])=>cids.map(cid=>({pid,cid})));const list=document.getElementById('confirm-list');if(!all.length){list.innerHTML='<div class="empty-state">No assignments sent yet.</div>';return;}list.innerHTML=all.map(({pid,cid})=>{const info=getProgramInfo(pid);const c=getCoach(cid);const status=confirmations[cid+pid];const pill=sent?(status==='confirmed'?'<span class="status-pill pill-confirmed">Confirmed</span>':'<span class="status-pill pill-pending">Pending</span>'):'<span class="status-pill pill-notsent">Not sent</span>';const ir=sent&&status==='confirmed'?`<div class="incident-row"><span class="incident-label">Log incident:</span><button class="incident-btn inc-noshow" onclick="logIncident('${cid}','${pid}','no-show')">No-show</button><button class="incident-btn inc-latecancel" onclick="logIncident('${cid}','${pid}','late-cancel')">Late cancel</button></div>`:'';return`<div class="roster-row"><div class="conf-row" style="border:none;padding-bottom:0"><div class="conf-left"><div class="avatar ${c.av}">${c.initials}</div><div><div class="conf-name">${c.name} ${relBadgeHtml(c)}</div><div class="conf-detail">${info.school.name} · ${info.program.label} · ${info.program.time}</div></div></div>${pill}</div>${ir}</div>`;}).join('');}
 function logIncident(coachId,pid,type){const c=getCoach(coachId);if(!c)return;if(type==='no-show')c.stats.noShows++;else c.stats.lateCancels++;const ex=sessionLog.find(s=>s.coachId===coachId&&s.pid===pid&&s.date===todayStr());if(ex)ex.status=type;else sessionLog.push({id:'sl'+sessionLogNext++,coachId,date:todayStr(),pid,status:type,paid:false});persist();renderConfirmations();renderPayroll();renderRoster(document.getElementById('search-input')?.value||'');showToast(`${c.name} — ${type==='no-show'?'No-show':'Late cancel'} logged`);}
@@ -1732,7 +1860,32 @@ function openBroadcast(pid,removedCid){broadcastPid=pid;broadcastRemovedCid=remo
 function sendBroadcast(){if(broadcastFired)return;broadcastFired=true;document.getElementById('broadcast-send-btn').disabled=true;const assigned=assignedIds();const candidates=coaches.filter(c=>c.available&&!assigned.includes(c.id)&&c.id!==broadcastRemovedCid);if(!candidates.length){showToast('No available coaches');closeBroadcast();return;}candidates.forEach((c,i)=>setTimeout(()=>{const el=document.getElementById('bco-st-'+c.id);if(el){el.className='bco-status bco-sending';el.textContent='Text sent...';}},300+i*250));const winner=candidates.find(c=>c.isSub)||candidates[Math.floor(Math.random()*candidates.length)];setTimeout(()=>{candidates.filter(c=>c.id!==winner.id).forEach(c=>{const el=document.getElementById('bco-st-'+c.id);if(el){el.className='bco-status bco-waiting';el.textContent='No reply';}});const el=document.getElementById('bco-st-'+winner.id);if(el){el.className='bco-status bco-replied';el.textContent='✓ Replied YES';}document.getElementById('broadcast-actions').style.display='none';document.getElementById('broadcast-winner-wrap').innerHTML=`<div class="broadcast-winner-banner"><div class="broadcast-winner-icon"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="broadcast-winner-text">${winner.name} is confirmed!</div><button class="broadcast-winner-btn" onclick="acceptBroadcastWinner('${winner.id}')">Assign them →</button></div>`;},1200+candidates.length*200);}
 function acceptBroadcastWinner(winnerId){if(broadcastRemovedCid)removeAssignment(broadcastPid,broadcastRemovedCid);if(!assignments[broadcastPid])assignments[broadcastPid]=[];assignments[broadcastPid].push(winnerId);const info=getProgramInfo(broadcastPid);const c=getCoach(winnerId);closeBroadcast();persist();renderPool();renderSchools();updateStats();showToast(`${c.name} assigned to ${info.program.label}`);}
 function closeBroadcast(){document.getElementById('broadcast-backdrop').classList.remove('show');broadcastPid=broadcastRemovedCid=null;broadcastFired=false;}
-function renderRoster(filter=''){const q=(filter||'').toLowerCase();const filtered=coaches.filter(c=>c.name.toLowerCase().includes(q)||c.sport.toLowerCase().includes(q));document.getElementById('roster-count').textContent=coaches.length;const list=document.getElementById('roster-list');if(!filtered.length){list.innerHTML=`<div class="empty-state">No ${V('workers').toLowerCase()} found.</div>`;return;}const isHourly=V('payModel')==='hourly';list.innerHTML=filtered.map(c=>{const total=c.stats.confirmed+c.stats.noShows+c.stats.lateCancels;const relInfo=relScore(c)!==null?`${c.stats.confirmed}✓ ${c.stats.noShows}✗ ${c.stats.lateCancels}⚠ over ${total} sessions`:'No sessions logged yet';const portalTag=c.fromPortal?`<span class="portal-badge">Via portal</span>`:'';const certTag=c.certification?`<span class="portal-badge" style="background:var(--amber-light);color:#b45309">${c.certification}</span>`:'';const payDisplay=isHourly?`$${c.payRate}/hr`:`$${c.payRate}/session`;return`<div class="roster-row"><div class="roster-main"><div class="avatar ${c.av}">${c.initials}</div><div class="roster-info"><div class="roster-name">${c.name}${portalTag}${certTag}</div><div class="roster-meta">${c.sport} · ${c.phone} · ${payDisplay}</div></div><div class="roster-actions">${relBadgeHtml(c)}<button class="avail-toggle ${c.available?'avail-yes':'avail-no'}" onclick="toggleAvail('${c.id}')">${c.available?'Available':'Unavailable'}</button><button class="sub-toggle ${c.isSub?'sub-on':'sub-off'}" onclick="toggleSub('${c.id}')">${c.isSub?V('subBench'):V('primary')}</button><button class="del-btn" onclick="deleteCoach('${c.id}')">Remove</button></div></div><div class="incident-row" style="background:transparent"><span class="incident-label">Reliability:</span><span style="font-size:11px;color:var(--text-secondary)">${relInfo}</span></div>${c.notes?`<div style="padding:0 16px 10px;font-size:11px;color:var(--text-secondary);font-style:italic">${c.notes}</div>`:''}</div>`;}).join('');}
+function renderRoster(filter=''){
+  const q=(filter||'').toLowerCase();
+  const activeCoaches=coaches.filter(c=>!c.inactive);
+  const inactiveCoaches=coaches.filter(c=>c.inactive);
+  const visible=showInactive?coaches:activeCoaches;
+  const filtered=visible.filter(c=>c.name.toLowerCase().includes(q)||c.sport.toLowerCase().includes(q));
+  document.getElementById('roster-count').textContent=activeCoaches.length;
+  const list=document.getElementById('roster-list');
+  if(!filtered.length){list.innerHTML=`<div class="empty-state">No ${V('workers').toLowerCase()} found.</div>`;return;}
+  const isHourly=V('payModel')==='hourly';
+  const rows=filtered.map(c=>{
+    const total=c.stats.confirmed+c.stats.noShows+c.stats.lateCancels;
+    const relInfo=relScore(c)!==null?`${c.stats.confirmed}✓ ${c.stats.noShows}✗ ${c.stats.lateCancels}⚠ over ${total} sessions`:'No sessions logged yet';
+    const portalTag=c.fromPortal?`<span class="portal-badge">Via portal</span>`:'';
+    const certTag=c.certification?`<span class="portal-badge" style="background:var(--amber-light);color:#b45309">${c.certification}</span>`:'';
+    const inactiveTag=c.inactive?`<span class="inactive-badge">Inactive</span>`:'';
+    const payDisplay=isHourly?`$${c.payRate}/hr`:`$${c.payRate}/session`;
+    const actions=c.inactive
+      ?`<button class="restore-btn" onclick="restoreCoach('${c.id}')">Restore</button>`
+      :`${relBadgeHtml(c)}<button class="avail-toggle ${c.available?'avail-yes':'avail-no'}" onclick="toggleAvail('${c.id}')">${c.available?'Available':'Unavailable'}</button><button class="sub-toggle ${c.isSub?'sub-on':'sub-off'}" onclick="toggleSub('${c.id}')">${c.isSub?V('subBench'):V('primary')}</button><button class="del-btn" onclick="deleteCoach('${c.id}')">Remove</button>`;
+    return`<div class="roster-row${c.inactive?' is-inactive':''}"><div class="roster-main"><div class="avatar ${c.av}">${c.initials}</div><div class="roster-info"><div class="roster-name">${c.name}${inactiveTag}${portalTag}${certTag}</div><div class="roster-meta">${c.sport} · ${c.phone} · ${payDisplay}</div></div><div class="roster-actions">${actions}</div></div><div class="incident-row" style="background:transparent"><span class="incident-label">Reliability:</span><span style="font-size:11px;color:var(--text-secondary)">${relInfo}</span></div>${c.notes?`<div style="padding:0 16px 10px;font-size:11px;color:var(--text-secondary);font-style:italic">${c.notes}</div>`:''}</div>`;
+  }).join('');
+  const toggleHtml=inactiveCoaches.length?`<label class="show-inactive-toggle"><input type="checkbox" ${showInactive?'checked':''} onchange="toggleShowInactive(this.checked)"> Show ${inactiveCoaches.length} inactive ${V('worker').toLowerCase()}${inactiveCoaches.length!==1?'s':''}</label>`:'';
+  list.innerHTML=rows+toggleHtml;
+}
+function toggleShowInactive(val){showInactive=val;renderRoster(document.getElementById('search-input')?.value||'');}
 function showForm(){
   if(formVisible)return;formVisible=true;
   const isHourly=V('payModel')==='hourly';
@@ -1742,13 +1895,51 @@ function showForm(){
 }
 function cancelForm(){formVisible=false;document.getElementById('add-form-wrap').innerHTML='';}
 function addCoach(){const first=document.getElementById('f-first').value.trim();const last=document.getElementById('f-last').value.trim();const sport=document.getElementById('f-sport').value;const phone=document.getElementById('f-phone').value.trim()||'(no phone)';const payRate=parseFloat(document.getElementById('f-pay').value)||DEFAULT_PAY;const notes=document.getElementById('f-notes').value.trim();const isSub=document.getElementById('f-sub').value==='1';const certification=document.getElementById('f-cert')?.value.trim()||'';const dressCode=document.getElementById('f-dress')?.value.trim()||'';if(!first){document.getElementById('f-first').focus();return;}const name=last?`${first} ${last.charAt(0)}.`:first;coaches.push({id:'c'+nextId++,name,sport,phone,initials:mkInitials(name),av:avColor(coaches.length),available:true,isSub,payRate,certification,dressCode,stats:{confirmed:0,noShows:0,lateCancels:0},notes});cancelForm();persist();renderRoster(document.getElementById('search-input').value);renderPool();updateStats();populatePayrollFilters();showToast(`${name} added`);}
-function deleteCoach(id){Object.keys(assignments).forEach(pid=>{assignments[pid]=(assignments[pid]||[]).filter(x=>x!==id);if(!assignments[pid].length)delete assignments[pid];});const c=getCoach(id);coaches=coaches.filter(x=>x.id!==id);persist();renderRoster(document.getElementById('search-input').value);renderPool();renderSchools();updateStats();populatePayrollFilters();if(c)showToast(`${c.name} removed`);}
+function deleteCoach(id){
+  const c=getCoach(id);if(!c)return;
+  const hasLog=sessionLog.some(s=>s.coachId===id);
+  if(hasLog){
+    // Soft-delete — mark inactive, remove from assignments, keep record for payroll history
+    c.inactive=true;c.available=false;
+    Object.keys(assignments).forEach(pid=>{
+      assignments[pid]=(assignments[pid]||[]).filter(x=>x!==id);
+      if(!assignments[pid].length)delete assignments[pid];
+    });
+    persist();renderRoster(document.getElementById('search-input').value);renderPool();renderSchools();updateStats();populatePayrollFilters();
+    showToast(`${c.name} marked inactive — session history preserved`);
+  } else {
+    // No history — safe to hard-delete
+    if(!confirm(`Remove ${c.name} from the roster? They have no session history so this is permanent.`))return;
+    Object.keys(assignments).forEach(pid=>{
+      assignments[pid]=(assignments[pid]||[]).filter(x=>x!==id);
+      if(!assignments[pid].length)delete assignments[pid];
+    });
+    coaches=coaches.filter(x=>x.id!==id);
+    persist();renderRoster(document.getElementById('search-input').value);renderPool();renderSchools();updateStats();populatePayrollFilters();
+    showToast(`${c.name} removed`);
+  }
+}
+function restoreCoach(id){
+  const c=getCoach(id);if(!c)return;
+  c.inactive=false;c.available=true;
+  persist();renderRoster(document.getElementById('search-input').value);renderPool();updateStats();
+  showToast(`${c.name} restored to active roster`);
+}
 function toggleAvail(id){const c=getCoach(id);if(!c)return;c.available=!c.available;if(c.available)c.fromPortal=false;if(!c.available){Object.keys(assignments).forEach(pid=>{assignments[pid]=(assignments[pid]||[]).filter(x=>x!==id);if(!assignments[pid].length)delete assignments[pid];});}persist();renderRoster(document.getElementById('search-input').value);renderPool();renderSchools();updateStats();showToast(`${c.name} marked ${c.available?'available':'unavailable'}`);}
 function toggleSub(id){const c=getCoach(id);if(!c)return;c.isSub=!c.isSub;persist();renderRoster(document.getElementById('search-input').value);renderPool();showToast(`${c.name} moved to ${c.isSub?'sub bench':'primary roster'}`);}
 function switchTab(tab){['schedule','coaches','confirm','payroll'].forEach((t,i)=>{document.getElementById('view-'+t).classList.toggle('active',t===tab);document.querySelectorAll('.nav-tab')[i].classList.toggle('active',t===tab);});if(tab==='confirm')renderConfirmations();if(tab==='coaches')renderRoster(document.getElementById('search-input')?.value||'');if(tab==='payroll'){populatePayrollFilters();renderPayroll();}}
 
 /* ══ PAYROLL ══ */
-function populatePayrollFilters(){const sel=document.getElementById('pay-coach-filter');if(!sel)return;const cur=sel.value;sel.innerHTML='<option value="">All coaches</option>'+coaches.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');sel.value=cur;}
+function populatePayrollFilters(){
+  const sel=document.getElementById('pay-coach-filter');if(!sel)return;
+  const cur=sel.value;
+  const active=coaches.filter(c=>!c.inactive);
+  const inactive=coaches.filter(c=>c.inactive);
+  let html=`<option value="">All coaches</option>`;
+  html+=active.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  if(inactive.length) html+=`<optgroup label="Inactive">${inactive.map(c=>`<option value="${c.id}">${c.name} (inactive)</option>`).join('')}</optgroup>`;
+  sel.innerHTML=html;sel.value=cur;
+}
 /* ── Pay group helpers ── */
 /* ══════════════════════════════════════
    STUDENT ROSTER UPLOAD
@@ -1955,7 +2146,8 @@ function renderPayroll(){
     hd.className='session-log-hd';
     body.innerHTML=log.map(s=>{
       const c=getCoach(s.coachId); if(!c)return'';
-      const info=getProgramInfo(s.pid);
+      // Search all seasons so archived program info resolves correctly
+      const info=getProgramInfoFromSeasons(s.pid);
       const amt=sessionAmount(s);
       const sp=s.status==='completed'?'<span class="session-status-pill ss-completed">Completed</span>':s.status==='no-show'?'<span class="session-status-pill ss-noshow">No-show</span>':'<span class="session-status-pill ss-latecancel">Late cancel</span>';
       const ap=amt>0?`<span class="session-amount">$${amt}</span>`:`<span class="session-amount zero">$0</span>`;
@@ -2128,11 +2320,18 @@ function openSeasonEdit(){editSeasonId=getCurrentSeason().id;detailView='school'
 function closeSeasonEdit(){document.getElementById('season-page').classList.remove('active');renderSchools();renderPool();updateStats();}
 function renderSeasonList(){document.getElementById('season-list-wrap').innerHTML=seasons.map(s=>`<div class="season-item ${s.id===editSeasonId?'sel':''}" onclick="selectSeason('${s.id}')"><div class="season-item-name">${s.name}${s.current?'<span class="current-badge">CURRENT</span>':''}</div><div class="season-item-period">${s.period}</div></div>`).join('');}
 function selectSeason(id){editSeasonId=id;openProgForms={};openCoordForms={};renderSeasonList();renderSeasonDetail();}
-function toggleNewSeasonForm(){newSeasonOpen=!newSeasonOpen;const wrap=document.getElementById('new-season-form-wrap');if(!newSeasonOpen){wrap.innerHTML='';return;}wrap.innerHTML=`<div class="new-season-form"><div class="ns-field"><label>Season name</label><input id="ns-name" type="text" placeholder="Summer 2025" autofocus></div><div class="ns-field"><label>Period</label><input id="ns-period" type="text" placeholder="Jun – Aug 2025"></div><div class="ns-field"><label>Copy schools from</label><select id="ns-copy"><option value="">— Start blank —</option>${seasons.map(s=>`<option value="${s.id}">${s.name}</option>`).join('')}</select></div><div class="ns-actions"><button class="btn-xs-ghost" onclick="toggleNewSeasonForm()">Cancel</button><button class="btn-xs-save" onclick="createSeason()">Create</button></div></div>`;}
+function toggleNewSeasonForm(){newSeasonOpen=!newSeasonOpen;const wrap=document.getElementById('new-season-form-wrap');if(!newSeasonOpen){wrap.innerHTML='';return;}wrap.innerHTML=`<div class="new-season-form"><div class="ns-field"><label>${V('seasonNoun')} name</label><input id="ns-name" type="text" placeholder="${V('seasonPlaceholder')}" autofocus></div><div class="ns-field"><label>Period</label><input id="ns-period" type="text" placeholder="${V('seasonPeriodPlaceholder')}"></div><div class="ns-field"><label>Copy ${V('sites').toLowerCase()} from</label><select id="ns-copy"><option value="">— Start blank —</option>${seasons.map(s=>`<option value="${s.id}">${s.name}</option>`).join('')}</select></div><div class="ns-actions"><button class="btn-xs-ghost" onclick="toggleNewSeasonForm()">Cancel</button><button class="btn-xs-save" onclick="createSeason()">Create</button></div></div>`;}
 function createSeason(){const name=document.getElementById('ns-name').value.trim();const period=document.getElementById('ns-period').value.trim();const copyFrom=document.getElementById('ns-copy').value;if(!name)return;let cs=[];if(copyFrom){const src=seasons.find(s=>s.id===copyFrom);if(src)cs=JSON.parse(JSON.stringify(src.schools)).map(s=>{s.id='s'+nextSchoolId++;s.programs=s.programs.map(p=>({...p,id:'p'+nextProgId++}));return s;});}const ns={id:'sn'+(nextSeasonId++),name,period:period||'',current:false,schools:cs};seasons.unshift(ns);newSeasonOpen=false;document.getElementById('new-season-form-wrap').innerHTML='';editSeasonId=ns.id;persist();renderSeasonList();renderSeasonDetail();showToast(`${name} created`);}
-function renderSeasonDetail(){const s=getEditSeason();const detail=document.getElementById('season-detail');if(!s){detail.innerHTML='<div class="season-placeholder">Select a season</div>';return;}detail.innerHTML=`<div class="season-detail-hd"><div><div class="season-detail-name">${s.name}</div><div class="season-detail-period">${s.period} · ${s.schools.length} school${s.schools.length!==1?'s':''}</div></div><div style="display:flex;align-items:center;gap:10px">${!s.current?`<button class="btn-xs-save" onclick="setCurrentSeason('${s.id}')">Set as current</button>`:'<span style="font-size:11px;font-weight:600;color:var(--brand-dark)">✓ Active season</span>'}<div class="view-toggle"><button class="vtbtn ${detailView==='school'?'act':''}" onclick="setDetailView('school')">By School</button><button class="vtbtn ${detailView==='day'?'act':''}" onclick="setDetailView('day')">By Day</button></div></div></div>${detailView==='school'?renderBySchool(s):renderByDay(s)}`;}
+function renderSeasonDetail(){
+  const s=getEditSeason();const detail=document.getElementById('season-detail');
+  if(!s){detail.innerHTML=`<div class="season-placeholder">Select a ${V('seasonNoun').toLowerCase()} to manage its ${V('sites').toLowerCase()} and ${V('shifts').toLowerCase()}</div>`;return;}
+  const siteCount=s.schools.length;
+  const activeLbl=`✓ Active ${V('seasonNoun').toLowerCase()}`;
+  const setCurrent=!s.current?`<button class="btn-xs-save" onclick="setCurrentSeason('${s.id}')">Set as current</button>`:`<span style="font-size:11px;font-weight:600;color:var(--brand-dark)">${activeLbl}</span>`;
+  detail.innerHTML=`<div class="season-detail-hd"><div><div class="season-detail-name">${s.name}</div><div class="season-detail-period">${s.period} · ${siteCount} ${V('site').toLowerCase()}${siteCount!==1?'s':''}</div></div><div style="display:flex;align-items:center;gap:10px">${setCurrent}<div class="view-toggle"><button class="vtbtn ${detailView==='school'?'act':''}" onclick="setDetailView('school')">By ${V('site')}</button><button class="vtbtn ${detailView==='day'?'act':''}" onclick="setDetailView('day')">By Day</button></div></div></div>${detailView==='school'?renderBySchool(s):renderByDay(s)}`;
+}
 function setDetailView(v){detailView=v;renderSeasonDetail();}
-function setCurrentSeason(id){seasons.forEach(s=>s.current=s.id===id);assignments={};confirmations={};sent=false;persist();showToast(`${getEditSeason().name} set as current season`);renderSeasonList();renderSeasonDetail();}
+function setCurrentSeason(id){seasons.forEach(s=>s.current=s.id===id);assignments={};confirmations={};sent=false;sentDate='';persist();showToast(`${getEditSeason().name} set as current season`);renderSeasonList();renderSeasonDetail();}
 function renderBySchool(season){return`<div class="se-school-list">${season.schools.map(school=>renderSchoolCard(season.id,school)).join('')}<div class="add-school-card" id="add-school-section-${season.id}"><button class="add-school-trigger" onclick="showAddSchoolForm('${season.id}')">+ ${V('addSiteLabel')}</button><div id="add-school-form-wrap-${season.id}"></div></div></div>`;}
 function renderSchoolCard(seasonId,school){const pill=sportPillClass(school.sport);const programs=school.programs.map(p=>renderProgRow(seasonId,school.id,p)).join('');const fo=openProgForms[school.id];const contactBar=`<div class="se-contact-bar"><span class="se-contact-label">📞 ${V('siteContactLabel')}</span><input class="se-contact-input se-contact-name" type="text" placeholder="Contact name" value="${school.contactName||''}" onchange="updateSchoolField('${seasonId}','${school.id}','contactName',this.value)"><input class="se-contact-input se-contact-phone" type="tel" placeholder="Contact phone" value="${school.contactPhone||''}" onchange="updateSchoolField('${seasonId}','${school.id}','contactPhone',this.value)"></div>`;return`<div class="se-school-card" id="se-sc-${school.id}"><div class="se-school-hd"><div><div class="school-name-text">${school.name}</div><div class="school-sub">${school.programs.length} ${V('shift').toLowerCase()}${school.programs.length!==1?'s':''} · ${school.sport}</div></div><div class="se-school-actions"><div class="sport-pill ${pill}">${school.sport}</div><button class="rm-school-btn" onclick="removeSchool('${seasonId}','${school.id}')">Remove</button></div></div>${contactBar}<div class="se-prog-list" id="se-pl-${school.id}">${programs||`<div style="padding:6px 0;font-size:12px;color:var(--text-tertiary);font-style:italic">No ${V('shifts').toLowerCase()} yet.</div>`}</div><div class="se-add-prog-wrap"><button class="se-add-prog-trigger" onclick="toggleProgForm('${seasonId}','${school.id}')">+ Add ${V('shift').toLowerCase()}</button><div id="se-pf-${school.id}">${fo?buildProgForm(seasonId,school.id):''}</div></div>${renderCoordSection(seasonId,school)}</div>`;}
 function renderProgRow(seasonId,schoolId,p){
@@ -2318,9 +2517,12 @@ function downloadCSV(rows,filename){
   showToast('Downloaded '+filename);
 }
 function exportSessionCSV(){
-  const rows=[['Date','Coach','Sport','School','Program','Time','Status','Amount ($)','Paid']];
+  const rows=[['Date','Coach',V('skill'),'Site','Program','Time','Status','Amount ($)','Paid']];
   [...sessionLog].sort((a,b)=>b.date.localeCompare(a.date)).forEach(s=>{
-    const c=getCoach(s.coachId);const info=getProgramInfo(s.pid);if(!c)return;
+    const c=getCoach(s.coachId);
+    // Search all seasons — not just current — so archived sessions resolve correctly
+    const info=getProgramInfoFromSeasons(s.pid);
+    if(!c)return;
     rows.push([s.date,c.name,c.sport,info?.school.name||'—',info?.program.label||'—',info?.program.time||'—',s.status,sessionAmount(s),s.paid?'Yes':'No']);
   });
   downloadCSV(rows,`${ORG_CFG?.shortName||'EZ'}_sessions_${todayStr()}.csv`);
