@@ -981,93 +981,288 @@ let activityCategories=[
 function getAllActivities(){return activityCategories.flatMap(c=>c.activities);}
 function getActivityOptions(sel=''){return activityCategories.map(cat=>cat.activities.length?`<optgroup label="${cat.name}">${cat.activities.map(a=>`<option${a===sel?' selected':''}>${a}</option>`).join('')}</optgroup>`:'').join('');}
 
-/* ══ COORDINATORS ══ */
-let coordinators=[
-  {id:'coord1',name:'Jordan Williams',phone:'(301) 555-0001',email:'jordan@msa.org'},
-  {id:'coord2',name:'Alex Chen',      phone:'(301) 555-0002',email:'alex@msa.org'},
-  {id:'coord3',name:'Dana Rivera',    phone:'(301) 555-0003',email:'dana@msa.org'},
-];
-let nextCoordId=10; // overwritten below from _SAVED if available
+/* ══ VERTICAL DEFAULT DATA ══ */
+const VERTICAL_DEFAULTS={
+  sports:{
+    coordinators:[
+      {id:'coord1',name:'Jordan Williams',phone:'(301) 555-0001',email:'jordan@msa.org'},
+      {id:'coord2',name:'Alex Chen',      phone:'(301) 555-0002',email:'alex@msa.org'},
+      {id:'coord3',name:'Dana Rivera',    phone:'(301) 555-0003',email:'dana@msa.org'},
+    ],
+    seasons:[
+      {id:'sp2025',name:'Spring 2025',period:'Mar – May 2025',current:true,schools:[
+        {id:'s1',name:'Thurgood Marshall ES',sport:'Basketball',coordinatorId:'coord1',programs:[
+          {id:'p1a',label:'Grades K–2', days:['Monday','Wednesday','Friday'],time:'3:00–4:00 PM',max:1},
+          {id:'p1b',label:'Grades 3–4', days:['Tuesday','Thursday'],        time:'4:00–5:00 PM',max:1},
+          {id:'p1c',label:'Grades 5–6', days:['Monday','Wednesday','Friday'],time:'5:00–6:00 PM',max:2},
+        ]},
+        {id:'s2',name:'Walt Whitman HS',sport:'Soccer',coordinatorId:'coord2',programs:[
+          {id:'p2a',label:'JV Training',      days:['Tuesday','Thursday'],         time:'3:30–5:00 PM',max:1},
+          {id:'p2b',label:'Varsity Training', days:['Monday','Wednesday','Friday'],time:'5:00–6:30 PM',max:2},
+        ]},
+        {id:'s3',name:'Rockville HS',sport:'Football',coordinatorId:'coord1',programs:[
+          {id:'p3a',label:'Fundamentals', days:['Monday','Wednesday'],  time:'3:00–4:30 PM',max:1},
+          {id:'p3b',label:'Advanced',     days:['Tuesday','Thursday'],  time:'4:30–6:00 PM',max:1},
+          {id:'p3c',label:'Conditioning', days:['Friday'],              time:'6:00–7:00 PM',max:1},
+        ]},
+        {id:'s4',name:'Bethesda ES',sport:'Tennis',coordinatorId:'coord3',programs:[
+          {id:'p4a',label:'Beginners',    days:['Monday','Wednesday','Friday'],time:'3:30–4:30 PM',max:1},
+          {id:'p4b',label:'Intermediate', days:['Tuesday','Thursday'],         time:'4:30–5:30 PM',max:1},
+        ]},
+        {id:'s5',name:'Richard Montgomery HS',sport:'Baseball',coordinatorId:'coord2',programs:[
+          {id:'p5a',label:'Pitching Clinic',days:['Monday','Wednesday'],time:'3:00–4:30 PM',max:1},
+          {id:'p5b',label:'Batting Clinic', days:['Tuesday','Thursday'],time:'4:30–6:00 PM',max:1},
+          {id:'p5c',label:'Fielding Clinic',days:['Friday'],            time:'6:00–7:00 PM',max:1},
+        ]},
+      ]},
+      {id:'wi2025',name:'Winter 2025',period:'Jan – Feb 2025',current:false,schools:[
+        {id:'s10',name:'Thurgood Marshall ES',sport:'Basketball',coordinatorId:'coord1',programs:[
+          {id:'p10a',label:'Beginner Drills',days:['Monday','Wednesday','Friday'],time:'3:00–4:30 PM',max:2},
+          {id:'p10b',label:'Advanced Play',  days:['Tuesday','Thursday'],         time:'4:30–6:00 PM',max:1},
+        ]},
+      ]},
+    ],
+    coaches:[
+      {id:'c1', name:'Marcus J.',    initials:'MJ',sport:'Basketball',  phone:'(301) 555-0101',av:'av-blue',   available:true, isSub:false,payRate:30,stats:{confirmed:22,noShows:1,lateCancels:2},notes:'Great with K–5, reliable.'},
+      {id:'c2', name:'Priya S.',     initials:'PS',sport:'Soccer',      phone:'(301) 555-0102',av:'av-green',  available:true, isSub:false,payRate:28,stats:{confirmed:18,noShows:0,lateCancels:1},notes:''},
+      {id:'c3', name:'Derek W.',     initials:'DW',sport:'Football',    phone:'(301) 555-0103',av:'av-coral',  available:true, isSub:false,payRate:32,stats:{confirmed:15,noShows:3,lateCancels:2},notes:'Needs reminder texts.'},
+      {id:'c4', name:'Alicia T.',    initials:'AT',sport:'Tennis',      phone:'(301) 555-0104',av:'av-purple', available:true, isSub:false,payRate:25,stats:{confirmed:8, noShows:0,lateCancels:0},notes:'New this season.'},
+      {id:'c5', name:'James R.',     initials:'JR',sport:'Baseball',    phone:'(301) 555-0105',av:'av-amber',  available:true, isSub:false,payRate:28,stats:{confirmed:20,noShows:1,lateCancels:0},notes:''},
+      {id:'c6', name:'Sofia M.',     initials:'SM',sport:'Soccer',      phone:'(301) 555-0106',av:'av-green',  available:false,isSub:true, payRate:25,stats:{confirmed:12,noShows:2,lateCancels:3},notes:'Unavailable Mon/Tue.'},
+      {id:'c7', name:'Tyrese B.',    initials:'TB',sport:'Basketball',  phone:'(301) 555-0107',av:'av-blue',   available:true, isSub:false,payRate:30,stats:{confirmed:11,noShows:0,lateCancels:1},notes:'Former Maryland Terps player.'},
+      {id:'c8', name:'Keisha N.',    initials:'KN',sport:'Volleyball',  phone:'(301) 555-0108',av:'av-purple', available:true, isSub:false,payRate:28,stats:{confirmed:9, noShows:1,lateCancels:0},notes:''},
+      {id:'c9', name:'Jordan L.',    initials:'JL',sport:'Soccer',      phone:'(301) 555-0109',av:'av-teal',   available:true, isSub:false,payRate:28,stats:{confirmed:14,noShows:0,lateCancels:0},notes:'Available evenings only.'},
+      {id:'c10',name:'Rasheed A.',   initials:'RA',sport:'Football',    phone:'(301) 555-0110',av:'av-coral',  available:true, isSub:true, payRate:27,stats:{confirmed:6, noShows:1,lateCancels:1},notes:'Sub — call first.'},
+      {id:'c11',name:'Maya P.',      initials:'MP',sport:'Tennis',      phone:'(301) 555-0111',av:'av-pink',   available:true, isSub:false,payRate:26,stats:{confirmed:17,noShows:0,lateCancels:0},notes:'Certified USTA instructor.'},
+      {id:'c12',name:'Devon C.',     initials:'DC',sport:'Basketball',  phone:'(301) 555-0112',av:'av-amber',  available:false,isSub:true, payRate:25,stats:{confirmed:4, noShows:2,lateCancels:1},notes:'College student — limited availability.'},
+      {id:'c13',name:'Imani F.',     initials:'IF',sport:'Lacrosse',    phone:'(301) 555-0113',av:'av-green',  available:true, isSub:false,payRate:29,stats:{confirmed:10,noShows:0,lateCancels:1},notes:''},
+      {id:'c14',name:'Chris O.',     initials:'CO',sport:'Baseball',    phone:'(301) 555-0114',av:'av-blue',   available:true, isSub:false,payRate:28,stats:{confirmed:13,noShows:1,lateCancels:0},notes:'Played D3 at Towson.'},
+      {id:'c15',name:'Aaliyah G.',   initials:'AG',sport:'Soccer',      phone:'(301) 555-0115',av:'av-purple', available:true, isSub:false,payRate:27,stats:{confirmed:7, noShows:0,lateCancels:0},notes:'New — started spring season.'},
+      {id:'c16',name:'Brandon K.',   initials:'BK',sport:'Football',    phone:'(301) 555-0116',av:'av-coral',  available:true, isSub:false,payRate:30,stats:{confirmed:19,noShows:2,lateCancels:1},notes:''},
+      {id:'c17',name:'Nia W.',       initials:'NW',sport:'Basketball',  phone:'(301) 555-0117',av:'av-teal',   available:true, isSub:false,payRate:28,stats:{confirmed:16,noShows:0,lateCancels:2},notes:'Great with older kids, grades 4–6.'},
+      {id:'c18',name:'Samuel D.',    initials:'SD',sport:'Tennis',      phone:'(301) 555-0118',av:'av-amber',  available:true, isSub:true, payRate:25,stats:{confirmed:5, noShows:1,lateCancels:0},notes:'Sub bench — responds quickly.'},
+    ],
+    sessionLog:[
+      {id:'sl1', coachId:'c1',date:'2025-04-08',pid:'p1a',status:'completed',  paid:true},
+      {id:'sl2', coachId:'c2',date:'2025-04-08',pid:'p2a',status:'completed',  paid:true},
+      {id:'sl3', coachId:'c3',date:'2025-04-08',pid:'p3a',status:'completed',  paid:true},
+      {id:'sl4', coachId:'c4',date:'2025-04-08',pid:'p4a',status:'completed',  paid:true},
+      {id:'sl5', coachId:'c5',date:'2025-04-08',pid:'p5a',status:'completed',  paid:true},
+      {id:'sl6', coachId:'c1',date:'2025-04-09',pid:'p1b',status:'completed',  paid:true},
+      {id:'sl7', coachId:'c3',date:'2025-04-09',pid:'p3b',status:'no-show',    paid:false},
+      {id:'sl8', coachId:'c2',date:'2025-04-09',pid:'p2b',status:'completed',  paid:true},
+      {id:'sl9', coachId:'c5',date:'2025-04-10',pid:'p5b',status:'completed',  paid:true},
+      {id:'sl10',coachId:'c1',date:'2025-04-10',pid:'p1c',status:'completed',  paid:true},
+      {id:'sl11',coachId:'c4',date:'2025-04-10',pid:'p4b',status:'late-cancel',paid:false},
+      {id:'sl12',coachId:'c2',date:'2025-04-11',pid:'p2a',status:'completed',  paid:false},
+      {id:'sl13',coachId:'c3',date:'2025-04-11',pid:'p3a',status:'completed',  paid:false},
+      {id:'sl14',coachId:'c5',date:'2025-04-11',pid:'p5c',status:'completed',  paid:false},
+      {id:'sl15',coachId:'c1',date:'2025-04-14',pid:'p1a',status:'completed',  paid:false},
+      {id:'sl16',coachId:'c4',date:'2025-04-14',pid:'p4a',status:'completed',  paid:false},
+      {id:'sl17',coachId:'c3',date:'2025-04-14',pid:'p3c',status:'late-cancel',paid:false},
+    ],
+  },
 
-/* ══ DEFAULT DATA ══ */
-const DEFAULT_SEASONS=[
-  {id:'sp2025',name:'Spring 2025',period:'Mar – May 2025',current:true,schools:[
-    {id:'s1',name:'Thurgood Marshall ES',sport:'Basketball',coordinatorId:'coord1',programs:[
-      {id:'p1a',label:'Grades K–2', days:['Monday','Wednesday','Friday'],time:'3:00–4:00 PM',max:1},
-      {id:'p1b',label:'Grades 3–4', days:['Tuesday','Thursday'],        time:'4:00–5:00 PM',max:1},
-      {id:'p1c',label:'Grades 5–6', days:['Monday','Wednesday','Friday'],time:'5:00–6:00 PM',max:2},
-    ]},
-    {id:'s2',name:'Walt Whitman HS',sport:'Soccer',coordinatorId:'coord2',programs:[
-      {id:'p2a',label:'JV Training',      days:['Tuesday','Thursday'],         time:'3:30–5:00 PM',max:1},
-      {id:'p2b',label:'Varsity Training', days:['Monday','Wednesday','Friday'],time:'5:00–6:30 PM',max:2},
-    ]},
-    {id:'s3',name:'Rockville HS',sport:'Football',coordinatorId:'coord1',programs:[
-      {id:'p3a',label:'Fundamentals', days:['Monday','Wednesday'],  time:'3:00–4:30 PM',max:1},
-      {id:'p3b',label:'Advanced',     days:['Tuesday','Thursday'],  time:'4:30–6:00 PM',max:1},
-      {id:'p3c',label:'Conditioning', days:['Friday'],              time:'6:00–7:00 PM',max:1},
-    ]},
-    {id:'s4',name:'Bethesda ES',sport:'Tennis',coordinatorId:'coord3',programs:[
-      {id:'p4a',label:'Beginners',    days:['Monday','Wednesday','Friday'],time:'3:30–4:30 PM',max:1},
-      {id:'p4b',label:'Intermediate', days:['Tuesday','Thursday'],         time:'4:30–5:30 PM',max:1},
-    ]},
-    {id:'s5',name:'Richard Montgomery HS',sport:'Baseball',coordinatorId:'coord2',programs:[
-      {id:'p5a',label:'Pitching Clinic',days:['Monday','Wednesday'],time:'3:00–4:30 PM',max:1},
-      {id:'p5b',label:'Batting Clinic', days:['Tuesday','Thursday'],time:'4:30–6:00 PM',max:1},
-      {id:'p5c',label:'Fielding Clinic',days:['Friday'],            time:'6:00–7:00 PM',max:1},
-    ]},
-  ]},
-  {id:'wi2025',name:'Winter 2025',period:'Jan – Feb 2025',current:false,schools:[
-    {id:'s10',name:'Thurgood Marshall ES',sport:'Basketball',coordinatorId:'coord1',programs:[
-      {id:'p10a',label:'Beginner Drills',days:['Monday','Wednesday','Friday'],time:'3:00–4:30 PM',max:2},
-      {id:'p10b',label:'Advanced Play',  days:['Tuesday','Thursday'],         time:'4:30–6:00 PM',max:1},
-    ]},
-  ]},
-  {id:'fa2024',name:'Fall 2024',period:'Sep – Nov 2024',current:false,schools:[
-    {id:'s20',name:'Walt Whitman HS',sport:'Football',coordinatorId:'coord3',programs:[
-      {id:'p20a',label:'Freshman Squad',days:['Monday','Wednesday'],         time:'3:30–5:00 PM',max:1},
-      {id:'p20b',label:'Varsity Squad', days:['Monday','Wednesday','Friday'],time:'5:30–7:00 PM',max:2},
-    ]},
-  ]},
-];
-const DEFAULT_COACHES=[
-  {id:'c1', name:'Marcus J.',    initials:'MJ',sport:'Basketball',  phone:'(301) 555-0101',av:'av-blue',   available:true, isSub:false,payRate:30,stats:{confirmed:22,noShows:1,lateCancels:2},notes:'Great with K–5, reliable.'},
-  {id:'c2', name:'Priya S.',     initials:'PS',sport:'Soccer',      phone:'(301) 555-0102',av:'av-green',  available:true, isSub:false,payRate:28,stats:{confirmed:18,noShows:0,lateCancels:1},notes:''},
-  {id:'c3', name:'Derek W.',     initials:'DW',sport:'Football',    phone:'(301) 555-0103',av:'av-coral',  available:true, isSub:false,payRate:32,stats:{confirmed:15,noShows:3,lateCancels:2},notes:'Needs reminder texts.'},
-  {id:'c4', name:'Alicia T.',    initials:'AT',sport:'Tennis',      phone:'(301) 555-0104',av:'av-purple', available:true, isSub:false,payRate:25,stats:{confirmed:8, noShows:0,lateCancels:0},notes:'New this season.'},
-  {id:'c5', name:'James R.',     initials:'JR',sport:'Baseball',    phone:'(301) 555-0105',av:'av-amber',  available:true, isSub:false,payRate:28,stats:{confirmed:20,noShows:1,lateCancels:0},notes:''},
-  {id:'c6', name:'Sofia M.',     initials:'SM',sport:'Soccer',      phone:'(301) 555-0106',av:'av-green',  available:false,isSub:true, payRate:25,stats:{confirmed:12,noShows:2,lateCancels:3},notes:'Unavailable Mon/Tue.'},
-  {id:'c7', name:'Tyrese B.',    initials:'TB',sport:'Basketball',  phone:'(301) 555-0107',av:'av-blue',   available:true, isSub:false,payRate:30,stats:{confirmed:11,noShows:0,lateCancels:1},notes:'Former Maryland Terps player.'},
-  {id:'c8', name:'Keisha N.',    initials:'KN',sport:'Volleyball',  phone:'(301) 555-0108',av:'av-purple', available:true, isSub:false,payRate:28,stats:{confirmed:9, noShows:1,lateCancels:0},notes:''},
-  {id:'c9', name:'Jordan L.',    initials:'JL',sport:'Soccer',      phone:'(301) 555-0109',av:'av-teal',   available:true, isSub:false,payRate:28,stats:{confirmed:14,noShows:0,lateCancels:0},notes:'Available evenings only.'},
-  {id:'c10',name:'Rasheed A.',   initials:'RA',sport:'Football',    phone:'(301) 555-0110',av:'av-coral',  available:true, isSub:true, payRate:27,stats:{confirmed:6, noShows:1,lateCancels:1},notes:'Sub — call first.'},
-  {id:'c11',name:'Maya P.',      initials:'MP',sport:'Tennis',      phone:'(301) 555-0111',av:'av-pink',   available:true, isSub:false,payRate:26,stats:{confirmed:17,noShows:0,lateCancels:0},notes:'Certified USTA instructor.'},
-  {id:'c12',name:'Devon C.',     initials:'DC',sport:'Basketball',  phone:'(301) 555-0112',av:'av-amber',  available:false,isSub:true, payRate:25,stats:{confirmed:4, noShows:2,lateCancels:1},notes:'College student — limited availability.'},
-  {id:'c13',name:'Imani F.',     initials:'IF',sport:'Lacrosse',    phone:'(301) 555-0113',av:'av-green',  available:true, isSub:false,payRate:29,stats:{confirmed:10,noShows:0,lateCancels:1},notes:''},
-  {id:'c14',name:'Chris O.',     initials:'CO',sport:'Baseball',    phone:'(301) 555-0114',av:'av-blue',   available:true, isSub:false,payRate:28,stats:{confirmed:13,noShows:1,lateCancels:0},notes:'Played D3 at Towson.'},
-  {id:'c15',name:'Aaliyah G.',   initials:'AG',sport:'Soccer',      phone:'(301) 555-0115',av:'av-purple', available:true, isSub:false,payRate:27,stats:{confirmed:7, noShows:0,lateCancels:0},notes:'New — started spring season.'},
-  {id:'c16',name:'Brandon K.',   initials:'BK',sport:'Football',    phone:'(301) 555-0116',av:'av-coral',  available:true, isSub:false,payRate:30,stats:{confirmed:19,noShows:2,lateCancels:1},notes:''},
-  {id:'c17',name:'Nia W.',       initials:'NW',sport:'Basketball',  phone:'(301) 555-0117',av:'av-teal',   available:true, isSub:false,payRate:28,stats:{confirmed:16,noShows:0,lateCancels:2},notes:'Great with older kids, grades 4–6.'},
-  {id:'c18',name:'Samuel D.',    initials:'SD',sport:'Tennis',      phone:'(301) 555-0118',av:'av-amber',  available:true, isSub:true, payRate:25,stats:{confirmed:5, noShows:1,lateCancels:0},notes:'Sub bench — responds quickly.'},
-];
-const DEFAULT_SESSION_LOG=[
-  {id:'sl1', coachId:'c1',date:'2025-04-08',pid:'p1a',status:'completed',  paid:true},
-  {id:'sl2', coachId:'c2',date:'2025-04-08',pid:'p2a',status:'completed',  paid:true},
-  {id:'sl3', coachId:'c3',date:'2025-04-08',pid:'p3a',status:'completed',  paid:true},
-  {id:'sl4', coachId:'c4',date:'2025-04-08',pid:'p4a',status:'completed',  paid:true},
-  {id:'sl5', coachId:'c5',date:'2025-04-08',pid:'p5a',status:'completed',  paid:true},
-  {id:'sl6', coachId:'c1',date:'2025-04-09',pid:'p1b',status:'completed',  paid:true},
-  {id:'sl7', coachId:'c3',date:'2025-04-09',pid:'p3b',status:'no-show',    paid:false},
-  {id:'sl8', coachId:'c2',date:'2025-04-09',pid:'p2b',status:'completed',  paid:true},
-  {id:'sl9', coachId:'c5',date:'2025-04-10',pid:'p5b',status:'completed',  paid:true},
-  {id:'sl10',coachId:'c1',date:'2025-04-10',pid:'p1c',status:'completed',  paid:true},
-  {id:'sl11',coachId:'c4',date:'2025-04-10',pid:'p4b',status:'late-cancel',paid:false},
-  {id:'sl12',coachId:'c2',date:'2025-04-11',pid:'p2a',status:'completed',  paid:false},
-  {id:'sl13',coachId:'c3',date:'2025-04-11',pid:'p3a',status:'completed',  paid:false},
-  {id:'sl14',coachId:'c5',date:'2025-04-11',pid:'p5c',status:'completed',  paid:false},
-  {id:'sl15',coachId:'c1',date:'2025-04-14',pid:'p1a',status:'completed',  paid:false},
-  {id:'sl16',coachId:'c4',date:'2025-04-14',pid:'p4a',status:'completed',  paid:false},
-  {id:'sl17',coachId:'c3',date:'2025-04-14',pid:'p3c',status:'late-cancel',paid:false},
-];
+  construction:{
+    coordinators:[
+      {id:'coord1',name:'Carlos Rivera',  phone:'(240) 555-1001',email:'carlos@buildco.com'},
+      {id:'coord2',name:'Dana Torres',    phone:'(240) 555-1002',email:'dana@buildco.com'},
+    ],
+    seasons:[
+      {id:'proj2025a',name:'Spring Projects 2025',period:'Mar – Jun 2025',current:true,schools:[
+        {id:'j1',name:'Riverside Office Tower',sport:'Electrical',coordinatorId:'coord1',contactName:'Phil Gutierrez',contactPhone:'(240) 555-2001',programs:[
+          {id:'j1a',label:'Floor 3 — Wiring',    days:['Monday','Tuesday','Wednesday','Thursday','Friday'],time:'7:00 AM – 3:30 PM',max:2},
+          {id:'j1b',label:'Floor 4 — Panel Work',days:['Monday','Wednesday','Friday'],                   time:'7:00 AM – 3:30 PM',max:1},
+        ]},
+        {id:'j2',name:'Maple Heights Residential',sport:'Carpentry & Framing',coordinatorId:'coord2',contactName:'Rosa Kim',contactPhone:'(240) 555-2002',programs:[
+          {id:'j2a',label:'Building A — Framing',days:['Monday','Wednesday','Friday'],time:'7:00 AM – 4:00 PM',max:3},
+          {id:'j2b',label:'Building B — Framing',days:['Tuesday','Thursday'],        time:'7:00 AM – 4:00 PM',max:2},
+        ]},
+        {id:'j3',name:'Harbor View Renovation',sport:'General Labor',coordinatorId:'coord1',contactName:'Mike Osei',contactPhone:'(240) 555-2003',programs:[
+          {id:'j3a',label:'Demo Phase',   days:['Monday','Tuesday','Wednesday','Thursday'],time:'8:00 AM – 5:00 PM',max:4},
+          {id:'j3b',label:'Cleanup Crew', days:['Friday'],                                time:'8:00 AM – 2:00 PM',max:2},
+        ]},
+      ]},
+      {id:'proj2024b',name:'Fall Projects 2024',period:'Sep – Dec 2024',current:false,schools:[
+        {id:'j10',name:'Westfield Medical Center',sport:'Plumbing & Pipefitting',coordinatorId:'coord2',programs:[
+          {id:'j10a',label:'Rough-In — West Wing',days:['Monday','Tuesday','Wednesday','Thursday','Friday'],time:'6:30 AM – 3:00 PM',max:2},
+        ]},
+      ]},
+    ],
+    coaches:[
+      {id:'c1', name:'Marcus B.',  initials:'MB',sport:'Carpentry & Framing',   phone:'(240) 555-0201',av:'av-amber', available:true, isSub:false,payRate:28,stats:{confirmed:24,noShows:0,lateCancels:1},notes:'Lead framer — reliable.'},
+      {id:'c2', name:'James E.',   initials:'JE',sport:'Electrical',            phone:'(240) 555-0202',av:'av-blue',  available:true, isSub:false,payRate:32,stats:{confirmed:19,noShows:1,lateCancels:0},notes:'Licensed journeyman electrician.'},
+      {id:'c3', name:'Priya N.',   initials:'PN',sport:'Plumbing & Pipefitting',phone:'(240) 555-0203',av:'av-teal',  available:true, isSub:false,payRate:30,stats:{confirmed:16,noShows:0,lateCancels:2},notes:''},
+      {id:'c4', name:'Derek H.',   initials:'DH',sport:'Concrete & Masonry',   phone:'(240) 555-0204',av:'av-coral', available:true, isSub:false,payRate:26,stats:{confirmed:11,noShows:2,lateCancels:1},notes:'Needs 24hr notice.'},
+      {id:'c5', name:'Sofia L.',   initials:'SL',sport:'General Labor',        phone:'(240) 555-0205',av:'av-green', available:true, isSub:false,payRate:22,stats:{confirmed:28,noShows:0,lateCancels:0},notes:'Fast, dependable — great for demo work.'},
+      {id:'c6', name:'Tyrese W.',  initials:'TW',sport:'Electrical',           phone:'(240) 555-0206',av:'av-blue',  available:true, isSub:true, payRate:32,stats:{confirmed:8, noShows:1,lateCancels:1},notes:'On-call — responds same day.'},
+      {id:'c7', name:'Keisha M.',  initials:'KM',sport:'Carpentry & Framing',  phone:'(240) 555-0207',av:'av-pink',  available:true, isSub:false,payRate:27,stats:{confirmed:14,noShows:0,lateCancels:0},notes:'OSHA-30 certified.'},
+      {id:'c8', name:'Rasheed A.', initials:'RA',sport:'General Labor',        phone:'(240) 555-0208',av:'av-purple',available:false,isSub:true, payRate:22,stats:{confirmed:5, noShows:1,lateCancels:2},notes:'On-call — currently on another site.'},
+    ],
+    sessionLog:[
+      {id:'sl1',coachId:'c1',date:'2025-04-08',pid:'j2a',status:'completed',  paid:true},
+      {id:'sl2',coachId:'c2',date:'2025-04-08',pid:'j1a',status:'completed',  paid:true},
+      {id:'sl3',coachId:'c5',date:'2025-04-08',pid:'j3a',status:'completed',  paid:true},
+      {id:'sl4',coachId:'c3',date:'2025-04-09',pid:'j1b',status:'completed',  paid:true},
+      {id:'sl5',coachId:'c4',date:'2025-04-09',pid:'j2b',status:'no-show',    paid:false},
+      {id:'sl6',coachId:'c1',date:'2025-04-10',pid:'j2a',status:'completed',  paid:true},
+      {id:'sl7',coachId:'c2',date:'2025-04-10',pid:'j1a',status:'completed',  paid:false},
+      {id:'sl8',coachId:'c5',date:'2025-04-11',pid:'j3b',status:'completed',  paid:false},
+      {id:'sl9',coachId:'c7',date:'2025-04-11',pid:'j2b',status:'completed',  paid:false},
+    ],
+  },
+
+  events:{
+    coordinators:[
+      {id:'coord1',name:'Alicia Morgan',  phone:'(202) 555-3001',email:'alicia@staffpro.com'},
+      {id:'coord2',name:'Jordan Chase',   phone:'(202) 555-3002',email:'jordan@staffpro.com'},
+    ],
+    seasons:[
+      {id:'ev2025s',name:'Spring Season 2025',period:'Mar – Jun 2025',current:true,schools:[
+        {id:'v1',name:'Capitol Grand Ballroom',sport:'Food & Beverage',coordinatorId:'coord1',contactName:'Sandra Wu',contactPhone:'(202) 555-4001',programs:[
+          {id:'v1a',label:'Cocktail Hour',   days:['Friday','Saturday'],time:'5:00 – 8:00 PM',max:4},
+          {id:'v1b',label:'Dinner Service',  days:['Friday','Saturday'],time:'7:00 – 11:00 PM',max:6},
+        ]},
+        {id:'v2',name:'Riverside Conference Center',sport:'Hospitality & Guest Svcs',coordinatorId:'coord2',contactName:'Tom Baxter',contactPhone:'(202) 555-4002',programs:[
+          {id:'v2a',label:'Registration Desk',days:['Monday','Tuesday','Wednesday','Thursday','Friday'],time:'8:00 AM – 6:00 PM',max:2},
+          {id:'v2b',label:'Breakout Rooms',   days:['Tuesday','Thursday'],time:'9:00 AM – 5:00 PM',max:1},
+        ]},
+        {id:'v3',name:'Harbor Stage & Arts',sport:'Production & AV',coordinatorId:'coord1',contactName:'Leo Parks',contactPhone:'(202) 555-4003',programs:[
+          {id:'v3a',label:'Sound Check',  days:['Friday','Saturday'],time:'2:00 – 6:00 PM',max:2},
+          {id:'v3b',label:'Show Night',   days:['Friday','Saturday'],time:'7:00 – 11:00 PM',max:3},
+        ]},
+      ]},
+      {id:'ev2024f',name:'Fall Season 2024',period:'Sep – Dec 2024',current:false,schools:[
+        {id:'v10',name:'Meridian Hotel Rooftop',sport:'Food & Beverage',coordinatorId:'coord1',programs:[
+          {id:'v10a',label:'Corporate Dinner',days:['Wednesday','Thursday','Friday'],time:'6:00 – 10:00 PM',max:5},
+        ]},
+      ]},
+    ],
+    coaches:[
+      {id:'c1', name:'Alicia T.',  initials:'AT',sport:'Food & Beverage',         phone:'(202) 555-0301',av:'av-green', available:true, isSub:false,payRate:18,stats:{confirmed:31,noShows:0,lateCancels:1},notes:'Lead server — excellent reviews.'},
+      {id:'c2', name:'Marcus J.',  initials:'MJ',sport:'Security & Crowd Control',phone:'(202) 555-0302',av:'av-blue',  available:true, isSub:false,payRate:20,stats:{confirmed:22,noShows:1,lateCancels:0},notes:'Former law enforcement.'},
+      {id:'c3', name:'Priya S.',   initials:'PS',sport:'Production & AV',         phone:'(202) 555-0303',av:'av-purple',available:true, isSub:false,payRate:24,stats:{confirmed:17,noShows:0,lateCancels:2},notes:'Certified sound engineer.'},
+      {id:'c4', name:'Jordan L.',  initials:'JL',sport:'Hospitality & Guest Svcs',phone:'(202) 555-0304',av:'av-teal',  available:true, isSub:false,payRate:17,stats:{confirmed:14,noShows:0,lateCancels:0},notes:'Fluent in Spanish and French.'},
+      {id:'c5', name:'Devon C.',   initials:'DC',sport:'Logistics & Setup',       phone:'(202) 555-0305',av:'av-amber', available:true, isSub:false,payRate:16,stats:{confirmed:19,noShows:2,lateCancels:1},notes:''},
+      {id:'c6', name:'Nia W.',     initials:'NW',sport:'Food & Beverage',         phone:'(202) 555-0306',av:'av-pink',  available:true, isSub:true, payRate:18,stats:{confirmed:9, noShows:0,lateCancels:1},notes:'On-call — great for last-minute fills.'},
+      {id:'c7', name:'Samuel D.',  initials:'SD',sport:'Security & Crowd Control',phone:'(202) 555-0307',av:'av-coral', available:false,isSub:true, payRate:20,stats:{confirmed:6, noShows:1,lateCancels:2},notes:'On-call — not available Sundays.'},
+    ],
+    sessionLog:[
+      {id:'sl1',coachId:'c1',date:'2025-04-05',pid:'v1b',status:'completed',  paid:true},
+      {id:'sl2',coachId:'c2',date:'2025-04-05',pid:'v1a',status:'completed',  paid:true},
+      {id:'sl3',coachId:'c3',date:'2025-04-05',pid:'v3b',status:'completed',  paid:true},
+      {id:'sl4',coachId:'c4',date:'2025-04-07',pid:'v2a',status:'completed',  paid:true},
+      {id:'sl5',coachId:'c5',date:'2025-04-07',pid:'v2b',status:'late-cancel',paid:false},
+      {id:'sl6',coachId:'c1',date:'2025-04-12',pid:'v1a',status:'completed',  paid:false},
+      {id:'sl7',coachId:'c3',date:'2025-04-12',pid:'v3a',status:'completed',  paid:false},
+    ],
+  },
+
+  healthcare:{
+    coordinators:[
+      {id:'coord1',name:'Maria Santos',  phone:'(301) 555-5001',email:'maria@carelink.com'},
+      {id:'coord2',name:'James Okafor',  phone:'(301) 555-5002',email:'james@carelink.com'},
+    ],
+    seasons:[
+      {id:'hc2025q2',name:'Q2 2025',period:'Apr – Jun 2025',current:true,schools:[
+        {id:'h1',name:'Sunrise Assisted Living',sport:'Home Care',coordinatorId:'coord1',contactName:'Nancy Belk',contactPhone:'(301) 555-6001',programs:[
+          {id:'h1a',label:'Morning Rounds',  days:['Monday','Tuesday','Wednesday','Thursday','Friday'],time:'7:00 – 11:00 AM',max:2},
+          {id:'h1b',label:'Afternoon Care',  days:['Monday','Tuesday','Wednesday','Thursday','Friday'],time:'1:00 – 5:00 PM',max:2},
+          {id:'h1c',label:'Weekend Coverage',days:['Saturday','Sunday'],                             time:'8:00 AM – 4:00 PM',max:1},
+        ]},
+        {id:'h2',name:'Maple Grove Memory Care',sport:'Specialized Care',coordinatorId:'coord2',contactName:'Roy Daniels',contactPhone:'(301) 555-6002',programs:[
+          {id:'h2a',label:'Day Shift',    days:['Monday','Tuesday','Wednesday','Thursday','Friday'],time:'8:00 AM – 4:00 PM',max:2},
+          {id:'h2b',label:'Evening Shift',days:['Monday','Tuesday','Wednesday','Thursday','Friday'],time:'4:00 – 12:00 AM',max:1},
+        ]},
+        {id:'h3',name:'In-Home Service Area',sport:'Companion Care',coordinatorId:'coord1',programs:[
+          {id:'h3a',label:'Morning Visit',  days:['Tuesday','Thursday','Saturday'],time:'9:00 – 11:30 AM',max:1},
+          {id:'h3b',label:'Afternoon Visit',days:['Monday','Wednesday','Friday'],  time:'1:00 – 3:30 PM',max:1},
+        ]},
+      ]},
+      {id:'hc2025q1',name:'Q1 2025',period:'Jan – Mar 2025',current:false,schools:[
+        {id:'h10',name:'Riverside Rehab Center',sport:'Physical Therapy',coordinatorId:'coord2',programs:[
+          {id:'h10a',label:'Morning PT',days:['Monday','Wednesday','Friday'],time:'9:00 AM – 12:00 PM',max:1},
+        ]},
+      ]},
+    ],
+    coaches:[
+      {id:'c1', name:'Maria G.',   initials:'MG',sport:'Home Care',       phone:'(301) 555-0401',av:'av-green', available:true, isSub:false,payRate:19,stats:{confirmed:34,noShows:0,lateCancels:0},notes:'CPR certified. Excellent with dementia patients.'},
+      {id:'c2', name:'James W.',   initials:'JW',sport:'Skilled Nursing',  phone:'(301) 555-0402',av:'av-blue',  available:true, isSub:false,payRate:28,stats:{confirmed:21,noShows:1,lateCancels:0},notes:'RN — licensed in MD and VA.'},
+      {id:'c3', name:'Priya C.',   initials:'PC',sport:'Physical Therapy', phone:'(301) 555-0403',av:'av-purple',available:true, isSub:false,payRate:32,stats:{confirmed:15,noShows:0,lateCancels:1},notes:'DPT — works with post-op patients.'},
+      {id:'c4', name:'Marcus T.',  initials:'MT',sport:'Home Care',        phone:'(301) 555-0404',av:'av-teal',  available:true, isSub:false,payRate:19,stats:{confirmed:27,noShows:0,lateCancels:2},notes:'Bilingual — Spanish.'},
+      {id:'c5', name:'Alicia N.',  initials:'AN',sport:'Companion Care',   phone:'(301) 555-0405',av:'av-pink',  available:true, isSub:false,payRate:16,stats:{confirmed:19,noShows:1,lateCancels:0},notes:'Great with memory care residents.'},
+      {id:'c6', name:'Derek M.',   initials:'DM',sport:'Skilled Nursing',  phone:'(301) 555-0406',av:'av-amber', available:true, isSub:true, payRate:28,stats:{confirmed:8, noShows:0,lateCancels:1},notes:'On-call LPN — quick to respond.'},
+    ],
+    sessionLog:[
+      {id:'sl1',coachId:'c1',date:'2025-04-07',pid:'h1a',status:'completed',  paid:true},
+      {id:'sl2',coachId:'c2',date:'2025-04-07',pid:'h2a',status:'completed',  paid:true},
+      {id:'sl3',coachId:'c4',date:'2025-04-07',pid:'h3b',status:'completed',  paid:true},
+      {id:'sl4',coachId:'c5',date:'2025-04-08',pid:'h3a',status:'completed',  paid:true},
+      {id:'sl5',coachId:'c1',date:'2025-04-08',pid:'h1b',status:'completed',  paid:true},
+      {id:'sl6',coachId:'c3',date:'2025-04-09',pid:'h2a',status:'late-cancel',paid:false},
+      {id:'sl7',coachId:'c4',date:'2025-04-10',pid:'h3b',status:'completed',  paid:false},
+      {id:'sl8',coachId:'c2',date:'2025-04-11',pid:'h2b',status:'completed',  paid:false},
+    ],
+  },
+
+  tutoring:{
+    coordinators:[
+      {id:'coord1',name:'Sofia Reyes',  phone:'(443) 555-7001',email:'sofia@learnhub.com'},
+      {id:'coord2',name:'Brandon Kim',  phone:'(443) 555-7002',email:'brandon@learnhub.com'},
+    ],
+    seasons:[
+      {id:'tu2025sp',name:'Spring 2025',period:'Feb – Jun 2025',current:true,schools:[
+        {id:'t1',name:'Bethesda Learning Center',sport:'Math',coordinatorId:'coord1',contactName:'Carol Hughes',contactPhone:'(443) 555-8001',programs:[
+          {id:'t1a',label:'Elementary Math',  days:['Monday','Wednesday','Friday'],time:'3:00 – 5:00 PM',max:2},
+          {id:'t1b',label:'Advanced Algebra',  days:['Tuesday','Thursday'],        time:'4:00 – 6:00 PM',max:1},
+          {id:'t1c',label:'SAT Prep Math',     days:['Saturday'],                  time:'10:00 AM – 12:00 PM',max:1},
+        ]},
+        {id:'t2',name:'Rockville Tutoring Hub',sport:'Science',coordinatorId:'coord2',contactName:'Andre Frost',contactPhone:'(443) 555-8002',programs:[
+          {id:'t2a',label:'Middle School Science',days:['Monday','Tuesday','Wednesday'],time:'3:00 – 5:00 PM',max:2},
+          {id:'t2b',label:'AP Biology Prep',      days:['Thursday','Friday'],           time:'4:00 – 6:00 PM',max:1},
+        ]},
+        {id:'t3',name:'Online / Virtual',sport:'Reading',coordinatorId:'coord1',programs:[
+          {id:'t3a',label:'Literacy Program', days:['Monday','Wednesday'],time:'4:00 – 5:30 PM',max:1},
+          {id:'t3b',label:'Enrichment Hour',  days:['Saturday'],         time:'10:00 AM – 12:00 PM',max:2},
+        ]},
+      ]},
+      {id:'tu2024f',name:'Fall 2024',period:'Sep – Dec 2024',current:false,schools:[
+        {id:'t10',name:'Chevy Chase Study Hall',sport:'STEM',coordinatorId:'coord2',programs:[
+          {id:'t10a',label:'Coding Fundamentals',days:['Monday','Wednesday','Friday'],time:'4:00 – 6:00 PM',max:1},
+        ]},
+      ]},
+    ],
+    coaches:[
+      {id:'c1', name:'Sofia M.',   initials:'SM',sport:'Math',           phone:'(443) 555-0501',av:'av-purple',available:true, isSub:false,payRate:45,stats:{confirmed:28,noShows:0,lateCancels:1},notes:'Former AP Calculus teacher.'},
+      {id:'c2', name:'Brandon K.', initials:'BK',sport:'Science',        phone:'(443) 555-0502',av:'av-blue',  available:true, isSub:false,payRate:40,stats:{confirmed:21,noShows:1,lateCancels:0},notes:'MS in Biology from UMD.'},
+      {id:'c3', name:'Aaliyah G.', initials:'AG',sport:'Reading',        phone:'(443) 555-0503',av:'av-green', available:true, isSub:false,payRate:38,stats:{confirmed:17,noShows:0,lateCancels:0},notes:'Certified reading specialist.'},
+      {id:'c4', name:'Chris O.',   initials:'CO',sport:'Languages',      phone:'(443) 555-0504',av:'av-teal',  available:true, isSub:false,payRate:40,stats:{confirmed:14,noShows:0,lateCancels:2},notes:'Native Spanish speaker. Also teaches French.'},
+      {id:'c5', name:'Maya P.',    initials:'MP',sport:'STEM',           phone:'(443) 555-0505',av:'av-pink',  available:true, isSub:false,payRate:42,stats:{confirmed:19,noShows:0,lateCancels:0},notes:'Software engineer — great with coding.'},
+      {id:'c6', name:'Jordan F.',  initials:'JF',sport:'Reading',        phone:'(443) 555-0506',av:'av-amber', available:true, isSub:true, payRate:38,stats:{confirmed:6, noShows:1,lateCancels:1},notes:'Sub tutor — available afternoons.'},
+    ],
+    sessionLog:[
+      {id:'sl1',coachId:'c1',date:'2025-04-07',pid:'t1a',status:'completed',  paid:true},
+      {id:'sl2',coachId:'c2',date:'2025-04-07',pid:'t2a',status:'completed',  paid:true},
+      {id:'sl3',coachId:'c3',date:'2025-04-07',pid:'t3a',status:'completed',  paid:true},
+      {id:'sl4',coachId:'c1',date:'2025-04-08',pid:'t1b',status:'completed',  paid:true},
+      {id:'sl5',coachId:'c2',date:'2025-04-08',pid:'t2b',status:'completed',  paid:true},
+      {id:'sl6',coachId:'c5',date:'2025-04-09',pid:'t3b',status:'completed',  paid:false},
+      {id:'sl7',coachId:'c4',date:'2025-04-10',pid:'t1a',status:'late-cancel',paid:false},
+      {id:'sl8',coachId:'c1',date:'2025-04-12',pid:'t1c',status:'completed',  paid:false},
+    ],
+  },
+};
+
+/* Pick defaults based on vertical — falls back to sports if unrecognized */
+const _vertical = ORG_CFG?.vertical || 'sports';
+const _VD = VERTICAL_DEFAULTS[_vertical] || VERTICAL_DEFAULTS.sports;
+const DEFAULT_SEASONS     = _VD.seasons;
+const DEFAULT_COACHES     = _VD.coaches;
+const DEFAULT_SESSION_LOG = _VD.sessionLog;
+
+/* ══ COORDINATORS — start with vertical defaults, overridden by _SAVED ══ */
+let coordinators = JSON.parse(JSON.stringify(_VD.coordinators));
+let nextCoordId=10; // overwritten below from _SAVED if available
 
 /* ══ LOCALSTORAGE PERSISTENCE ══ */
 const LS_KEY='msa_scheduler_data';
@@ -1075,7 +1270,7 @@ function lsLoad(){try{const r=localStorage.getItem(LS_KEY);return r?JSON.parse(r
 function persist(){
   try{
     localStorage.setItem(LS_KEY,JSON.stringify({
-      seasons,coaches,assignments,confirmations,sent,
+      seasons,coaches,coordinators,assignments,confirmations,sent,
       sessionLog,sessionLogNext,
       nextId,nextSeasonId,nextSchoolId,nextProgId,nextCoordId,
       dailyNote,
@@ -1125,6 +1320,8 @@ let nextSchoolId  = _SAVED?.nextSchoolId  ?? 40;
 let nextProgId    = _SAVED?.nextProgId    ?? 300;
 nextCoordId       = _SAVED?.nextCoordId   ?? 10;
 let dailyNote     = _SAVED?.dailyNote     ?? '';
+/* Restore coordinators — overwrite defaults if we have saved ones */
+if(_SAVED?.coordinators?.length) coordinators = _SAVED.coordinators;
 let dragging=null,formVisible=false,pickerCoachId=null,pickerSchoolId=null;
 let editSeasonId=null,detailView='school',newSeasonOpen=false,openProgForms={},openCoordForms={};
 let portalCoach=null,coachAvail={};
@@ -1421,23 +1618,31 @@ function onWeekDrop(e,day){
 function openPickerForDay(coachId,day){
   pickerCoachId=coachId;pickerSchoolId=null;
   const c=getCoach(coachId);
-  const daySchools=getSchools().map(s=>({...s,programs:s.programs.filter(p=>p.days.includes(day))})).filter(s=>s.programs.length>0);
+  // Search all current season schools for programs on this day
+  const allSchools=getCurrentSeason().schools;
+  const daySchools=allSchools.map(s=>({...s,programs:s.programs.filter(p=>p.days.includes(day))})).filter(s=>s.programs.length>0);
   document.getElementById('picker-school-name').textContent=day;
-  document.getElementById('picker-school-sub').textContent=`Pick a class for ${c.name.split(' ')[0]}`;
+  document.getElementById('picker-school-sub').textContent=`Pick a ${V('shift').toLowerCase()} for ${c.name.split(' ')[0]}`;
   document.getElementById('picker-coach-name').textContent=c.name;
   document.getElementById('picker-coach-sport').textContent=c.sport;
   const av=document.getElementById('picker-av');av.className='avatar '+c.av;av.textContent=c.initials;
   let bodyHtml='';
-  daySchools.forEach(s=>{
-    bodyHtml+=`<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-tertiary);padding:8px 13px 4px">${s.name}</div>`;
-    s.programs.forEach(p=>{
-      const count=progCount(p.id),full=count>=p.max,already=(assignments[p.id]||[]).includes(coachId);
-      const disabled=full||already;
-      const sportMatch=c.sport===s.sport;
-      const matchTag=(!disabled&&sportMatch)?`<span class="match-tag">Sport match</span>`:'';
-      bodyHtml+=`<div class="program-option ${disabled?'is-disabled':''}" onclick="${disabled?'':` assignToProgram('${p.id}')`}"><div><div class="prog-opt-name">${p.label}${matchTag}</div><div class="prog-opt-time">${p.time}</div></div><div class="prog-spots ${full?'is-full':''}">${already?'already here':full?'full':`${count}/${p.max} filled`}</div></div>`;
+  if(!daySchools.length){
+    bodyHtml=`<div style="padding:16px;text-align:center;font-size:12px;color:var(--text-tertiary);font-style:italic">No ${V('shifts').toLowerCase()} scheduled on ${day}.</div>`;
+  } else {
+    daySchools.forEach(s=>{
+      bodyHtml+=`<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-tertiary);padding:8px 13px 4px">${s.name}</div>`;
+      s.programs.forEach(p=>{
+        const count=progCount(p.id),full=count>=p.max,already=(assignments[p.id]||[]).includes(coachId);
+        const disabled=full||already;
+        const sportMatch=c.sport===s.sport;
+        const matchTag=(!disabled&&sportMatch)?`<span class="match-tag">Skill match</span>`:'';
+        const sc=p.students?.length||0;
+        const studTag=sc>0?`<span class="student-badge" style="margin-left:6px">${sc} students</span>`:'';
+        bodyHtml+=`<div class="program-option ${disabled?'is-disabled':''}" onclick="${disabled?'':` assignToProgram('${p.id}')`}"><div><div class="prog-opt-name">${p.label}${matchTag}${studTag}</div><div class="prog-opt-time">${p.time}</div></div><div class="prog-spots ${full?'is-full':''}">${already?'already here':full?'full':`${count}/${p.max} filled`}</div></div>`;
+      });
     });
-  });
+  }
   document.getElementById('picker-body').innerHTML=bodyHtml;
   document.getElementById('picker-backdrop').classList.add('show');
 }
