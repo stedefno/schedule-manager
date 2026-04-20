@@ -420,6 +420,41 @@
   .portal-empty-icon{font-size:28px;margin-bottom:10px;opacity:0.4;}
   .portal-empty-text{font-size:13px;color:var(--text-tertiary);font-style:italic;}
 
+  /* ── CHECK-IN CARD ── */
+  .checkin-week-label{font-size:11px;font-weight:600;color:var(--text-tertiary);font-family:'DM Mono',monospace;}
+  .checkin-submitted-badge{font-size:10px;font-weight:700;background:var(--brand-light);color:var(--brand-dark);border:1px solid var(--brand-mid);border-radius:20px;padding:3px 10px;letter-spacing:0.03em;}
+  .checkin-pending-badge{font-size:10px;font-weight:700;background:var(--amber-light);color:#b45309;border:1px solid #fde68a;border-radius:20px;padding:3px 10px;letter-spacing:0.03em;}
+  .checkin-section{padding:14px 18px;border-bottom:1px solid var(--border);}
+  .checkin-section:last-child{border-bottom:none;}
+  .checkin-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-tertiary);margin-bottom:10px;}
+  .checkin-session-row{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:6px;background:var(--surface);}
+  .checkin-session-row:last-child{margin-bottom:0;}
+  .checkin-session-info{flex:1;min-width:0;}
+  .checkin-session-name{font-size:12px;font-weight:600;}
+  .checkin-session-detail{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;margin-top:1px;}
+  .checkin-toggle{display:flex;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;flex-shrink:0;margin-left:10px;}
+  .checkin-toggle-btn{padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:var(--bg);font-family:inherit;color:var(--text-secondary);transition:all 0.12s;white-space:nowrap;}
+  .checkin-toggle-btn.active-confirm{background:var(--brand);color:white;}
+  .checkin-toggle-btn.active-sub{background:var(--amber-light);color:#b45309;}
+  .checkin-day-grid{display:flex;gap:6px;flex-wrap:wrap;}
+  .checkin-day-btn{padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);font-family:inherit;color:var(--text-secondary);transition:all 0.12s;}
+  .checkin-day-btn:hover{border-color:var(--brand-mid);}
+  .checkin-day-btn.active{background:var(--brand);border-color:var(--brand-dark);color:white;}
+  .checkin-textarea{width:100%;border:1.5px solid var(--border);border-radius:var(--radius);font-family:inherit;font-size:13px;color:var(--text);background:var(--surface);padding:10px 12px;resize:none;min-height:72px;outline:none;line-height:1.6;}
+  .checkin-textarea:focus{border-color:var(--brand);}
+  .checkin-textarea::placeholder{color:var(--text-tertiary);}
+  .checkin-submit-row{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-top:1px solid var(--border);background:var(--bg);}
+  .checkin-submit-btn{background:var(--brand);color:white;border:none;border-radius:var(--radius);padding:10px 24px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+  .checkin-submit-btn:hover{background:var(--brand-dark);}
+  .checkin-hint{font-size:12px;color:var(--text-tertiary);}
+  .checkin-summary-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;}
+  .checkin-summary-row:last-child{border-bottom:none;}
+  .checkin-summary-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-tertiary);width:110px;flex-shrink:0;padding-top:1px;}
+  .checkin-summary-val{flex:1;color:var(--text);line-height:1.5;}
+  .checkin-edit-btn{font-size:11px;font-weight:500;color:var(--text-secondary);background:none;border:1px solid var(--border);border-radius:8px;padding:4px 10px;cursor:pointer;font-family:inherit;}
+  .checkin-edit-btn:hover{border-color:var(--brand);color:var(--brand-dark);}
+  .checkin-empty{font-size:12px;color:var(--text-tertiary);font-style:italic;padding:16px 18px;}
+
   /* ── AVAIL GRID ── */
   .avail-section{padding:18px;}
   .avail-grid-container{overflow-x:auto;padding-bottom:4px;}
@@ -655,6 +690,54 @@
   .roster-grade{font-size:11px;color:var(--text-secondary);background:var(--bg);border-radius:5px;padding:1px 7px;}
   .roster-modal-foot{padding:12px 18px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0;}
   .roster-err{color:var(--red,#ef4444);font-size:12px;padding:12px 0;font-style:italic;}
+
+  /* ── CHECK-IN TAB (coordinator view) ── */
+  .checkin-tab-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+  @media(max-width:760px){.checkin-tab-grid{grid-template-columns:1fr;}}
+  .ci-stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px;box-shadow:var(--shadow);}
+  .ci-stat-num{font-size:28px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;}
+  .ci-stat-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-tertiary);margin-top:4px;}
+  .ci-stat-sub{font-size:12px;color:var(--text-secondary);margin-top:6px;}
+  .ci-section-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);margin-bottom:14px;}
+  .ci-section-hd{padding:11px 16px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+  .ci-section-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-tertiary);}
+  .ci-section-count{font-size:11px;font-weight:600;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+  .ci-row{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);}
+  .ci-row:last-child{border-bottom:none;}
+  .ci-row:hover{background:var(--bg);}
+  .ci-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;flex-shrink:0;}
+  .ci-coach-name{font-size:13px;font-weight:600;}
+  .ci-coach-meta{font-size:11px;color:var(--text-secondary);margin-top:2px;}
+  .ci-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+  .ci-pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px;white-space:nowrap;}
+  .ci-pill-sub{background:#fef9c3;color:#854d0e;border:1px solid #fde68a;}
+  .ci-pill-avail{background:var(--brand-light);color:var(--brand-dark);border:1px solid var(--brand-mid);}
+  .ci-pill-confirmed{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;}
+  .ci-not-submitted{font-size:11px;color:var(--text-tertiary);font-style:italic;padding:2px 0;}
+  .ci-material-row{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);}
+  .ci-material-row:last-child{border-bottom:none;}
+  .ci-material-row.resolved{opacity:0.45;}
+  .ci-material-text{flex:1;font-size:13px;line-height:1.5;}
+  .ci-material-who{font-size:11px;color:var(--text-secondary);margin-top:2px;}
+  .ci-resolve-btn{background:none;border:1px solid var(--border);border-radius:7px;padding:4px 10px;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;color:var(--text-secondary);flex-shrink:0;}
+  .ci-resolve-btn:hover{border-color:var(--brand);color:var(--brand-dark);}
+  .ci-resolve-btn.done{background:var(--brand-light);color:var(--brand-dark);border-color:var(--brand-mid);}
+  .ci-feedback-row{padding:12px 16px;border-bottom:1px solid var(--border);}
+  .ci-feedback-row:last-child{border-bottom:none;}
+  .ci-feedback-who{font-size:11px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;}
+  .ci-feedback-text{font-size:13px;color:var(--text);line-height:1.5;}
+  .ci-reviewed-btn{background:none;border:none;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--text-tertiary);padding:0;}
+  .ci-reviewed-btn:hover{color:var(--brand-dark);}
+  .ci-reviewed-btn.done{color:var(--brand-dark);}
+  .ci-send-btn{display:flex;align-items:center;gap:6px;background:var(--brand);color:white;border:none;border-radius:var(--radius);padding:8px 18px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;}
+  .ci-send-btn:hover{background:var(--brand-dark);}
+  .ci-send-btn svg{width:13px;height:13px;fill:white;flex-shrink:0;}
+  .ci-empty{padding:28px 16px;text-align:center;font-size:13px;color:var(--text-tertiary);font-style:italic;}
+  .ci-no-submit-row{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--border);}
+  .ci-no-submit-row:last-child{border-bottom:none;}
+  .ci-no-submit-name{font-size:13px;font-weight:500;flex:1;}
+  .ci-nudge-btn{font-size:10px;font-weight:600;background:none;border:1px solid var(--border);border-radius:6px;padding:3px 8px;cursor:pointer;font-family:inherit;color:var(--text-secondary);}
+  .ci-nudge-btn:hover{border-color:var(--amber);color:#b45309;}
 </style>
 </head>
 <body>
@@ -669,6 +752,9 @@
   </div>
   <div class="nav">
     <button class="nav-tab active" onclick="switchTab('schedule')"><span>Schedule</span></button>
+    <button class="nav-tab" onclick="switchTab('checkin')">
+      <span>Check-In</span><span class="badge-count" id="checkin-badge">0</span>
+    </button>
     <button class="nav-tab" onclick="switchTab('coaches')"><span id="nav-coaches-tab">Coaches</span></button>
     <button class="nav-tab" onclick="switchTab('confirm')">
       <span>Confirmations</span><span class="badge-count" id="pending-badge">0</span>
@@ -743,6 +829,21 @@
       </div>
       <textarea class="daily-note-input" id="daily-note-input" placeholder="Jot anything down — weather cancellations, reminders, special instructions for today..." oninput="saveDailyNote(this.value)"></textarea>
     </div>
+  </div>
+
+  <!-- CHECK-IN -->
+  <div class="view" id="view-checkin">
+    <div class="coaches-header">
+      <div>
+        <div class="page-title">Weekly check-in</div>
+        <div class="page-sub" id="checkin-tab-sub">Responses from your team for the upcoming week</div>
+      </div>
+      <button class="ci-send-btn" onclick="sendCheckinBroadcast()">
+        <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+        Send check-in to all
+      </button>
+    </div>
+    <div id="checkin-tab-body"></div>
   </div>
 
   <!-- COACHES -->
@@ -880,7 +981,7 @@
   </div>
   <div style="overflow-y:auto;flex:1">
   <div class="portal-main">
-    <div class="portal-hero"><div class="portal-hero-title">Welcome, Coach 👋</div><div class="portal-hero-sub">Enter your information and set your weekly availability. You'll also see your scheduled classes below.</div></div>
+    <div class="portal-hero"><div class="portal-hero-title">Welcome 👋</div><div class="portal-hero-sub">Enter your information, complete your weekly check-in, and set your availability. Your coordinator sees everything here.</div></div>
     <div class="portal-success-banner" id="portal-success-banner" style="display:none">
       <div class="portal-success-icon"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
       <div class="portal-success-text">You're all set, <span style="font-weight:700" id="portal-success-name"></span>!</div>
@@ -907,6 +1008,17 @@
           <button class="portal-edit-btn" onclick="editPortalForm()">Edit</button>
         </div>
       </div>
+    </div>
+    <!-- ── WEEKLY CHECK-IN ── -->
+    <div class="portal-card" id="checkin-card" style="display:none">
+      <div class="portal-card-header">
+        <div>
+          <div class="portal-card-title">Weekly check-in</div>
+          <div class="checkin-week-label" id="checkin-week-label"></div>
+        </div>
+        <div id="checkin-status-badge"></div>
+      </div>
+      <div id="checkin-body"></div>
     </div>
     <div class="portal-card">
       <div class="portal-card-header"><div class="portal-card-title">Weekly availability</div><div class="portal-card-sub">Click hours · drag to select</div></div>
@@ -1358,6 +1470,11 @@ let availDragging=false,availDragMode=null;
 let broadcastPid=null,broadcastRemovedCid=null,broadcastFired=false;
 let payGroup='day'; /* 'day' | 'week' | 'month' */
 let scheduleView='tomorrow'; /* 'tomorrow' | 'week' */
+/* ── Check-in transient state ── */
+let checkinConfirmed={};  /* { "pid:Day": true=confirmed | false=needsSub } */
+let checkinSubAvail=[];   /* day names coach can sub */
+let checkinMaterials='';
+let checkinFeedback='';
 
 /* ══ HELPERS ══ */
 function getCurrentSeason(){return seasons.find(s=>s.current)||seasons[0];}
@@ -1404,6 +1521,7 @@ function init(){
   persist();
   renderPool();renderSchools();updateStats();renderRoster();renderAvailGrid();renderPortalConfirmations();
   populatePayrollFilters();renderPayroll();
+  updateCheckinBadge();
   /* Restore daily note — clear if from a previous day */
   const today=todayStr();
   const noteEl=document.getElementById('daily-note-input');
@@ -1927,7 +2045,16 @@ function restoreCoach(id){
 }
 function toggleAvail(id){const c=getCoach(id);if(!c)return;c.available=!c.available;if(c.available)c.fromPortal=false;if(!c.available){Object.keys(assignments).forEach(pid=>{assignments[pid]=(assignments[pid]||[]).filter(x=>x!==id);if(!assignments[pid].length)delete assignments[pid];});}persist();renderRoster(document.getElementById('search-input').value);renderPool();renderSchools();updateStats();showToast(`${c.name} marked ${c.available?'available':'unavailable'}`);}
 function toggleSub(id){const c=getCoach(id);if(!c)return;c.isSub=!c.isSub;persist();renderRoster(document.getElementById('search-input').value);renderPool();showToast(`${c.name} moved to ${c.isSub?'sub bench':'primary roster'}`);}
-function switchTab(tab){['schedule','coaches','confirm','payroll'].forEach((t,i)=>{document.getElementById('view-'+t).classList.toggle('active',t===tab);document.querySelectorAll('.nav-tab')[i].classList.toggle('active',t===tab);});if(tab==='confirm')renderConfirmations();if(tab==='coaches')renderRoster(document.getElementById('search-input')?.value||'');if(tab==='payroll'){populatePayrollFilters();renderPayroll();}}
+function switchTab(tab){
+  ['schedule','checkin','coaches','confirm','payroll'].forEach((t,i)=>{
+    document.getElementById('view-'+t).classList.toggle('active',t===tab);
+    document.querySelectorAll('.nav-tab')[i].classList.toggle('active',t===tab);
+  });
+  if(tab==='confirm')renderConfirmations();
+  if(tab==='coaches')renderRoster(document.getElementById('search-input')?.value||'');
+  if(tab==='payroll'){populatePayrollFilters();renderPayroll();}
+  if(tab==='checkin')renderCheckinTab();
+}
 
 /* ══ PAYROLL ══ */
 function populatePayrollFilters(){
@@ -2215,11 +2342,382 @@ function markPaid(id){const s=sessionLog.find(x=>x.id===id);if(!s)return;s.paid=
 function markAllPaid(){let n=0;sessionLog.forEach(s=>{if(s.status==='completed'&&!s.paid){s.paid=true;n++;}});renderPayroll();showToast(n?`${n} session${n!==1?'s':''} marked as paid`:'All sessions already paid');}
 
 /* ══ PORTAL ══ */
+/* ══ CHECK-IN TAB (coordinator view) ══ */
+
+function getCheckinWeekLabel(){
+  return checkinWeekLabel(getCheckinWeekOf());
+}
+
+function renderCheckinTab(){
+  const weekOf=getCheckinWeekOf();
+  const activeCoaches=coaches.filter(c=>!c.inactive);
+  const submitted=activeCoaches.filter(c=>c.weeklyCheckin?.weekOf===weekOf);
+  const notSubmitted=activeCoaches.filter(c=>c.weeklyCheckin?.weekOf!==weekOf);
+
+  // Update nav badge with pending count
+  const badge=document.getElementById('checkin-badge');
+  if(badge){badge.textContent=notSubmitted.length;badge.classList.toggle('show',notSubmitted.length>0);}
+
+  // Update sub-header
+  const sub=document.getElementById('checkin-tab-sub');
+  if(sub)sub.textContent=`${getCheckinWeekLabel()} · ${submitted.length} of ${activeCoaches.length} submitted`;
+
+  // Collect sub requests, materials, feedback from submitted coaches
+  const subRequests=[];
+  const materials=[];  // {coachId, text, resolved}
+  const feedback=[];   // {coachId, text, reviewed}
+
+  submitted.forEach(c=>{
+    const ci=c.weeklyCheckin;
+    // Sub requests — sessions where needsSub=true
+    ci.sessions.filter(s=>s.needsSub).forEach(s=>{
+      const info=getProgramInfoFromSeasons(s.pid);
+      subRequests.push({coach:c,day:s.day,program:info?.program,school:info?.school});
+    });
+    if(ci.materials?.trim()) materials.push({coach:c,text:ci.materials,resolved:ci.materialsResolved||false});
+    if(ci.feedback?.trim()) feedback.push({coach:c,text:ci.feedback,reviewed:ci.feedbackReviewed||false});
+  });
+
+  /* ── Summary cards ── */
+  const summaryHtml=`
+  <div class="checkin-tab-grid">
+    <div class="ci-stat-card">
+      <div class="ci-stat-num" style="color:var(--brand)">${submitted.length}<span style="font-size:14px;color:var(--text-tertiary)">/${activeCoaches.length}</span></div>
+      <div class="ci-stat-lbl">Submitted</div>
+      <div class="ci-stat-sub">${notSubmitted.length} still pending · ${getCheckinWeekLabel()}</div>
+    </div>
+    <div class="ci-stat-card">
+      <div class="ci-stat-num" style="color:${subRequests.length>0?'#b45309':'var(--text)'}">${subRequests.length}</div>
+      <div class="ci-stat-lbl">Sub requests</div>
+      <div class="ci-stat-sub">${subRequests.length?'Need coverage — see below':'No subs needed this week 👍'}</div>
+    </div>
+  </div>`;
+
+  /* ── Sub requests ── */
+  const subHtml=subRequests.length?subRequests.map(({coach:c,day,program,school})=>`
+    <div class="ci-row">
+      <div class="ci-av ${c.av}">${c.initials}</div>
+      <div style="flex:1">
+        <div class="ci-coach-name">${c.name} <span style="font-size:11px;font-weight:400;color:var(--text-secondary)">needs a sub</span></div>
+        <div class="ci-coach-meta">${day}${school?` · ${school.name}`:''}${program?` · ${program.label} · ${program.time}`:''}</div>
+      </div>
+      <button class="ci-resolve-btn" onclick="openBroadcast('${program?.id||''}','${c.id}')">Find sub</button>
+    </div>`).join(''):`<div class="ci-empty">No sub requests this week.</div>`;
+
+  /* ── Response overview ── */
+  const overviewHtml=`
+    ${submitted.map(c=>{
+      const ci=c.weeklyCheckin;
+      const confirmedCount=ci.sessions.filter(s=>!s.needsSub).length;
+      const subCount=ci.sessions.filter(s=>s.needsSub).length;
+      const pills=[
+        confirmedCount?`<span class="ci-pill ci-pill-confirmed">✓ ${confirmedCount} confirmed</span>`:'',
+        subCount?`<span class="ci-pill ci-pill-sub">🔄 ${subCount} sub needed</span>`:'',
+        ci.subAvailDays?.length?`<span class="ci-pill ci-pill-avail">Can sub: ${ci.subAvailDays.map(d=>d.slice(0,3)).join(', ')}</span>`:'',
+      ].filter(Boolean).join('');
+      return`<div class="ci-row">
+        <div class="ci-av ${c.av}">${c.initials}</div>
+        <div style="flex:1">
+          <div class="ci-coach-name">${c.name}</div>
+          <div class="ci-pills">${pills||'<span class="ci-not-submitted">No sessions assigned</span>'}</div>
+        </div>
+      </div>`;
+    }).join('')}
+    ${notSubmitted.map(c=>`
+      <div class="ci-no-submit-row">
+        <div class="ci-av ${c.av}">${c.initials}</div>
+        <div class="ci-no-submit-name">${c.name} <span style="font-size:11px;color:var(--text-tertiary)">· not submitted</span></div>
+        <button class="ci-nudge-btn" onclick="nudgeCoach('${c.id}')">Nudge</button>
+      </div>`).join('')}`;
+
+  /* ── Materials ── */
+  const materialsHtml=materials.length?materials.map((m,idx)=>`
+    <div class="ci-material-row ${m.resolved?'resolved':''}">
+      <div style="flex:1">
+        <div class="ci-material-text">${m.text}</div>
+        <div class="ci-material-who">${m.coach.name} · ${getCheckinWeekLabel()}</div>
+      </div>
+      <button class="ci-resolve-btn ${m.resolved?'done':''}" onclick="resolveCheckinMaterial('${m.coach.id}',${!m.resolved})">
+        ${m.resolved?'✓ Resolved':'Mark resolved'}
+      </button>
+    </div>`).join(''):`<div class="ci-empty">No material requests this week.</div>`;
+
+  /* ── Feedback ── */
+  const feedbackHtml=feedback.length?feedback.map((f,idx)=>`
+    <div class="ci-feedback-row">
+      <div class="ci-feedback-who">
+        <span>${f.coach.name}</span>
+        <button class="ci-reviewed-btn ${f.reviewed?'done':''}" onclick="resolveCheckinFeedback('${f.coach.id}',${!f.reviewed})">
+          ${f.reviewed?'✓ Reviewed':'Mark reviewed'}
+        </button>
+      </div>
+      <div class="ci-feedback-text">${f.text}</div>
+    </div>`).join(''):`<div class="ci-empty">No feedback submitted this week.</div>`;
+
+  document.getElementById('checkin-tab-body').innerHTML=`
+    ${summaryHtml}
+    <div class="ci-section-card">
+      <div class="ci-section-hd"><div class="ci-section-title">🔄 Sub requests</div><div class="ci-section-count">${subRequests.length}</div></div>
+      ${subHtml}
+    </div>
+    <div class="ci-section-card">
+      <div class="ci-section-hd"><div class="ci-section-title">Team responses</div><div class="ci-section-count">${submitted.length} of ${activeCoaches.length}</div></div>
+      ${overviewHtml}
+    </div>
+    <div class="ci-section-card">
+      <div class="ci-section-hd"><div class="ci-section-title">📦 Materials needed</div><div class="ci-section-count">${materials.filter(m=>!m.resolved).length} pending</div></div>
+      ${materialsHtml}
+    </div>
+    <div class="ci-section-card">
+      <div class="ci-section-hd"><div class="ci-section-title">💬 Feedback</div><div class="ci-section-count">${feedback.filter(f=>!f.reviewed).length} unread</div></div>
+      ${feedbackHtml}
+    </div>`;
+}
+
+function resolveCheckinMaterial(coachId,resolved){
+  const c=getCoach(coachId);if(!c?.weeklyCheckin)return;
+  c.weeklyCheckin.materialsResolved=resolved;
+  persist();renderCheckinTab();
+  showToast(resolved?'Materials marked resolved':'Marked as still needed');
+}
+
+function resolveCheckinFeedback(coachId,reviewed){
+  const c=getCoach(coachId);if(!c?.weeklyCheckin)return;
+  c.weeklyCheckin.feedbackReviewed=reviewed;
+  persist();renderCheckinTab();
+  showToast(reviewed?'Feedback marked reviewed':'Marked as unread');
+}
+
+function nudgeCoach(coachId){
+  const c=getCoach(coachId);if(!c)return;
+  showToast(`Reminder sent to ${c.name} — check-in link included`);
+}
+
+function sendCheckinBroadcast(){
+  const weekOf=getCheckinWeekOf();
+  const activeCoaches=coaches.filter(c=>!c.inactive);
+  const pending=activeCoaches.filter(c=>c.weeklyCheckin?.weekOf!==weekOf);
+  if(!pending.length){showToast('All coaches have already submitted their check-in 👍');return;}
+  if(!confirm(`Send weekly check-in request to ${pending.length} coach${pending.length!==1?'es':''}?`))return;
+  showToast(`Check-in sent to ${pending.length} coach${pending.length!==1?'es':''} via SMS`);
+}
+
+function updateCheckinBadge(){
+  const weekOf=getCheckinWeekOf();
+  const activeCoaches=coaches.filter(c=>!c.inactive);
+  const pending=activeCoaches.filter(c=>c.weeklyCheckin?.weekOf!==weekOf).length;
+  const badge=document.getElementById('checkin-badge');
+  if(badge){badge.textContent=pending;badge.classList.toggle('show',pending>0);}
+}
+
+/* ══ WEEKLY CHECK-IN (portal functions) ══ */
+
+function getCheckinWeekOf(){
+  /* Returns the Monday of next week as YYYY-MM-DD */
+  const d=new Date();
+  const day=d.getDay(); // 0=Sun,1=Mon,...,6=Sat
+  const daysUntilMonday=day===0?1:day===1?7:8-day;
+  d.setDate(d.getDate()+daysUntilMonday);
+  return d.toISOString().split('T')[0];
+}
+
+function checkinWeekLabel(weekOf){
+  const d=new Date(weekOf+'T12:00:00');
+  const end=new Date(d);end.setDate(d.getDate()+4);
+  const opts={month:'short',day:'numeric'};
+  return`Week of ${d.toLocaleDateString('en-US',opts)} – ${end.toLocaleDateString('en-US',opts)}`;
+}
+
+function getCoachAssignedSessions(){
+  /* Returns [{pid, program, school, day}] for the matched coach */
+  if(!portalCoach?.phone)return[];
+  const matched=coaches.find(c=>c.phone===portalCoach.phone);
+  if(!matched)return[];
+  const result=[];
+  Object.entries(assignments).forEach(([pid,cids])=>{
+    if(!cids.includes(matched.id))return;
+    const info=getProgramInfo(pid);
+    if(!info)return;
+    info.program.days.forEach(day=>{
+      result.push({pid,day,program:info.program,school:info.school});
+    });
+  });
+  return result;
+}
+
+function renderCheckinCard(){
+  const card=document.getElementById('checkin-card');
+  const body=document.getElementById('checkin-body');
+  const weekLabel=document.getElementById('checkin-week-label');
+  const statusBadge=document.getElementById('checkin-status-badge');
+  if(!card||!body)return;
+
+  const weekOf=getCheckinWeekOf();
+  if(weekLabel)weekLabel.textContent=checkinWeekLabel(weekOf);
+
+  // Check if coach already submitted for this week
+  const matched=portalCoach?.phone?coaches.find(c=>c.phone===portalCoach.phone):null;
+  const existing=matched?.weeklyCheckin;
+  const alreadySubmitted=existing&&existing.weekOf===weekOf;
+
+  card.style.display='block';
+
+  if(alreadySubmitted){
+    statusBadge.innerHTML='<span class="checkin-submitted-badge">✓ Submitted</span>';
+    renderCheckinSummary(existing,body,matched);
+  } else {
+    statusBadge.innerHTML='<span class="checkin-pending-badge">Pending</span>';
+    // Pre-populate state from any existing partial data
+    const sessions=getCoachAssignedSessions();
+    // Default: all sessions confirmed
+    sessions.forEach(({pid,day})=>{
+      const k=`${pid}:${day}`;
+      if(checkinConfirmed[k]===undefined)checkinConfirmed[k]=true;
+    });
+    renderCheckinForm(sessions,body,weekOf);
+  }
+}
+
+function renderCheckinForm(sessions,body,weekOf){
+  const workdays=DAYS_FULL.slice(0,5); // Mon–Fri
+
+  /* Section 1 — Assigned sessions */
+  let sessHtml='';
+  if(!sessions.length){
+    sessHtml=`<div class="checkin-empty">No sessions assigned yet for this week.</div>`;
+  } else {
+    sessHtml=sessions.map(({pid,day,program,school})=>{
+      const k=`${pid}:${day}`;
+      const isConfirmed=checkinConfirmed[k]!==false;
+      return`<div class="checkin-session-row">
+        <div class="checkin-session-info">
+          <div class="checkin-session-name">${school.name} · ${program.label}</div>
+          <div class="checkin-session-detail">${day} · ${program.time}</div>
+        </div>
+        <div class="checkin-toggle">
+          <button class="checkin-toggle-btn ${isConfirmed?'active-confirm':''}" onclick="setCheckinSession('${pid}','${day}',true)">✓ I'll be there</button>
+          <button class="checkin-toggle-btn ${!isConfirmed?'active-sub':''}" onclick="setCheckinSession('${pid}','${day}',false)">Need sub</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  /* Section 2 — Sub availability */
+  const subBtns=workdays.map(day=>{
+    const on=checkinSubAvail.includes(day);
+    return`<button class="checkin-day-btn ${on?'active':''}" onclick="toggleCheckinSubDay('${day}')">${day.slice(0,3)}</button>`;
+  }).join('');
+
+  body.innerHTML=`
+    <div class="checkin-section">
+      <div class="checkin-section-title">Your sessions next week — are you confirmed?</div>
+      ${sessHtml}
+    </div>
+    <div class="checkin-section">
+      <div class="checkin-section-title">Days you can cover for someone else</div>
+      <div class="checkin-day-grid">${subBtns}</div>
+      <div style="font-size:11px;color:var(--text-tertiary);margin-top:8px">Select any day you're free to sub in if needed.</div>
+    </div>
+    <div class="checkin-section">
+      <div class="checkin-section-title">Materials needed for next week</div>
+      <textarea class="checkin-textarea" id="ci-materials" placeholder="e.g. 6 extra basketballs for Friday · cones for drill setup · printed rosters" oninput="checkinMaterials=this.value">${checkinMaterials}</textarea>
+    </div>
+    <div class="checkin-section">
+      <div class="checkin-section-title">General feedback</div>
+      <textarea class="checkin-textarea" id="ci-feedback" placeholder="Anything you'd like your coordinator to know — how the kids are doing, schedule concerns, ideas..." oninput="checkinFeedback=this.value">${checkinFeedback}</textarea>
+    </div>
+    <div class="checkin-submit-row">
+      <div class="checkin-hint">Responses go directly to your coordinator.</div>
+      <button class="checkin-submit-btn" onclick="submitCheckin()">Submit check-in</button>
+    </div>`;
+}
+
+function renderCheckinSummary(ci,body,coach){
+  const sessionLines=ci.sessions.map(s=>{
+    const info=getProgramInfo(s.pid)||getProgramInfoFromSeasons(s.pid);
+    const label=info?`${info.school.name} · ${info.program.label} (${s.day})`:s.day;
+    const icon=s.needsSub?'🔄':'✅';
+    return`<div style="margin-bottom:4px">${icon} ${label}</div>`;
+  }).join('');
+
+  body.innerHTML=`
+    <div class="portal-card-body">
+      <div class="checkin-summary-row">
+        <div class="checkin-summary-label">Sessions</div>
+        <div class="checkin-summary-val">${sessionLines||'None assigned'}</div>
+      </div>
+      ${ci.subAvailDays?.length?`<div class="checkin-summary-row"><div class="checkin-summary-label">Can sub</div><div class="checkin-summary-val">${ci.subAvailDays.join(', ')}</div></div>`:''}
+      ${ci.materials?`<div class="checkin-summary-row"><div class="checkin-summary-label">Materials</div><div class="checkin-summary-val">${ci.materials}</div></div>`:''}
+      ${ci.feedback?`<div class="checkin-summary-row"><div class="checkin-summary-label">Feedback</div><div class="checkin-summary-val">${ci.feedback}</div></div>`:''}
+      <div style="margin-top:14px"><button class="checkin-edit-btn" onclick="editCheckin()">Edit check-in</button></div>
+    </div>`;
+}
+
+function setCheckinSession(pid,day,confirmed){
+  checkinConfirmed[`${pid}:${day}`]=confirmed;
+  /* Re-render just the session rows without full card redraw */
+  const sessions=getCoachAssignedSessions();
+  const weekOf=getCheckinWeekOf();
+  const body=document.getElementById('checkin-body');
+  if(body)renderCheckinForm(sessions,body,weekOf);
+}
+
+function toggleCheckinSubDay(day){
+  if(checkinSubAvail.includes(day)) checkinSubAvail=checkinSubAvail.filter(d=>d!==day);
+  else checkinSubAvail.push(day);
+  const sessions=getCoachAssignedSessions();
+  const weekOf=getCheckinWeekOf();
+  const body=document.getElementById('checkin-body');
+  if(body)renderCheckinForm(sessions,body,weekOf);
+}
+
+function submitCheckin(){
+  if(!portalCoach?.phone){showToast('Please save your information first.');return;}
+  const matched=coaches.find(c=>c.phone===portalCoach.phone);
+  if(!matched){showToast('Coach record not found.');return;}
+
+  const sessions=getCoachAssignedSessions().map(({pid,day})=>({
+    pid,day,needsSub:checkinConfirmed[`${pid}:${day}`]===false
+  }));
+
+  matched.weeklyCheckin={
+    weekOf:getCheckinWeekOf(),
+    submittedAt:new Date().toISOString(),
+    sessions,
+    subAvailDays:[...checkinSubAvail],
+    materials:checkinMaterials,
+    feedback:checkinFeedback,
+  };
+
+  persist();
+  renderCheckinCard();
+  showToast('Check-in submitted — your coordinator has been notified 👍');
+}
+
+function editCheckin(){
+  /* Reset transient state from submitted data so edits pre-fill */
+  const matched=portalCoach?.phone?coaches.find(c=>c.phone===portalCoach.phone):null;
+  const ci=matched?.weeklyCheckin;
+  if(ci){
+    checkinConfirmed={};
+    ci.sessions.forEach(s=>{ checkinConfirmed[`${s.pid}:${s.day}`]=!s.needsSub; });
+    checkinSubAvail=[...ci.subAvailDays||[]];
+    checkinMaterials=ci.materials||'';
+    checkinFeedback=ci.feedback||'';
+  }
+  const statusBadge=document.getElementById('checkin-status-badge');
+  if(statusBadge)statusBadge.innerHTML='<span class="checkin-pending-badge">Editing</span>';
+  const sessions=getCoachAssignedSessions();
+  const weekOf=getCheckinWeekOf();
+  const body=document.getElementById('checkin-body');
+  if(body)renderCheckinForm(sessions,body,weekOf);
+}
+
 function openPortal(){
   document.getElementById('portal-page').classList.add('active');
   // Populate sport select from org activity categories
   const sel=document.getElementById('p-sport');
-  if(sel) sel.innerHTML=`<option value="">— Select sport —</option>${getActivityOptions(portalCoach?.sport||'')}`;
+  if(sel) sel.innerHTML=`<option value="">— Select ${V('skill').toLowerCase()} —</option>${getActivityOptions(portalCoach?.sport||'')}`;
   // Restore a recognized coach's saved availability into the grid
   if(portalCoach?.phone){
     const matched=coaches.find(c=>c.phone===portalCoach.phone);
@@ -2227,6 +2725,8 @@ function openPortal(){
       coachAvail=JSON.parse(JSON.stringify(matched.weeklyAvailability));
       renderAvailGrid();
     }
+    // Show check-in card for recognized coach
+    renderCheckinCard();
   }
   renderPortalConfirmations();
 }
@@ -2280,6 +2780,18 @@ function submitPortalForm(){
   document.getElementById('portal-profile-name').textContent=dn;
   document.getElementById('portal-profile-meta').textContent=`${sport} · ${phone}`;
   renderPortalConfirmations();
+  // Show check-in card now that we have a matched coach
+  // Reset transient check-in state for new session (keep if they already submitted this week)
+  const mc=coaches.find(c=>c.phone===phone);
+  if(mc?.weeklyCheckin?.weekOf!==getCheckinWeekOf()){
+    checkinConfirmed={};checkinSubAvail=[];checkinMaterials='';checkinFeedback='';
+  } else if(mc?.weeklyCheckin){
+    mc.weeklyCheckin.sessions.forEach(s=>{checkinConfirmed[`${s.pid}:${s.day}`]=!s.needsSub;});
+    checkinSubAvail=[...mc.weeklyCheckin.subAvailDays||[]];
+    checkinMaterials=mc.weeklyCheckin.materials||'';
+    checkinFeedback=mc.weeklyCheckin.feedback||'';
+  }
+  renderCheckinCard();
 }
 function editPortalForm(){document.getElementById('portal-form-wrap').style.display='block';document.getElementById('portal-profile-wrap').style.display='none';document.getElementById('portal-success-banner').style.display='none';if(portalCoach){document.getElementById('p-first').value=portalCoach.first;document.getElementById('p-last').value=portalCoach.last;document.getElementById('p-sport').value=portalCoach.sport;document.getElementById('p-phone').value=portalCoach.phone;}}
 function renderPortalConfirmations(){const list=document.getElementById('portal-conf-list');const counter=document.getElementById('portal-conf-count');const all=Object.entries(assignments).flatMap(([pid,cids])=>cids.map(cid=>({pid,cid})));if(!all.length){counter.textContent='';list.innerHTML='<div class="portal-empty"><div class="portal-empty-icon">📋</div><div class="portal-empty-text">No classes scheduled yet.</div></div>';return;}let filtered=all;if(portalCoach){const matched=coaches.filter(c=>c.phone===portalCoach.phone);if(matched.length){const ids=matched.map(c=>c.id);filtered=all.filter(({cid})=>ids.includes(cid));}}if(!filtered.length){counter.textContent='';list.innerHTML='<div class="portal-empty"><div class="portal-empty-icon">🔍</div><div class="portal-empty-text">No classes found for your number.</div></div>';return;}const cc=filtered.filter(({pid,cid})=>confirmations[cid+pid]==='confirmed').length;counter.textContent=`${cc} of ${filtered.length} confirmed`;list.innerHTML=filtered.map(({pid,cid})=>{const info=getProgramInfo(pid);const c=getCoach(cid);const status=confirmations[cid+pid];const ic=SPORT_ICON[info.school.sport]||'icon-default';const em=SPORT_EMOJI[info.school.sport]||'🏅';let pill,reply;if(!sent){pill='<span class="portal-status-pill portal-pill-notsent">Not sent yet</span>';reply='<span class="portal-status-reply">Awaiting coordinator</span>';}else if(status==='confirmed'){pill='<span class="portal-status-pill portal-pill-confirmed">✓ Confirmed</span>';reply='<span class="portal-status-reply">Replied YES via text</span>';}else{pill='<span class="portal-status-pill portal-pill-pending">Pending reply</span>';reply='<span class="portal-status-reply">Reply YES to confirm</span>';}return`<div class="portal-conf-row"><div class="portal-conf-icon ${ic}">${em}</div><div class="portal-conf-info"><div class="portal-conf-school">${info.school.name}</div><div class="portal-conf-detail">${info.program.label} · ${info.program.time}</div></div><div class="portal-conf-status">${pill}${reply}</div></div>`;}).join('');}
