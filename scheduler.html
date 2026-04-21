@@ -135,6 +135,9 @@
   .send-btn:hover:not(:disabled){background:var(--brand-dark);transform:translateY(-1px);box-shadow:var(--shadow-md);}
   .send-btn:disabled{background:var(--border);color:var(--text-tertiary);cursor:not-allowed;transform:none;}
   .send-btn svg{width:16px;height:16px;fill:white;}
+  .print-schedule-btn{display:flex;align-items:center;gap:6px;background:var(--surface);color:var(--text-secondary);border:1px solid var(--border);border-radius:var(--radius);padding:11px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.15s;}
+  .print-schedule-btn:hover{border-color:var(--brand);color:var(--brand-dark);background:var(--brand-light);}
+  .print-schedule-btn svg{width:14px;height:14px;flex-shrink:0;}
   .edit-season-trigger{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--text-secondary);background:none;border:1px solid var(--border);border-radius:7px;padding:4px 10px;cursor:pointer;font-family:inherit;transition:all 0.12s;}
   .edit-season-trigger:hover{border-color:var(--brand);color:var(--brand-dark);}
   .edit-season-trigger svg{width:12px;height:12px;stroke:currentColor;fill:none;}
@@ -208,6 +211,11 @@
   .sms-coach{font-size:12px;font-weight:600;}
   .sms-phone{font-size:10px;color:var(--text-tertiary);font-family:'DM Mono',monospace;}
   .sms-bubble{background:var(--bg);border-radius:10px 10px 10px 3px;padding:7px 10px;font-size:11px;line-height:1.5;color:var(--text-secondary);margin-top:5px;border:1px solid var(--border);}
+  .sms-bubble.followup{background:var(--brand-light);border-color:var(--brand-mid);color:var(--brand-dark);margin-top:4px;}
+  .sms-followup-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--brand-dark);margin-top:8px;opacity:0.7;}
+  .roster-link-btn{display:inline-flex;align-items:center;gap:4px;margin-top:6px;font-size:10px;font-weight:700;color:var(--brand-dark);background:white;border:1px solid var(--brand-mid);border-radius:6px;padding:3px 9px;cursor:pointer;font-family:inherit;}
+  .roster-link-btn:hover{background:var(--brand-light);}
+  .roster-link-btn svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2;}
   .sms-status{display:flex;align-items:center;gap:5px;font-size:10px;margin-top:5px;}
   .dot{width:6px;height:6px;border-radius:50%;}
   .dot-sending{background:var(--amber);}.dot-sent{background:var(--brand);}
@@ -409,6 +417,8 @@
   .portal-conf-info{flex:1;min-width:0;}
   .portal-conf-school{font-size:13px;font-weight:600;}
   .portal-conf-detail{font-size:11px;color:var(--text-secondary);margin-top:2px;font-family:'DM Mono',monospace;}
+  .portal-roster-btn{display:inline-flex;align-items:center;gap:5px;margin-top:7px;font-size:11px;font-weight:600;color:var(--brand-dark);background:var(--brand-light);border:1px solid var(--brand-mid);border-radius:7px;padding:4px 10px;cursor:pointer;font-family:inherit;transition:all 0.12s;}
+  .portal-roster-btn:hover{background:var(--brand);color:white;border-color:var(--brand-dark);}
   .portal-conf-status{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
   .portal-status-pill{font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;white-space:nowrap;}
   .portal-pill-confirmed{background:var(--brand-light);color:var(--brand-dark);}
@@ -599,6 +609,14 @@
   .coverage-bar-fill.partial{background:var(--amber);}
   .coverage-bar-fill.empty{background:var(--border);}
   .coverage-label{font-size:10px;font-weight:600;color:var(--text-tertiary);white-space:nowrap;}
+  /* ── Sub request indicators ── */
+  .sub-request-banner{display:flex;align-items:center;gap:7px;padding:7px 14px;background:#fffbeb;border-bottom:1px solid #fde68a;font-size:11px;font-weight:600;color:#b45309;}
+  .sub-request-banner svg{width:13px;height:13px;stroke:#b45309;fill:none;stroke-width:2;flex-shrink:0;}
+  .sub-request-banner .find-sub-link{margin-left:auto;font-size:10px;font-weight:700;color:#b45309;background:none;border:1px solid #fde68a;border-radius:5px;padding:2px 7px;cursor:pointer;font-family:inherit;}
+  .sub-request-banner .find-sub-link:hover{background:#fef3c7;}
+  .assigned-chip.needs-sub{border-color:#fde68a;background:#fffbeb;}
+  .assigned-chip.needs-sub .sm-av{opacity:0.6;}
+  .needs-sub-tag{font-size:9px;font-weight:700;color:#b45309;background:#fef3c7;border-radius:3px;padding:1px 4px;margin-left:2px;white-space:nowrap;}
 
   /* ── SPORT MATCH HIGHLIGHT IN PICKER ── */
   .program-option.sport-match{border-color:var(--brand,var(--green));background:var(--brand-light,var(--green-light));}
@@ -738,6 +756,27 @@
   .ci-no-submit-name{font-size:13px;font-weight:500;flex:1;}
   .ci-nudge-btn{font-size:10px;font-weight:600;background:none;border:1px solid var(--border);border-radius:6px;padding:3px 8px;cursor:pointer;font-family:inherit;color:var(--text-secondary);}
   .ci-nudge-btn:hover{border-color:var(--amber);color:#b45309;}
+
+  /* ── INLINE PAY RATE EDIT ── */
+  .pay-rate-field{display:inline-flex;align-items:center;gap:2px;cursor:pointer;}
+  .pay-rate-val{font-size:12px;color:var(--text-secondary);border-bottom:1px dashed var(--border);padding-bottom:1px;transition:border-color 0.12s;}
+  .pay-rate-val:hover{border-color:var(--brand);color:var(--brand-dark);}
+  .pay-rate-input{width:52px;padding:1px 4px;border:1.5px solid var(--brand);border-radius:5px;font-size:12px;font-family:'DM Mono',monospace;color:var(--text);background:var(--surface);outline:none;}
+
+  /* ── COORDINATOR DASHBOARD ── */
+  .dashboard-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:14px;}
+  @media(max-width:900px){.dashboard-strip{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:580px){.dashboard-strip{grid-template-columns:repeat(2,1fr);}}
+  .dash-tile{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:11px 13px;cursor:pointer;transition:all 0.14s;box-shadow:var(--shadow);}
+  .dash-tile:hover{border-color:var(--brand-mid);background:var(--brand-light);transform:translateY(-1px);box-shadow:var(--shadow-md);}
+  .dash-tile.alert{border-color:#fde68a;background:#fffbeb;}
+  .dash-tile.alert:hover{border-color:#f59e0b;background:#fef3c7;}
+  .dash-tile.good{border-color:var(--brand-mid);background:var(--brand-light);}
+  .dash-num{font-size:22px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:var(--text);}
+  .dash-tile.alert .dash-num{color:#b45309;}
+  .dash-tile.good .dash-num{color:var(--brand-dark);}
+  .dash-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-tertiary);margin-top:4px;}
+  .dash-sub{font-size:10px;color:var(--text-tertiary);margin-top:2px;line-height:1.3;}
 </style>
 </head>
 <body>
@@ -781,6 +820,8 @@
 
   <!-- SCHEDULE -->
   <div class="view active" id="view-schedule">
+    <!-- ── COORDINATOR DASHBOARD ── -->
+    <div class="dashboard-strip" id="dashboard-strip"></div>
     <div class="schedule-grid">
       <div>
         <div class="panel-label" id="pool-panel-label">Available coaches</div>
@@ -810,10 +851,16 @@
         <div class="stat-block"><div class="stat-num" id="stat-c">0</div><div class="stat-lbl">Confirmed</div></div>
         <div class="stat-block" id="stat-conflict-block"><div class="stat-num" id="stat-x">0</div><div class="stat-lbl">Conflicts</div></div>
       </div>
-      <button class="send-btn" id="send-btn" onclick="sendAssignments()" disabled>
-        <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
-        Send all assignments
-      </button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="print-schedule-btn" onclick="printDailySchedule()" title="Print or share tomorrow's schedule">
+          <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke="currentColor"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print schedule
+        </button>
+        <button class="send-btn" id="send-btn" onclick="sendAssignments()" disabled>
+          <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+          Send all assignments
+        </button>
+      </div>
     </div>
 
     <!-- ── DAILY BRIEFING NOTE ── -->
@@ -1466,6 +1513,11 @@ if(_SAVED?.coordinators?.length) coordinators = _SAVED.coordinators;
 let dragging=null,formVisible=false,pickerCoachId=null,pickerSchoolId=null;
 let editSeasonId=null,detailView='school',newSeasonOpen=false,openProgForms={},openCoordForms={};
 let portalCoach=null,coachAvail={};
+/* Restore portal session from previous visit */
+try{
+  const _ps=localStorage.getItem('ez_portal_session');
+  if(_ps)portalCoach=JSON.parse(_ps);
+}catch(e){portalCoach=null;}
 let availDragging=false,availDragMode=null;
 let broadcastPid=null,broadcastRemovedCid=null,broadcastFired=false;
 let payGroup='day'; /* 'day' | 'week' | 'month' */
@@ -1522,6 +1574,7 @@ function init(){
   renderPool();renderSchools();updateStats();renderRoster();renderAvailGrid();renderPortalConfirmations();
   populatePayrollFilters();renderPayroll();
   updateCheckinBadge();
+  updateDashboard();
   /* Restore daily note — clear if from a previous day */
   const today=todayStr();
   const noteEl=document.getElementById('daily-note-input');
@@ -1761,20 +1814,25 @@ function renderWeekView(){
 
     const daySchools=schools.map(s=>({...s,programs:s.programs.filter(p=>p.days.includes(day))})).filter(s=>s.programs.length>0);
     const dayConflictCount=[...conflicts].filter(k=>k.endsWith(':'+day)).length;
+    const daySubReqs=getSubRequestsForDay(day);
+    const daySubCount=daySubReqs.length;
 
     const schoolsHtml=daySchools.length?daySchools.map(school=>{
       const progRows=school.programs.map(p=>{
         const hasConflict=conflicts.has(p.id+':'+day);
+        const subReqsForProg=daySubReqs.filter(r=>r.pid===p.id);
         const chips=(assignments[p.id]||[]).map(cid=>{
           const c=getCoach(cid);if(!c)return'';
-          const isConflicted=hasConflict;
-          return`<div class="assigned-chip" style="font-size:10px;padding:2px 6px 2px 4px;${isConflicted?'border-color:#fde68a;background:var(--amber-light)':''}"><div class="sm-av ${c.av}" style="width:14px;height:14px;font-size:6px">${c.initials}</div><span>${c.name}</span><span class="remove-x" onclick="removeAssignment('${p.id}','${cid}')">×</span></div>`;
+          const needsSub=subReqsForProg.some(r=>r.coachId===cid);
+          const chipStyle=hasConflict?'border-color:#fde68a;background:var(--amber-light)':needsSub?'border-color:#fde68a;background:#fffbeb':'';
+          return`<div class="assigned-chip" style="font-size:10px;padding:2px 6px 2px 4px;${chipStyle}"><div class="sm-av ${c.av}" style="width:14px;height:14px;font-size:6px">${c.initials}</div><span>${c.name}</span>${needsSub?`<span style="font-size:8px;color:#b45309;margin-left:2px">⚠sub</span>`:''}<span class="remove-x" onclick="removeAssignment('${p.id}','${cid}')">×</span></div>`;
         }).join('');
         const full=progCount(p.id)>=p.max;
         return`<div class="wk-prog-row${hasConflict?' has-conflict':''}">
           <div class="wk-prog-label">${p.label}</div>
           <div class="wk-prog-time">${p.time}</div>
           ${hasConflict?`<div class="wk-conflict-tag">⚠ ${V('worker')} conflict</div>`:''}
+          ${subReqsForProg.length&&!hasConflict?`<div class="wk-conflict-tag" style="color:#b45309">🔄 Sub needed</div>`:''}
           <div class="wk-prog-chips">${chips||`<span class="prog-hint" style="font-size:10px">${full?'Full':`No ${V('worker').toLowerCase()}`}</span>`}</div>
         </div>`;
       }).join('');
@@ -1785,6 +1843,7 @@ function renderWeekView(){
       <div class="wk-col-hd">
         <div class="wk-day-name">${dayLabel} <span style="font-weight:400;color:var(--text-tertiary)">${dateStr}</span></div>
         ${dayConflictCount>0?`<div class="wk-conflict-badge">⚠ ${dayConflictCount} conflict${dayConflictCount!==1?'s':''}</div>`:''}
+        ${daySubCount>0?`<div class="wk-conflict-badge" style="background:#fffbeb;color:#b45309;border-color:#fde68a">🔄 ${daySubCount} sub${daySubCount!==1?'s':''} needed</div>`:''}
       </div>
       <div class="wk-col-body">${schoolsHtml}<div class="wk-drop-hint">Drop a ${V('worker').toLowerCase()} here</div></div>
     </div>`;
@@ -1846,8 +1905,22 @@ function renderSchools(){
   if(!filtered.length){list.innerHTML=`<div class="card" style="padding:32px;text-align:center;color:var(--text-tertiary);font-size:13px;font-style:italic">No ${V('shifts').toLowerCase()} scheduled for ${tomorrow}.</div>`;return;}
   list.innerHTML=filtered.map(s=>{
     const pill=sportPillClass(s.sport);
+    const tomorrow=getTomorrowDayName();
+    const subReqsForSchool=getSubRequestsForDay(tomorrow).filter(r=>s.programs.some(p=>p.id===r.pid));
     const rows=s.programs.map(p=>{
-      const chips=(assignments[p.id]||[]).map(cid=>{const c=getCoach(cid);return`<div class="assigned-chip"><div class="sm-av ${c.av}">${c.initials}</div><span>${c.name}</span>${sent?`<span class="replace-btn" onclick="openBroadcast('${p.id}','${cid}')">Replace</span>`:''}<span class="remove-x" onclick="removeAssignment('${p.id}','${cid}')">×</span></div>`;}).join('');
+      const subReqsForProg=getSubRequestsForDay(tomorrow).filter(r=>r.pid===p.id);
+      const chips=(assignments[p.id]||[]).map(cid=>{
+        const c=getCoach(cid);
+        const needsSub=subReqsForProg.some(r=>r.coachId===cid);
+        return`<div class="assigned-chip${needsSub?' needs-sub':''}">
+          <div class="sm-av ${c.av}">${c.initials}</div>
+          <span>${c.name}</span>
+          ${needsSub?`<span class="needs-sub-tag">needs sub</span>`:''}
+          ${sent&&!needsSub?`<span class="replace-btn" onclick="openBroadcast('${p.id}','${cid}')">Replace</span>`:''}
+          ${needsSub?`<span class="replace-btn" onclick="openBroadcast('${p.id}','${cid}')">Find sub</span>`:''}
+          <span class="remove-x" onclick="removeAssignment('${p.id}','${cid}')">×</span>
+        </div>`;
+      }).join('');
       const full=progCount(p.id)>=p.max;
       const sc=p.students?.length||0;
       const studentBadge=`<span class="student-badge${sc===0?' none':''}" title="${sc} students enrolled"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>${sc>0?sc:'No roster'}</span>`;
@@ -1862,6 +1935,13 @@ function renderSchools(){
     const studentHeader=totalStudents>0
       ? `<span class="school-student-total"><svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>${totalStudents} students</span>`
       : `<span class="school-student-total no-roster"><svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>No roster</span>`;
+    const subBanner=subReqsForSchool.length
+      ?`<div class="sub-request-banner">
+          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          ${subReqsForSchool.length} sub request${subReqsForSchool.length!==1?'s':''} — ${subReqsForSchool.map(r=>r.coach.name.split(' ')[0]).join(', ')}
+          <button class="find-sub-link" onclick="switchTab('checkin')">View in Check-In →</button>
+        </div>`
+      :'';
     return`<div class="school-card" id="scard-${s.id}">
       <div class="school-header">
         <div>
@@ -1873,6 +1953,7 @@ function renderSchools(){
           <div class="sport-pill ${pill}">${s.sport}</div>
         </div>
       </div>
+      ${subBanner}
       <div class="school-drop-zone" id="dropzone-${s.id}" ondragover="onSchoolDragOver(event,'${s.id}')" ondragleave="onSchoolDragLeave('${s.id}')" ondrop="onSchoolDrop(event,'${s.id}')">Drop a ${V('worker').toLowerCase()} here to assign to a ${V('shift').toLowerCase()}</div>
       <div class="program-list">${rows}</div>
       ${coverageBar}
@@ -1904,6 +1985,7 @@ function updateStats(){
   const pending=Object.values(confirmations).filter(v=>v==='pending').length;
   const badge=document.getElementById('pending-badge');
   badge.textContent=pending;badge.classList.toggle('show',sent&&pending>0);
+  updateDashboard();
 }
 function onDragStart(e,id){dragging=id;setTimeout(()=>document.getElementById('chip-'+id)?.classList.add('dragging'),0);}
 function onDragEnd(){document.querySelectorAll('.coach-chip').forEach(el=>el.classList.remove('dragging'));dragging=null;}
@@ -1919,7 +2001,16 @@ function openPicker(coachId,schoolId){pickerCoachId=coachId;pickerSchoolId=schoo
     const studTag=sc>0?`<span class="student-badge" style="margin-left:6px">${sc} students</span>`:'';
     return`<div class="program-option ${disabled?'is-disabled':''} ${matchClass}" onclick="${disabled?'':` assignToProgram('${p.id}')`}"><div><div class="prog-opt-name">${p.label}${matchTag}${studTag}</div><div class="prog-opt-time">${p.time}</div></div><div class="prog-spots ${full?'is-full':''}">${already?'already here':full?'full':`${count}/${p.max} filled`}</div></div>`;
   }).join('');document.getElementById('picker-backdrop').classList.add('show');}
-function assignToProgram(pid){if(!assignments[pid])assignments[pid]=[];if(!assignments[pid].includes(pickerCoachId))assignments[pid].push(pickerCoachId);const c=getCoach(pickerCoachId);const info=getProgramInfo(pid);closePicker();persist();renderPool();renderSchools();updateStats();showToast(`${c.name} → ${info.program.label} at ${info.school.name}`);}
+function assignToProgram(pid){
+  if(!assignments[pid])assignments[pid]=[];
+  if(!assignments[pid].includes(pickerCoachId))assignments[pid].push(pickerCoachId);
+  const c=getCoach(pickerCoachId);
+  // Use cross-season lookup so week-view assignments (non-tomorrow days) resolve correctly
+  const info=getProgramInfoFromSeasons(pid)||getProgramInfo(pid);
+  closePicker();persist();renderPool();renderSchools();updateStats();
+  if(info)showToast(`${c.name} → ${info.program.label} at ${info.school.name}`);
+  else showToast(`${c.name} assigned`);
+}
 function closePicker(){document.getElementById('picker-backdrop').classList.remove('show');pickerCoachId=pickerSchoolId=null;}
 function sendAssignments(){
   const all=Object.entries(assignments).flatMap(([pid,cids])=>cids.map(cid=>({pid,cid})));
@@ -1963,20 +2054,78 @@ function sendAssignments(){
         }
         persist();
         const el2=document.getElementById('st-'+cid+pid);
-        if(el2)el2.innerHTML=confirmed
-          ?'<div class="dot dot-sent"></div><span style="color:var(--brand-dark)">Confirmed ✓</span>'
-          :'<div class="dot dot-sending"></div><span style="color:#b45309">No reply yet</span>';
+        if(el2){
+          if(confirmed){
+            const info2=getProgramInfo(pid);
+            const sc=info2?.program?.students?.length||0;
+            const rosterLine=sc>0
+              ?`<div class="sms-followup-label">Auto follow-up sent</div>
+                 <div class="sms-bubble followup">"Great, you're confirmed! Here's your class roster (${sc} student${sc!==1?'s':''}) for ${info2.program.label}: [roster link] — ${smsSender}"</div>
+                 <button class="roster-link-btn" onclick="openCoachRosterPage('${pid}','${getCoach(cid)?.name||''}')">
+                   <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                   View roster
+                 </button>`
+              :`<div class="sms-followup-label">Auto follow-up sent</div>
+                 <div class="sms-bubble followup">"Great, you're confirmed for ${info2?.program?.label||'your class'} tomorrow. See you there! — ${smsSender}"</div>`;
+            el2.innerHTML=`<div class="dot dot-sent"></div><span style="color:var(--brand-dark)">Confirmed ✓</span>${rosterLine}`;
+          } else {
+            el2.innerHTML='<div class="dot dot-sending"></div><span style="color:#b45309">No reply yet</span>';
+          }
+        }
         updateStats();renderPortalConfirmations();
       },800+Math.random()*1400);
     },350+i*400);
   });
 }
 function closeModal(){document.getElementById('modal-backdrop').classList.remove('show');renderPayroll();switchTab('confirm');}
-function renderConfirmations(){const all=Object.entries(assignments).flatMap(([pid,cids])=>cids.map(cid=>({pid,cid})));const list=document.getElementById('confirm-list');if(!all.length){list.innerHTML='<div class="empty-state">No assignments sent yet.</div>';return;}list.innerHTML=all.map(({pid,cid})=>{const info=getProgramInfo(pid);const c=getCoach(cid);const status=confirmations[cid+pid];const pill=sent?(status==='confirmed'?'<span class="status-pill pill-confirmed">Confirmed</span>':'<span class="status-pill pill-pending">Pending</span>'):'<span class="status-pill pill-notsent">Not sent</span>';const ir=sent&&status==='confirmed'?`<div class="incident-row"><span class="incident-label">Log incident:</span><button class="incident-btn inc-noshow" onclick="logIncident('${cid}','${pid}','no-show')">No-show</button><button class="incident-btn inc-latecancel" onclick="logIncident('${cid}','${pid}','late-cancel')">Late cancel</button></div>`:'';return`<div class="roster-row"><div class="conf-row" style="border:none;padding-bottom:0"><div class="conf-left"><div class="avatar ${c.av}">${c.initials}</div><div><div class="conf-name">${c.name} ${relBadgeHtml(c)}</div><div class="conf-detail">${info.school.name} · ${info.program.label} · ${info.program.time}</div></div></div>${pill}</div>${ir}</div>`;}).join('');}
+function renderConfirmations(){const all=Object.entries(assignments).flatMap(([pid,cids])=>cids.map(cid=>({pid,cid})));const list=document.getElementById('confirm-list');if(!all.length){list.innerHTML='<div class="empty-state">No assignments sent yet.</div>';return;}list.innerHTML=all.map(({pid,cid})=>{const info=getProgramInfo(pid);const c=getCoach(cid);const status=confirmations[cid+pid];const pill=sent?(status==='confirmed'?'<span class="status-pill pill-confirmed">Confirmed</span>':'<span class="status-pill pill-pending">Pending</span>'):'<span class="status-pill pill-notsent">Not sent</span>';const sc=info?.program?.students?.length||0;const rosterBtn=sent&&status==='confirmed'&&sc>0?`<button class="roster-link-btn" style="margin-left:6px" onclick="openCoachRosterPage('${pid}','${c.name}')"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Roster (${sc})</button>`:'';const ir=sent&&status==='confirmed'?`<div class="incident-row"><span class="incident-label">Log incident:</span><button class="incident-btn inc-noshow" onclick="logIncident('${cid}','${pid}','no-show')">No-show</button><button class="incident-btn inc-latecancel" onclick="logIncident('${cid}','${pid}','late-cancel')">Late cancel</button></div>`:'';return`<div class="roster-row"><div class="conf-row" style="border:none;padding-bottom:0"><div class="conf-left"><div class="avatar ${c.av}">${c.initials}</div><div><div class="conf-name">${c.name} ${relBadgeHtml(c)}</div><div class="conf-detail">${info.school.name} · ${info.program.label} · ${info.program.time}</div></div></div><div style="display:flex;align-items:center">${pill}${rosterBtn}</div></div>${ir}</div>`;}).join('');}
 function logIncident(coachId,pid,type){const c=getCoach(coachId);if(!c)return;if(type==='no-show')c.stats.noShows++;else c.stats.lateCancels++;const ex=sessionLog.find(s=>s.coachId===coachId&&s.pid===pid&&s.date===todayStr());if(ex)ex.status=type;else sessionLog.push({id:'sl'+sessionLogNext++,coachId,date:todayStr(),pid,status:type,paid:false});persist();renderConfirmations();renderPayroll();renderRoster(document.getElementById('search-input')?.value||'');showToast(`${c.name} — ${type==='no-show'?'No-show':'Late cancel'} logged`);}
 function openBroadcast(pid,removedCid){broadcastPid=pid;broadcastRemovedCid=removedCid;broadcastFired=false;const info=getProgramInfo(pid);const c=getCoach(removedCid);document.getElementById('broadcast-title').textContent=`${c.name} — find replacement`;document.getElementById('broadcast-sub').textContent=`${info.school.name} · ${info.program.label} · ${info.program.time}`;document.getElementById('broadcast-winner-wrap').innerHTML='';document.getElementById('broadcast-actions').style.display='flex';const assigned=assignedIds();const candidates=[...coaches.filter(c2=>c2.isSub&&c2.available&&!assigned.includes(c2.id)&&c2.id!==removedCid),...coaches.filter(c2=>!c2.isSub&&c2.available&&!assigned.includes(c2.id)&&c2.id!==removedCid)];document.getElementById('broadcast-coach-list').innerHTML=candidates.length?candidates.map(c2=>`<div class="broadcast-coach-option" id="bco-${c2.id}"><div class="avatar ${c2.av}" style="width:30px;height:30px;font-size:10px">${c2.initials}</div><div class="bco-info"><div class="bco-name">${c2.name} ${relBadgeHtml(c2)}</div><div class="bco-meta">${c2.sport} · ${c2.isSub?'Sub bench':'Primary'}</div></div><span class="bco-status bco-waiting" id="bco-st-${c2.id}">Waiting</span></div>`).join(''):'<div style="padding:12px;font-size:12px;color:var(--text-tertiary);font-style:italic">No coaches available.</div>';document.getElementById('broadcast-backdrop').classList.add('show');}
 function sendBroadcast(){if(broadcastFired)return;broadcastFired=true;document.getElementById('broadcast-send-btn').disabled=true;const assigned=assignedIds();const candidates=coaches.filter(c=>c.available&&!assigned.includes(c.id)&&c.id!==broadcastRemovedCid);if(!candidates.length){showToast('No available coaches');closeBroadcast();return;}candidates.forEach((c,i)=>setTimeout(()=>{const el=document.getElementById('bco-st-'+c.id);if(el){el.className='bco-status bco-sending';el.textContent='Text sent...';}},300+i*250));const winner=candidates.find(c=>c.isSub)||candidates[Math.floor(Math.random()*candidates.length)];setTimeout(()=>{candidates.filter(c=>c.id!==winner.id).forEach(c=>{const el=document.getElementById('bco-st-'+c.id);if(el){el.className='bco-status bco-waiting';el.textContent='No reply';}});const el=document.getElementById('bco-st-'+winner.id);if(el){el.className='bco-status bco-replied';el.textContent='✓ Replied YES';}document.getElementById('broadcast-actions').style.display='none';document.getElementById('broadcast-winner-wrap').innerHTML=`<div class="broadcast-winner-banner"><div class="broadcast-winner-icon"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="broadcast-winner-text">${winner.name} is confirmed!</div><button class="broadcast-winner-btn" onclick="acceptBroadcastWinner('${winner.id}')">Assign them →</button></div>`;},1200+candidates.length*200);}
-function acceptBroadcastWinner(winnerId){if(broadcastRemovedCid)removeAssignment(broadcastPid,broadcastRemovedCid);if(!assignments[broadcastPid])assignments[broadcastPid]=[];assignments[broadcastPid].push(winnerId);const info=getProgramInfo(broadcastPid);const c=getCoach(winnerId);closeBroadcast();persist();renderPool();renderSchools();updateStats();showToast(`${c.name} assigned to ${info.program.label}`);}
+function acceptBroadcastWinner(winnerId){
+  const pid=broadcastPid;
+  const removedCid=broadcastRemovedCid;
+
+  // ── Clean up the original coach ──
+  if(removedCid){
+    removeAssignment(pid,removedCid);
+
+    // Reverse their confirmed status for this slot
+    const confKey=removedCid+pid;
+    const wasConfirmed=confirmations[confKey]==='confirmed';
+    delete confirmations[confKey];
+
+    // Remove or revert the session log entry they generated when they confirmed
+    if(wasConfirmed){
+      const logIdx=sessionLog.findIndex(s=>s.coachId===removedCid&&s.pid===pid&&s.date===todayStr());
+      if(logIdx!==-1){
+        sessionLog.splice(logIdx,1);
+        // Walk back their confirmed stat
+        const originalCoach=getCoach(removedCid);
+        if(originalCoach&&originalCoach.stats.confirmed>0)originalCoach.stats.confirmed--;
+      }
+    }
+  }
+
+  // ── Assign the replacement ──
+  if(!assignments[pid])assignments[pid]=[];
+  assignments[pid].push(winnerId);
+
+  // Mark replacement as confirmed and add their session log entry
+  const confKey=winnerId+pid;
+  confirmations[confKey]='confirmed';
+  const alreadyLogged=sessionLog.some(s=>s.coachId===winnerId&&s.pid===pid&&s.date===todayStr());
+  if(!alreadyLogged){
+    sessionLog.push({id:'sl'+sessionLogNext++,coachId:winnerId,date:todayStr(),pid,status:'completed',paid:false});
+    const winner=getCoach(winnerId);if(winner)winner.stats.confirmed++;
+  }
+
+  const info=getProgramInfoFromSeasons(pid)||getProgramInfo(pid);
+  const c=getCoach(winnerId);
+  closeBroadcast();
+  persist();renderPool();renderSchools();updateStats();renderConfirmations();
+  showToast(`${c.name} assigned${info?` to ${info.program.label}`:''}${removedCid?' — replacing '+getCoach(removedCid)?.name?.split(' ')[0]:''}`);
+}
 function closeBroadcast(){document.getElementById('broadcast-backdrop').classList.remove('show');broadcastPid=broadcastRemovedCid=null;broadcastFired=false;}
 function renderRoster(filter=''){
   const q=(filter||'').toLowerCase();
@@ -1994,7 +2143,8 @@ function renderRoster(filter=''){
     const portalTag=c.fromPortal?`<span class="portal-badge">Via portal</span>`:'';
     const certTag=c.certification?`<span class="portal-badge" style="background:var(--amber-light);color:#b45309">${c.certification}</span>`:'';
     const inactiveTag=c.inactive?`<span class="inactive-badge">Inactive</span>`:'';
-    const payDisplay=isHourly?`$${c.payRate}/hr`:`$${c.payRate}/session`;
+    const payUnit=isHourly?'hr':'session';
+    const payDisplay=`<span class="pay-rate-field" onclick="editPayRate('${c.id}',this)" title="Click to edit pay rate"><span class="pay-rate-val">$${c.payRate}/${payUnit}</span></span>`;
     const actions=c.inactive
       ?`<button class="restore-btn" onclick="restoreCoach('${c.id}')">Restore</button>`
       :`${relBadgeHtml(c)}<button class="avail-toggle ${c.available?'avail-yes':'avail-no'}" onclick="toggleAvail('${c.id}')">${c.available?'Available':'Unavailable'}</button><button class="sub-toggle ${c.isSub?'sub-on':'sub-off'}" onclick="toggleSub('${c.id}')">${c.isSub?V('subBench'):V('primary')}</button><button class="del-btn" onclick="deleteCoach('${c.id}')">Remove</button>`;
@@ -2512,6 +2662,19 @@ function updateCheckinBadge(){
 
 /* ══ WEEKLY CHECK-IN (portal functions) ══ */
 
+/* Returns [{coachId, pid}] of coaches who flagged needsSub for a specific day this week */
+function getSubRequestsForDay(day){
+  const weekOf=getCheckinWeekOf();
+  const result=[];
+  coaches.forEach(c=>{
+    if(!c.weeklyCheckin||c.weeklyCheckin.weekOf!==weekOf)return;
+    c.weeklyCheckin.sessions
+      .filter(s=>s.needsSub&&s.day===day)
+      .forEach(s=>result.push({coachId:c.id,pid:s.pid,coach:c}));
+  });
+  return result;
+}
+
 function getCheckinWeekOf(){
   /* Returns the Monday of next week as YYYY-MM-DD */
   const d=new Date();
@@ -2589,7 +2752,7 @@ function renderCheckinForm(sessions,body,weekOf){
     sessHtml=sessions.map(({pid,day,program,school})=>{
       const k=`${pid}:${day}`;
       const isConfirmed=checkinConfirmed[k]!==false;
-      return`<div class="checkin-session-row">
+      return`<div class="checkin-session-row" data-checkin-key="${k}">
         <div class="checkin-session-info">
           <div class="checkin-session-name">${school.name} · ${program.label}</div>
           <div class="checkin-session-detail">${day} · ${program.time}</div>
@@ -2655,20 +2818,29 @@ function renderCheckinSummary(ci,body,coach){
 
 function setCheckinSession(pid,day,confirmed){
   checkinConfirmed[`${pid}:${day}`]=confirmed;
-  /* Re-render just the session rows without full card redraw */
+  /* Update toggle buttons in-place — don't re-render the whole form or textareas lose their values */
   const sessions=getCoachAssignedSessions();
-  const weekOf=getCheckinWeekOf();
-  const body=document.getElementById('checkin-body');
-  if(body)renderCheckinForm(sessions,body,weekOf);
+  sessions.forEach(s=>{
+    const k=`${s.pid}:${s.day}`;
+    const row=document.querySelector(`[data-checkin-key="${k}"]`);
+    if(!row)return;
+    const isConfirmed=checkinConfirmed[k]!==false;
+    const btns=row.querySelectorAll('.checkin-toggle-btn');
+    if(btns[0])btns[0].classList.toggle('active-confirm',isConfirmed);
+    if(btns[1])btns[1].classList.toggle('active-sub',!isConfirmed);
+  });
 }
 
 function toggleCheckinSubDay(day){
   if(checkinSubAvail.includes(day)) checkinSubAvail=checkinSubAvail.filter(d=>d!==day);
   else checkinSubAvail.push(day);
-  const sessions=getCoachAssignedSessions();
-  const weekOf=getCheckinWeekOf();
-  const body=document.getElementById('checkin-body');
-  if(body)renderCheckinForm(sessions,body,weekOf);
+  /* Update day buttons in-place — don't re-render and wipe textarea values */
+  document.querySelectorAll('.checkin-day-btn').forEach(btn=>{
+    const btnDay=btn.textContent.trim();
+    // Buttons show 3-char abbreviation — match against full day name
+    const fullDay=DAYS_FULL.find(d=>d.startsWith(btnDay));
+    if(fullDay)btn.classList.toggle('active',checkinSubAvail.includes(fullDay));
+  });
 }
 
 function submitCheckin(){
@@ -2718,15 +2890,33 @@ function openPortal(){
   // Populate sport select from org activity categories
   const sel=document.getElementById('p-sport');
   if(sel) sel.innerHTML=`<option value="">— Select ${V('skill').toLowerCase()} —</option>${getActivityOptions(portalCoach?.sport||'')}`;
-  // Restore a recognized coach's saved availability into the grid
+
   if(portalCoach?.phone){
     const matched=coaches.find(c=>c.phone===portalCoach.phone);
-    if(matched?.weeklyAvailability && Object.keys(matched.weeklyAvailability).length>0){
-      coachAvail=JSON.parse(JSON.stringify(matched.weeklyAvailability));
-      renderAvailGrid();
+    if(matched){
+      // Returning coach — restore full profile view without re-entering info
+      const dn=portalCoach.last?`${portalCoach.first} ${portalCoach.last}`:portalCoach.first;
+      document.getElementById('portal-success-banner').style.display='flex';
+      document.getElementById('portal-success-name').textContent=portalCoach.first;
+      document.getElementById('portal-form-wrap').style.display='none';
+      document.getElementById('portal-profile-wrap').style.display='block';
+      document.getElementById('portal-profile-av').textContent=mkInitials(dn);
+      document.getElementById('portal-profile-name').textContent=dn;
+      document.getElementById('portal-profile-meta').textContent=`${portalCoach.sport} · ${portalCoach.phone}`;
+      // Restore availability grid
+      if(matched.weeklyAvailability && Object.keys(matched.weeklyAvailability).length>0){
+        coachAvail=JSON.parse(JSON.stringify(matched.weeklyAvailability));
+        renderAvailGrid();
+      }
+      // Restore check-in state
+      if(matched.weeklyCheckin?.weekOf===getCheckinWeekOf()){
+        matched.weeklyCheckin.sessions.forEach(s=>{checkinConfirmed[`${s.pid}:${s.day}`]=!s.needsSub;});
+        checkinSubAvail=[...matched.weeklyCheckin.subAvailDays||[]];
+        checkinMaterials=matched.weeklyCheckin.materials||'';
+        checkinFeedback=matched.weeklyCheckin.feedback||'';
+      }
+      renderCheckinCard();
     }
-    // Show check-in card for recognized coach
-    renderCheckinCard();
   }
   renderPortalConfirmations();
 }
@@ -2738,6 +2928,8 @@ function submitPortalForm(){
   const phone=document.getElementById('p-phone').value.trim();
   if(!first||!sport||!phone)return;
   portalCoach={first,last,sport,phone};
+  // Persist portal session so coach is recognized on next open
+  try{localStorage.setItem('ez_portal_session',JSON.stringify(portalCoach));}catch(e){}
   const dn=last?`${first} ${last}`:first;
 
   /* ── Add or update in admin roster ── */
@@ -2793,8 +2985,58 @@ function submitPortalForm(){
   }
   renderCheckinCard();
 }
-function editPortalForm(){document.getElementById('portal-form-wrap').style.display='block';document.getElementById('portal-profile-wrap').style.display='none';document.getElementById('portal-success-banner').style.display='none';if(portalCoach){document.getElementById('p-first').value=portalCoach.first;document.getElementById('p-last').value=portalCoach.last;document.getElementById('p-sport').value=portalCoach.sport;document.getElementById('p-phone').value=portalCoach.phone;}}
-function renderPortalConfirmations(){const list=document.getElementById('portal-conf-list');const counter=document.getElementById('portal-conf-count');const all=Object.entries(assignments).flatMap(([pid,cids])=>cids.map(cid=>({pid,cid})));if(!all.length){counter.textContent='';list.innerHTML='<div class="portal-empty"><div class="portal-empty-icon">📋</div><div class="portal-empty-text">No classes scheduled yet.</div></div>';return;}let filtered=all;if(portalCoach){const matched=coaches.filter(c=>c.phone===portalCoach.phone);if(matched.length){const ids=matched.map(c=>c.id);filtered=all.filter(({cid})=>ids.includes(cid));}}if(!filtered.length){counter.textContent='';list.innerHTML='<div class="portal-empty"><div class="portal-empty-icon">🔍</div><div class="portal-empty-text">No classes found for your number.</div></div>';return;}const cc=filtered.filter(({pid,cid})=>confirmations[cid+pid]==='confirmed').length;counter.textContent=`${cc} of ${filtered.length} confirmed`;list.innerHTML=filtered.map(({pid,cid})=>{const info=getProgramInfo(pid);const c=getCoach(cid);const status=confirmations[cid+pid];const ic=SPORT_ICON[info.school.sport]||'icon-default';const em=SPORT_EMOJI[info.school.sport]||'🏅';let pill,reply;if(!sent){pill='<span class="portal-status-pill portal-pill-notsent">Not sent yet</span>';reply='<span class="portal-status-reply">Awaiting coordinator</span>';}else if(status==='confirmed'){pill='<span class="portal-status-pill portal-pill-confirmed">✓ Confirmed</span>';reply='<span class="portal-status-reply">Replied YES via text</span>';}else{pill='<span class="portal-status-pill portal-pill-pending">Pending reply</span>';reply='<span class="portal-status-reply">Reply YES to confirm</span>';}return`<div class="portal-conf-row"><div class="portal-conf-icon ${ic}">${em}</div><div class="portal-conf-info"><div class="portal-conf-school">${info.school.name}</div><div class="portal-conf-detail">${info.program.label} · ${info.program.time}</div></div><div class="portal-conf-status">${pill}${reply}</div></div>`;}).join('');}
+function editPortalForm(){
+  document.getElementById('portal-form-wrap').style.display='block';
+  document.getElementById('portal-profile-wrap').style.display='none';
+  document.getElementById('portal-success-banner').style.display='none';
+  if(portalCoach){
+    document.getElementById('p-first').value=portalCoach.first;
+    document.getElementById('p-last').value=portalCoach.last||'';
+    if(portalCoach.sport)document.getElementById('p-sport').value=portalCoach.sport;
+    document.getElementById('p-phone').value=portalCoach.phone;
+  }
+}
+function renderPortalConfirmations(){
+  const list=document.getElementById('portal-conf-list');
+  const counter=document.getElementById('portal-conf-count');
+  const all=Object.entries(assignments).flatMap(([pid,cids])=>cids.map(cid=>({pid,cid})));
+  if(!all.length){counter.textContent='';list.innerHTML='<div class="portal-empty"><div class="portal-empty-icon">📋</div><div class="portal-empty-text">No classes scheduled yet.</div></div>';return;}
+  let filtered=all;
+  if(portalCoach){
+    const matched=coaches.filter(c=>c.phone===portalCoach.phone);
+    if(matched.length){const ids=matched.map(c=>c.id);filtered=all.filter(({cid})=>ids.includes(cid));}
+  }
+  if(!filtered.length){counter.textContent='';list.innerHTML='<div class="portal-empty"><div class="portal-empty-icon">🔍</div><div class="portal-empty-text">No classes found for your number.</div></div>';return;}
+  const cc=filtered.filter(({pid,cid})=>confirmations[cid+pid]==='confirmed').length;
+  counter.textContent=`${cc} of ${filtered.length} confirmed`;
+  list.innerHTML=filtered.map(({pid,cid})=>{
+    const info=getProgramInfo(pid);const c=getCoach(cid);
+    const status=confirmations[cid+pid];
+    const ic=SPORT_ICON[info.school.sport]||'icon-default';
+    const em=SPORT_EMOJI[info.school.sport]||'🏅';
+    let pill,reply;
+    if(!sent){pill='<span class="portal-status-pill portal-pill-notsent">Not sent yet</span>';reply='<span class="portal-status-reply">Awaiting coordinator</span>';}
+    else if(status==='confirmed'){pill='<span class="portal-status-pill portal-pill-confirmed">✓ Confirmed</span>';reply='<span class="portal-status-reply">Replied YES via text</span>';}
+    else{pill='<span class="portal-status-pill portal-pill-pending">Pending reply</span>';reply='<span class="portal-status-reply">Reply YES to confirm</span>';}
+    // Roster button — shown whenever a roster has been uploaded for this program
+    const sc=info.program?.students?.length||0;
+    const rosterBtn=sc>0
+      ?`<button class="portal-roster-btn" onclick="openCoachRosterPage('${pid}','${c.name}')">
+          <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke="currentColor" width="11" height="11"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          View class roster · ${sc} students
+        </button>`
+      :'';
+    return`<div class="portal-conf-row">
+      <div class="portal-conf-icon ${ic}">${em}</div>
+      <div class="portal-conf-info">
+        <div class="portal-conf-school">${info.school.name}</div>
+        <div class="portal-conf-detail">${info.program.label} · ${info.program.time}</div>
+        ${rosterBtn}
+      </div>
+      <div class="portal-conf-status">${pill}${reply}</div>
+    </div>`;
+  }).join('');
+}
 
 /* ══ AVAIL GRID ══ */
 function renderAvailGrid(){const grid=document.getElementById('avail-grid');if(!grid)return;let html='<div class="avail-corner"></div>';DAYS_SHORT.forEach((d,i)=>{html+=`<button class="avail-day-btn" id="daybtn-${i}" onclick="toggleDay(${i})">${d}</button>`;});HOURS.forEach(h=>{html+=`<div class="avail-hour-label" onclick="toggleHour(${h})">${hourLabel(h)}</div>`;DAYS_FULL.forEach((day,di)=>{const on=coachAvail[day]?.includes(h);html+=`<div class="avail-cell ${on?'on':''}" id="ac-${di}-${h}" onmousedown="availDragStart(event,${di},${h})" onmouseenter="availDragEnter(${di},${h})" onmouseup="availDragEnd()" ontouchstart="availTapCell(${di},${h})"></div>`;});});grid.innerHTML=html;updateDayHeaders();updateAvailSummary();}
@@ -3010,6 +3252,7 @@ function saveSettings(){
   const portalLogo=document.getElementById('portal-logo-name');if(portalLogo)portalLogo.innerHTML=`${shortName} <span>Coach Portal</span>`;
   document.title=`${shortName} Scheduler`;
   persist();
+  applyOrgConfig();  // re-applies all vertical labels, logo, colors to DOM
   closeSettings();
   showToast('Settings saved');
 }
@@ -3057,6 +3300,357 @@ function updateSchoolField(seasonId,schoolId,field,value){
   const season=seasons.find(s=>s.id===seasonId);
   const school=season?.schools.find(sc=>sc.id===schoolId);
   if(school){school[field]=value;persist();}
+}
+
+/* ══ COACH ROSTER PAGE ══ */
+function openCoachRosterPage(pid, coachName){
+  const info=getProgramInfoFromSeasons(pid);
+  if(!info){showToast('Program info not found');return;}
+  const {school,program}=info;
+  const students=program.students||[];
+  const orgName=ORG_CFG?.orgName||'EZScheduler';
+  const orgShort=ORG_CFG?.shortName||'EZ';
+  const brand=ORG_CFG?.brandColor?.hex||'#1a9e72';
+  const brandDark=ORG_CFG?.brandColor?.dark||'#0f6e50';
+  const brandLight=ORG_CFG?.brandColor?.light||'#e6f7f1';
+
+  const d=new Date();d.setDate(d.getDate()+1);
+  const dateStr=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+
+  const studentRows=students.length
+    ? students.map((s,i)=>`
+        <tr>
+          <td class="num">${i+1}</td>
+          <td class="name">${s.name}</td>
+          <td class="grade">${s.grade?`Grade ${s.grade}`:''}</td>
+          <td class="present"><div class="check-box"></div></td>
+        </tr>`).join('')
+    : `<tr><td colspan="4" style="text-align:center;padding:24px;color:#9ca3af;font-style:italic">No roster uploaded for this program yet.</td></tr>`;
+
+  const html=`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${orgShort} · Roster · ${program.label}</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1a1a1a;background:#fff;padding:32px;max-width:700px;margin:0 auto;}
+  .doc-header{padding-bottom:18px;border-bottom:3px solid ${brand};margin-bottom:24px;}
+  .org-name{font-size:13px;font-weight:700;color:${brandDark};text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;}
+  .roster-title{font-size:22px;font-weight:700;color:#1a1a1a;line-height:1.2;}
+  .roster-meta{display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;}
+  .meta-item{font-size:12px;color:#6b7280;}
+  .meta-item strong{color:#374151;font-weight:600;}
+  .coach-chip{display:inline-flex;align-items:center;gap:6px;background:${brandLight};border:1px solid ${brand}20;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;color:${brandDark};margin-top:12px;}
+  table{width:100%;border-collapse:collapse;margin-top:8px;}
+  thead{background:${brandLight};}
+  th{padding:9px 12px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:${brandDark};border-bottom:2px solid ${brand}40;}
+  td{padding:10px 12px;border-bottom:1px solid #f3f4f6;font-size:14px;vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f9fafb;}
+  .num{color:#9ca3af;font-family:monospace;font-size:12px;width:36px;}
+  .name{font-weight:500;}
+  .grade{color:#6b7280;font-size:12px;width:80px;}
+  .present{width:60px;text-align:center;}
+  .check-box{width:22px;height:22px;border:2px solid #d1d5db;border-radius:5px;margin:0 auto;}
+  .summary{margin-top:20px;padding:14px 16px;background:#f9fafb;border-radius:8px;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;}
+  .summary-label{font-size:12px;color:#6b7280;}
+  .summary-count{font-size:18px;font-weight:700;color:${brandDark};}
+  .doc-footer{margin-top:28px;padding-top:14px;border-top:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#9ca3af;}
+  .notes-area{margin-top:20px;border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px;}
+  .notes-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#9ca3af;margin-bottom:8px;}
+  .notes-lines{display:flex;flex-direction:column;gap:8px;}
+  .notes-line{border-bottom:1px solid #e5e7eb;height:20px;}
+  @media print{
+    body{padding:16px;}
+    @page{margin:1.5cm;size:A4;}
+    .no-print{display:none;}
+    tr{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+  <div class="doc-header">
+    <div class="org-name">${orgName}</div>
+    <div class="roster-title">${program.label} — Class Roster</div>
+    <div class="roster-meta">
+      <div class="meta-item"><strong>${school.name}</strong></div>
+      <div class="meta-item">📅 ${dateStr}</div>
+      <div class="meta-item">🕐 ${program.time}</div>
+      <div class="meta-item">🏅 ${school.sport}</div>
+    </div>
+    ${coachName?`<div class="coach-chip">👤 ${coachName}</div>`:''}
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Student name</th>
+        <th>Grade</th>
+        <th>Present ✓</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${studentRows}
+    </tbody>
+  </table>
+
+  <div class="summary">
+    <div class="summary-label">Total enrolled</div>
+    <div class="summary-count">${students.length} student${students.length!==1?'s':''}</div>
+  </div>
+
+  <div class="notes-area">
+    <div class="notes-title">Session notes</div>
+    <div class="notes-lines">
+      ${Array(4).fill('<div class="notes-line"></div>').join('')}
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span>Generated by EZScheduler · ${new Date().toLocaleString()}</span>
+    <button onclick="window.print()" class="no-print" style="background:${brand};color:white;border:none;border-radius:6px;padding:6px 16px;font-size:12px;font-weight:600;cursor:pointer;">Print / Save PDF</button>
+  </div>
+</body>
+</html>`;
+
+  const win=window.open('','_blank');
+  if(win){win.document.write(html);win.document.close();}
+  else showToast('Allow pop-ups to view the roster');
+}
+
+/* ══ PRINT / SHARE DAILY SCHEDULE ══ */
+function printDailySchedule(){
+  const tomorrow=getTomorrowDayName();
+  const d=new Date();d.setDate(d.getDate()+1);
+  const dateStr=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  const orgName=ORG_CFG?.orgName||'EZScheduler';
+  const orgShort=ORG_CFG?.shortName||'EZ';
+  const brand=ORG_CFG?.brandColor?.hex||'#1a9e72';
+  const brandDark=ORG_CFG?.brandColor?.dark||'#0f6e50';
+  const brandLight=ORG_CFG?.brandColor?.light||'#e6f7f1';
+
+  // Build schedule data — schools with programs and assigned coaches
+  const schools=getSchools()
+    .map(s=>({...s,programs:s.programs.filter(p=>p.days.includes(tomorrow))}))
+    .filter(s=>s.programs.length>0);
+
+  const totalAssigned=assignedIds().length;
+  const totalSlots=schools.reduce((n,s)=>n+s.programs.reduce((m,p)=>m+p.max,0),0);
+  const totalFilled=schools.reduce((n,s)=>n+s.programs.reduce((m,p)=>m+Math.min(progCount(p.id),p.max),0),0);
+
+  // Build school sections
+  const schoolSections=schools.map(s=>{
+    const coord=coordinators.find(c=>c.id===s.coordinatorId);
+    const contactLine=s.contactName
+      ?`<div class="contact-line">📞 ${s.contactName}${s.contactPhone?` · ${s.contactPhone}`:''}</div>`:'';
+    const coordLine=coord
+      ?`<div class="coord-line">Coordinator: ${coord.name}${coord.phone?` · ${coord.phone}`:''}</div>`:'';
+
+    const programRows=s.programs.map(p=>{
+      const coaches=(assignments[p.id]||[]).map(cid=>{
+        const c=getCoach(cid);
+        return c?`<div class="coach-row">
+          <div class="coach-dot" style="background:${brand}"></div>
+          <div class="coach-name">${c.name}</div>
+          <div class="coach-phone">${c.phone}</div>
+        </div>`:'';
+      }).join('');
+      const empty=!coaches?`<div class="no-coach">⚠ No ${V('worker').toLowerCase()} assigned</div>`:'';
+      const subFlag=c=>{
+        const mc=coaches_arr_for_sub_check(p.id);
+        return mc.some(coach=>coach.weeklyCheckin?.weekOf===getCheckinWeekOf()&&
+          coach.weeklyCheckin.sessions.some(s=>s.pid===p.id&&s.needsSub))
+          ?`<div class="sub-flag">🔄 Sub needed</div>`:'';
+      };
+      return`<div class="program-block">
+        <div class="program-header">
+          <div class="program-name">${p.label}</div>
+          <div class="program-time">${p.time}</div>
+        </div>
+        ${coaches||empty}
+      </div>`;
+    }).join('');
+
+    return`<div class="school-section">
+      <div class="school-header">
+        <div class="school-name">${s.name}</div>
+        <div class="school-sport">${s.sport}</div>
+      </div>
+      ${contactLine}${coordLine}
+      <div class="programs">${programRows}</div>
+    </div>`;
+  }).join('');
+
+  const emptyMsg=!schools.length
+    ?`<div class="no-programs">No ${V('shifts').toLowerCase()} scheduled for ${tomorrow}.</div>`:'';
+
+  // Unassigned coaches note
+  const unassigned=availableCoaches().filter(c=>!assignedIds().includes(c.id)&&!c.isSub);
+  const unassignedNote=unassigned.length
+    ?`<div class="unassigned-section"><div class="unassigned-title">Available but unassigned</div><div class="unassigned-list">${unassigned.map(c=>`<span class="unassigned-chip">${c.name}</span>`).join('')}</div></div>`:'';
+
+  const noteSection=dailyNote
+    ?`<div class="notes-section"><div class="notes-title">Coordinator notes</div><div class="notes-text">${dailyNote}</div></div>`:'';
+
+  const html=`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${orgShort} · Daily Schedule · ${dateStr}</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1a1a1a;background:#fff;padding:32px;max-width:900px;margin:0 auto;}
+  .doc-header{display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:20px;border-bottom:3px solid ${brand};margin-bottom:28px;}
+  .org-name{font-size:22px;font-weight:700;color:${brandDark};}
+  .doc-title{font-size:14px;color:#555;margin-top:4px;}
+  .doc-date{font-size:13px;font-weight:600;color:#333;text-align:right;}
+  .doc-stats{font-size:12px;color:#777;margin-top:4px;text-align:right;}
+  .school-section{margin-bottom:24px;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;break-inside:avoid;}
+  .school-header{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;background:${brandLight};border-bottom:1px solid #d1fae5;}
+  .school-name{font-size:15px;font-weight:700;color:${brandDark};}
+  .school-sport{font-size:11px;font-weight:600;color:${brandDark};background:rgba(255,255,255,0.6);border-radius:20px;padding:2px 10px;}
+  .contact-line,.coord-line{font-size:11px;color:#6b7280;padding:5px 16px;background:#f9fafb;border-bottom:1px solid #f3f4f6;}
+  .programs{padding:12px 16px;display:grid;gap:12px;}
+  .program-block{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;}
+  .program-header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#f9fafb;border-bottom:1px solid #e5e7eb;}
+  .program-name{font-size:13px;font-weight:600;}
+  .program-time{font-size:11px;color:#6b7280;font-family:monospace;}
+  .coach-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid #f3f4f6;}
+  .coach-row:last-child{border-bottom:none;}
+  .coach-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .coach-name{font-size:13px;font-weight:500;flex:1;}
+  .coach-phone{font-size:12px;color:#6b7280;font-family:monospace;}
+  .no-coach{padding:8px 12px;font-size:12px;color:#b45309;font-style:italic;background:#fffbeb;}
+  .sub-flag{padding:4px 12px;font-size:11px;color:#b45309;background:#fef9c3;}
+  .unassigned-section{margin-top:24px;padding:14px 16px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;break-inside:avoid;}
+  .unassigned-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#9ca3af;margin-bottom:8px;}
+  .unassigned-list{display:flex;flex-wrap:wrap;gap:6px;}
+  .unassigned-chip{font-size:12px;font-weight:500;background:#e5e7eb;border-radius:20px;padding:3px 10px;color:#374151;}
+  .notes-section{margin-top:20px;padding:14px 16px;border:1px solid #e5e7eb;border-radius:10px;break-inside:avoid;}
+  .notes-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#9ca3af;margin-bottom:6px;}
+  .notes-text{font-size:13px;color:#374151;line-height:1.6;white-space:pre-wrap;}
+  .no-programs{padding:32px;text-align:center;font-size:14px;color:#9ca3af;font-style:italic;}
+  .doc-footer{margin-top:32px;padding-top:14px;border-top:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#9ca3af;}
+  @media print{
+    body{padding:16px;}
+    @page{margin:1.5cm;size:A4;}
+    .school-section{break-inside:avoid;}
+    .no-print{display:none;}
+  }
+</style>
+</head>
+<body>
+  <div class="doc-header">
+    <div>
+      <div class="org-name">${orgName}</div>
+      <div class="doc-title">Daily Schedule · ${V('shifts')}</div>
+    </div>
+    <div>
+      <div class="doc-date">${dateStr}</div>
+      <div class="doc-stats">${totalFilled}/${totalSlots} slots filled · ${schools.length} ${V('site').toLowerCase()}${schools.length!==1?'s':''}</div>
+    </div>
+  </div>
+
+  ${emptyMsg}
+  ${schoolSections}
+  ${unassignedNote}
+  ${noteSection}
+
+  <div class="doc-footer">
+    <span>Generated by EZScheduler · ${new Date().toLocaleString()}</span>
+    <button onclick="window.print()" class="no-print" style="background:${brand};color:white;border:none;border-radius:6px;padding:6px 16px;font-size:12px;font-weight:600;cursor:pointer;">Print / Save PDF</button>
+  </div>
+</body>
+</html>`;
+
+  const win=window.open('','_blank');
+  if(win){win.document.write(html);win.document.close();}
+  else showToast('Allow pop-ups to view the print schedule');
+}
+
+/* helper used inside printDailySchedule */
+function coaches_arr_for_sub_check(pid){
+  return (assignments[pid]||[]).map(cid=>getCoach(cid)).filter(Boolean);
+}
+</script>
+<!-- ROSTER UPLOAD MODAL -->
+<div class="roster-modal-backdrop" id="roster-modal-backdrop">
+  <div class="roster-modal">
+    <div class="roster-modal-head">
+      <div class="roster-modal-title" id="roster-modal-title">Upload roster</div>
+      <div class="roster-modal-sub" id="roster-modal-sub">Review students before saving</div>
+    </div>
+    <div class="roster-modal-body" id="roster-modal-body"></div>
+    <div class="roster-modal-foot">
+      <button class="btn-ghost" onclick="closeRosterModal()">Cancel</button>
+      <button class="btn-save" onclick="confirmRoster()">Save roster</button>
+    </div>
+  </div>
+</div>
+<input type="file" id="roster-file-input" accept=".csv,.xlsx,.xls" style="display:none" onchange="handleRosterFile(event)">
+
+<!-- Reset footer (for demos) -->
+<div style="text-align:center;padding:32px 0 16px;border-top:1px solid var(--border);margin-top:16px;">
+  <button onclick="resetSetup()" style="background:none;border:none;font-size:11px;color:var(--text-tertiary);cursor:pointer;font-family:inherit;padding:4px 8px;border-radius:5px;transition:color 0.12s;" onmouseover="this.style.color='var(--text-secondary)'" onmouseout="this.style.color='var(--text-tertiary)'">
+    ⚙ Re-run organization setup
+  </button>
+</div>
+
+
+<script>
+/* ══ INLINE PAY RATE EDITING ══ */
+function editPayRate(coachId,field){
+  const c=getCoach(coachId);if(!c||c.inactive)return;
+  const isHourly=V('payModel')==='hourly';
+  const payUnit=isHourly?'hr':'session';
+  field.innerHTML=`<input class="pay-rate-input" type="number" value="${c.payRate}" min="0" step="${isHourly?'0.25':'1'}" onblur="savePayRate('${coachId}',this)" onkeydown="if(event.key==='Enter')this.blur();if(event.key==='Escape'){this.value='${c.payRate}';this.blur();}" onclick="event.stopPropagation()">`;
+  const inp=field.querySelector('input');
+  if(inp){inp.focus();inp.select();}
+}
+function savePayRate(coachId,inp){
+  const c=getCoach(coachId);if(!c)return;
+  const val=parseFloat(inp.value);
+  if(!isNaN(val)&&val>=0&&val!==c.payRate){
+    c.payRate=val;
+    persist();
+    populatePayrollFilters();
+    showToast(`${c.name} — pay rate updated to $${val}/${V('payModel')==='hourly'?'hr':'session'}`);
+  }
+  const isHourly=V('payModel')==='hourly';
+  const payUnit=isHourly?'hr':'session';
+  const field=inp.closest('.pay-rate-field');
+  if(field)field.innerHTML=`<span class="pay-rate-val">$${c.payRate}/${payUnit}</span>`;
+}
+
+/* ══ COORDINATOR DASHBOARD ══ */
+function updateDashboard(){
+  const strip=document.getElementById('dashboard-strip');
+  if(!strip)return;
+  const tomorrow=getTomorrowDayName();
+  const activeCoaches=coaches.filter(c=>!c.inactive);
+  const weekOf=getCheckinWeekOf();
+  const tomorrowSchools=getSchools().map(s=>({...s,programs:s.programs.filter(p=>p.days.includes(tomorrow))})).filter(s=>s.programs.length>0);
+  const totalSlots=tomorrowSchools.reduce((n,s)=>n+s.programs.reduce((m,p)=>m+p.max,0),0);
+  const filledSlots=tomorrowSchools.reduce((n,s)=>n+s.programs.reduce((m,p)=>m+Math.min(progCount(p.id),p.max),0),0);
+  const pendingConf=Object.values(confirmations).filter(v=>v==='pending').length;
+  const outstandingPay=sessionLog.filter(s=>s.status==='completed'&&!s.paid).reduce((sum,s)=>sum+sessionAmount(s),0);
+  const allSubReqs=coaches.reduce((n,c)=>{if(c.weeklyCheckin?.weekOf!==weekOf)return n;return n+c.weeklyCheckin.sessions.filter(s=>s.needsSub).length;},0);
+  const ciSubmitted=activeCoaches.filter(c=>c.weeklyCheckin?.weekOf===weekOf).length;
+  const ciPending=activeCoaches.length-ciSubmitted;
+  const {count:conflictCount}=getConflicts();
+  const tiles=[
+    {num:filledSlots+'/'+totalSlots,lbl:'Slots filled',sub:`Tomorrow · ${tomorrowSchools.length} ${V('site').toLowerCase()}${tomorrowSchools.length!==1?'s':''}`,cls:filledSlots===totalSlots&&totalSlots>0?'good':filledSlots<totalSlots&&totalSlots>0?'alert':'',tab:'schedule'},
+    {num:pendingConf,lbl:'Pending confirms',sub:sent?'Awaiting coach reply':'Assignments not sent yet',cls:pendingConf>0?'alert':'',tab:'confirm'},
+    {num:allSubReqs,lbl:'Sub requests',sub:allSubReqs>0?'Coaches need coverage':'All clear this week',cls:allSubReqs>0?'alert':'',tab:'checkin'},
+    {num:`${ciSubmitted}/${activeCoaches.length}`,lbl:'Check-ins in',sub:ciPending>0?`${ciPending} still pending`:'All submitted ✓',cls:ciPending>0?'alert':activeCoaches.length>0?'good':'',tab:'checkin'},
+    {num:conflictCount,lbl:'Conflicts',sub:conflictCount>0?'Coach double-booked':'No conflicts',cls:conflictCount>0?'alert':'',tab:'schedule'},
+    {num:`$${outstandingPay.toLocaleString()}`,lbl:'Payroll owed',sub:`${sessionLog.filter(s=>s.status==='completed'&&!s.paid).length} unpaid sessions`,cls:outstandingPay>0?'alert':'',tab:'payroll'},
+  ];
+  strip.innerHTML=tiles.map(t=>`<div class="dash-tile ${t.cls}" onclick="switchTab('${t.tab}')"><div class="dash-num">${t.num}</div><div class="dash-lbl">${t.lbl}</div><div class="dash-sub">${t.sub}</div></div>`).join('');
 }
 
 init();
