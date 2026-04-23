@@ -419,6 +419,27 @@
   .portal-conf-detail{font-size:11px;color:var(--text-secondary);margin-top:2px;font-family:'DM Mono',monospace;}
   .portal-roster-btn{display:inline-flex;align-items:center;gap:5px;margin-top:7px;font-size:11px;font-weight:600;color:var(--brand-dark);background:var(--brand-light);border:1px solid var(--brand-mid);border-radius:7px;padding:4px 10px;cursor:pointer;font-family:inherit;transition:all 0.12s;}
   .portal-roster-btn:hover{background:var(--brand);color:white;border-color:var(--brand-dark);}
+
+  /* ── UNDO TOAST ── */
+  .undo-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:white;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:12px;z-index:999;opacity:0;transition:opacity 0.2s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.3);}
+  .undo-toast.show{opacity:1;pointer-events:all;}
+  .undo-toast-btn{background:var(--brand);color:white;border:none;border-radius:6px;padding:4px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
+  .undo-toast-btn:hover{background:var(--brand-dark);}
+
+  /* ── PORTAL SESSION HISTORY ── */
+  .portal-history-row{display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1px solid var(--border);font-size:13px;}
+  .portal-history-row:last-child{border-bottom:none;}
+  .portal-history-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .portal-history-dot.completed{background:var(--brand);}
+  .portal-history-dot.incident{background:var(--amber);}
+  .portal-history-info{flex:1;min-width:0;}
+  .portal-history-prog{font-weight:600;font-size:12px;}
+  .portal-history-date{font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;margin-top:1px;}
+  .portal-history-amount{font-size:12px;font-weight:600;color:var(--brand-dark);white-space:nowrap;}
+  .portal-history-pill{font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;margin-left:6px;}
+  .portal-history-pill.completed{background:var(--brand-light);color:var(--brand-dark);}
+  .portal-history-pill.no-show{background:#fee2e2;color:#b91c1c;}
+  .portal-history-pill.late-cancel{background:var(--amber-light);color:#b45309;}
   .portal-conf-status{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
   .portal-status-pill{font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;white-space:nowrap;}
   .portal-pill-confirmed{background:var(--brand-light);color:var(--brand-dark);}
@@ -488,6 +509,18 @@
   .avail-save-btn{background:var(--brand);color:white;border:none;border-radius:var(--radius);padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
   .avail-clear-btn{background:none;border:1px solid var(--border);border-radius:var(--radius);padding:8px 14px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;color:var(--text-secondary);margin-right:auto;}
   .avail-clear-btn:hover{border-color:var(--red);color:var(--red);}
+
+  /* ── COLLAPSED AVAILABILITY (after save) ── */
+  .avail-saved-view{display:flex;align-items:center;gap:14px;padding:16px 18px;}
+  .avail-saved-icon{width:36px;height:36px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .avail-saved-icon svg{width:18px;height:18px;stroke:white;}
+  .avail-saved-body{flex:1;min-width:0;}
+  .avail-saved-title{font-size:13px;font-weight:600;color:var(--brand-dark);}
+  .avail-saved-sub{font-size:12px;color:var(--text-secondary);margin-top:2px;}
+  .avail-saved-days{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;}
+  .avail-saved-day-chip{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;background:var(--brand-light);color:var(--brand-dark);border:1px solid var(--brand-mid);letter-spacing:0.02em;}
+  .avail-edit-btn{font-size:11px;font-weight:500;color:var(--text-secondary);background:none;border:1px solid var(--border);border-radius:8px;padding:5px 12px;cursor:pointer;font-family:inherit;flex-shrink:0;transition:all 0.12s;}
+  .avail-edit-btn:hover{border-color:var(--brand);color:var(--brand-dark);}
 
   /* ── SEASON EDIT ── */
   .season-layout{display:flex;flex:1;overflow:hidden;}
@@ -595,6 +628,10 @@
   .daily-note-wrap{margin-top:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 16px;box-shadow:var(--shadow);}
   .daily-note-label{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-tertiary);margin-bottom:8px;}
   .daily-note-label svg{width:12px;height:12px;}
+  .daily-note-copy-btn{margin-left:auto;display:flex;align-items:center;gap:4px;background:none;border:1px solid var(--border);border-radius:6px;padding:3px 9px;font-size:10px;font-weight:600;color:var(--text-secondary);cursor:pointer;font-family:inherit;text-transform:none;letter-spacing:0;transition:all 0.12s;}
+  .daily-note-copy-btn:hover{border-color:var(--brand);color:var(--brand-dark);background:var(--brand-light);}
+  .daily-note-copy-btn.copied{border-color:var(--brand-mid);background:var(--brand-light);color:var(--brand-dark);}
+  .daily-note-copy-btn svg{width:10px;height:10px;}
   .daily-note-input{width:100%;border:none;outline:none;font-family:inherit;font-size:13px;color:var(--text);background:transparent;resize:none;min-height:52px;line-height:1.6;}
   .daily-note-input::placeholder{color:var(--text-tertiary);}
   .daily-note-stale{display:none;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-tertiary);background:var(--bg);border-radius:6px;padding:5px 9px;margin-bottom:6px;border:1px solid var(--border);}
@@ -869,6 +906,10 @@
         <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         Today's notes
         <span id="daily-note-date-label" style="font-weight:400;text-transform:none;letter-spacing:0;margin-left:6px;"></span>
+        <button class="daily-note-copy-btn" id="daily-note-copy-btn" onclick="copyDailyNote()" title="Copy note to clipboard">
+          <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke="currentColor"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span id="daily-note-copy-label">Copy</span>
+        </button>
       </div>
       <div class="daily-note-stale" id="daily-note-stale">
         <span id="daily-note-stale-msg"></span>
@@ -1067,19 +1108,45 @@
       </div>
       <div id="checkin-body"></div>
     </div>
-    <div class="portal-card">
-      <div class="portal-card-header"><div class="portal-card-title">Weekly availability</div><div class="portal-card-sub">Click hours · drag to select</div></div>
-      <div class="avail-section">
+    <div class="portal-card" id="avail-card">
+      <div class="portal-card-header">
+        <div class="portal-card-title">Weekly availability</div>
+        <div class="portal-card-sub" id="avail-card-sub">Click hours · drag to select</div>
+      </div>
+      <!-- Expanded (edit) view — visible by default -->
+      <div class="avail-section" id="avail-section-edit">
         <div class="avail-grid-container"><div class="avail-grid" id="avail-grid"></div></div>
         <div class="avail-legend"><div class="avail-legend-item"><div class="avail-legend-dot dot-off"></div><span>Unavailable</span></div><div class="avail-legend-item"><div class="avail-legend-dot dot-on"></div><span>Available</span></div></div>
         <div class="avail-save-row"><button class="avail-clear-btn" onclick="clearAvailability()">Clear all</button><div class="avail-summary" id="avail-summary">No hours selected</div><button class="avail-save-btn" onclick="saveAvailability()">Save availability</button></div>
+      </div>
+      <!-- Collapsed (saved) view — hidden until save -->
+      <div class="avail-saved-view" id="avail-saved-view" style="display:none">
+        <div class="avail-saved-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke="currentColor"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <div class="avail-saved-body">
+          <div class="avail-saved-title">Availability set ✓</div>
+          <div class="avail-saved-sub" id="avail-saved-sub"></div>
+          <div class="avail-saved-days" id="avail-saved-days"></div>
+        </div>
+        <button class="avail-edit-btn" onclick="editAvailability()">Edit</button>
       </div>
     </div>
     <div class="portal-card">
       <div class="portal-card-header"><div class="portal-card-title">Your scheduled classes</div><div class="portal-conf-count" id="portal-conf-count"></div></div>
       <div id="portal-conf-list"></div>
     </div>
+    <div class="portal-card" id="portal-history-card" style="display:none">
+      <div class="portal-card-header"><div class="portal-card-title">Your session history</div><div class="portal-card-sub" id="portal-history-count"></div></div>
+      <div id="portal-history-list"></div>
+    </div>
   </div></div>
+</div>
+
+<!-- UNDO TOAST -->
+<div class="undo-toast" id="undo-toast">
+  <span id="undo-toast-msg">Assignment removed</span>
+  <button class="undo-toast-btn" onclick="undoAssignment()">Undo</button>
 </div>
 
 <!-- SEASON EDIT -->
@@ -1522,6 +1589,8 @@ let availDragging=false,availDragMode=null;
 let broadcastPid=null,broadcastRemovedCid=null,broadcastFired=false;
 let payGroup='day'; /* 'day' | 'week' | 'month' */
 let scheduleView='tomorrow'; /* 'tomorrow' | 'week' */
+let undoState=null; /* {assignments, msg} — single-level undo for assignment changes */
+let undoTimer=null;
 /* ── Check-in transient state ── */
 let checkinConfirmed={};  /* { "pid:Day": true=confirmed | false=needsSub } */
 let checkinSubAvail=[];   /* day names coach can sub */
@@ -1606,6 +1675,30 @@ function saveDailyNote(val){
   // Hide stale banner once user edits
   document.getElementById('daily-note-stale')?.classList.remove('show');
   persist();
+}
+
+function copyDailyNote(){
+  const val=document.getElementById('daily-note-input')?.value||'';
+  if(!val.trim()){showToast('Note is empty');return;}
+  const btn=document.getElementById('daily-note-copy-btn');
+  const lbl=document.getElementById('daily-note-copy-label');
+  const restore=()=>{if(btn)btn.classList.remove('copied');if(lbl)lbl.textContent='Copy';};
+  const onOk=()=>{
+    if(btn)btn.classList.add('copied');
+    if(lbl)lbl.textContent='Copied ✓';
+    setTimeout(restore,1800);
+    showToast('Note copied to clipboard');
+  };
+  if(navigator.clipboard?.writeText){
+    navigator.clipboard.writeText(val).then(onOk).catch(()=>fallback());
+  } else fallback();
+  function fallback(){
+    // Older browsers — use a hidden textarea
+    const ta=document.createElement('textarea');ta.value=val;ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');onOk();}catch(e){showToast('Copy failed — please copy manually');}
+    document.body.removeChild(ta);
+  }
 }
 function clearDailyNote(){
   dailyNote='';dailyNoteDate='';
@@ -1960,7 +2053,37 @@ function renderSchools(){
     </div>`;
   }).join('');
 }
-function removeAssignment(pid,cid){assignments[pid]=(assignments[pid]||[]).filter(x=>x!==cid);if(!assignments[pid].length)delete assignments[pid];persist();renderPool();renderSchools();updateStats();}
+/* ══ UNDO ══ */
+function saveUndo(msg){
+  undoState={assignments:JSON.parse(JSON.stringify(assignments)),msg};
+  const toast=document.getElementById('undo-toast');
+  const msgEl=document.getElementById('undo-toast-msg');
+  if(msgEl)msgEl.textContent=msg;
+  if(toast)toast.classList.add('show');
+  clearTimeout(undoTimer);
+  undoTimer=setTimeout(()=>{
+    undoState=null;
+    document.getElementById('undo-toast')?.classList.remove('show');
+  },5000);
+}
+function undoAssignment(){
+  if(!undoState)return;
+  assignments=undoState.assignments;
+  undoState=null;
+  clearTimeout(undoTimer);
+  document.getElementById('undo-toast')?.classList.remove('show');
+  persist();renderPool();renderSchools();updateStats();
+  showToast('Assignment restored ✓');
+}
+
+function removeAssignment(pid,cid){
+  const c=getCoach(cid);
+  const info=getProgramInfoFromSeasons(pid)||getProgramInfo(pid);
+  saveUndo('Removed '+(c?.name||'coach')+(info?' from '+info.program.label:''));
+  assignments[pid]=(assignments[pid]||[]).filter(x=>x!==cid);
+  if(!assignments[pid].length)delete assignments[pid];
+  persist();renderPool();renderSchools();updateStats();
+}
 function updateStats(){
   const a=assignedIds();
   document.getElementById('stat-a').textContent=a.length;
@@ -2007,6 +2130,7 @@ function assignToProgram(pid){
   const c=getCoach(pickerCoachId);
   // Use cross-season lookup so week-view assignments (non-tomorrow days) resolve correctly
   const info=getProgramInfoFromSeasons(pid)||getProgramInfo(pid);
+  saveUndo('Assigned '+(c?.name||'coach')+(info?' → '+info.program.label:''));
   closePicker();persist();renderPool();renderSchools();updateStats();
   if(info)showToast(`${c.name} → ${info.program.label} at ${info.school.name}`);
   else showToast(`${c.name} assigned`);
@@ -2132,7 +2256,7 @@ function renderRoster(filter=''){
   const activeCoaches=coaches.filter(c=>!c.inactive);
   const inactiveCoaches=coaches.filter(c=>c.inactive);
   const visible=showInactive?coaches:activeCoaches;
-  const filtered=visible.filter(c=>c.name.toLowerCase().includes(q)||c.sport.toLowerCase().includes(q));
+  const filtered=visible.filter(c=>c.name.toLowerCase().includes(q)||c.sport.toLowerCase().includes(q)||(c.phone&&c.phone.replace(/\D/g,'').includes(q.replace(/\D/g,''))));
   document.getElementById('roster-count').textContent=activeCoaches.length;
   const list=document.getElementById('roster-list');
   if(!filtered.length){list.innerHTML=`<div class="empty-state">No ${V('workers').toLowerCase()} found.</div>`;return;}
@@ -2863,6 +2987,8 @@ function submitCheckin(){
 
   persist();
   renderCheckinCard();
+  updateCheckinBadge();
+  updateDashboard();
   showToast('Check-in submitted — your coordinator has been notified 👍');
 }
 
@@ -2883,6 +3009,43 @@ function editCheckin(){
   const weekOf=getCheckinWeekOf();
   const body=document.getElementById('checkin-body');
   if(body)renderCheckinForm(sessions,body,weekOf);
+}
+
+/* ══ PORTAL SESSION HISTORY ══ */
+function renderPortalHistory(){
+  const card=document.getElementById('portal-history-card');
+  const list=document.getElementById('portal-history-list');
+  const count=document.getElementById('portal-history-count');
+  if(!card||!list)return;
+  if(!portalCoach?.phone){card.style.display='none';return;}
+  const matched=coaches.find(c=>c.phone===portalCoach.phone);
+  if(!matched){card.style.display='none';return;}
+
+  const mine=[...sessionLog].filter(s=>s.coachId===matched.id).sort((a,b)=>b.date.localeCompare(a.date));
+  if(!mine.length){card.style.display='none';return;}
+
+  card.style.display='block';
+  const totalEarned=mine.filter(s=>s.status==='completed').reduce((n,s)=>n+sessionAmount(s),0);
+  if(count)count.textContent=`${mine.length} session${mine.length!==1?'s':''} · $${totalEarned} earned`;
+
+  list.innerHTML=mine.slice(0,20).map(s=>{
+    const info=getProgramInfoFromSeasons(s.pid)||getProgramInfo(s.pid);
+    const amt=sessionAmount(s);
+    const dotCls=s.status==='completed'?'completed':'incident';
+    const pillCls=s.status==='completed'?'completed':s.status==='no-show'?'no-show':'late-cancel';
+    const pillLabel=s.status==='completed'?'Completed':s.status==='no-show'?'No-show':'Late cancel';
+    return`<div class="portal-history-row">
+      <div class="portal-history-dot ${dotCls}"></div>
+      <div class="portal-history-info">
+        <div class="portal-history-prog">${info?`${info.school.name} · ${info.program.label}`:'—'}
+          <span class="portal-history-pill ${pillCls}">${pillLabel}</span>
+        </div>
+        <div class="portal-history-date">${formatDate(s.date)}${info?` · ${info.program.time}`:''}</div>
+      </div>
+      <div class="portal-history-amount">${amt>0?`$${amt}`:s.status!=='completed'?'—':'$0'}</div>
+    </div>`;
+  }).join('');
+  if(mine.length>20)list.innerHTML+=`<div style="padding:10px 18px;font-size:11px;color:var(--text-tertiary);text-align:center">Showing 20 most recent · ${mine.length} total</div>`;
 }
 
 function openPortal(){
@@ -2907,6 +3070,7 @@ function openPortal(){
       if(matched.weeklyAvailability && Object.keys(matched.weeklyAvailability).length>0){
         coachAvail=JSON.parse(JSON.stringify(matched.weeklyAvailability));
         renderAvailGrid();
+        renderAvailSavedView();  // show collapsed summary since they have saved hours
       }
       // Restore check-in state
       if(matched.weeklyCheckin?.weekOf===getCheckinWeekOf()){
@@ -2916,6 +3080,7 @@ function openPortal(){
         checkinFeedback=matched.weeklyCheckin.feedback||'';
       }
       renderCheckinCard();
+      renderPortalHistory();
     }
   }
   renderPortalConfirmations();
@@ -2962,6 +3127,7 @@ function submitPortalForm(){
   if(matchedCoach?.weeklyAvailability && Object.keys(matchedCoach.weeklyAvailability).length>0){
     coachAvail=JSON.parse(JSON.stringify(matchedCoach.weeklyAvailability));
     renderAvailGrid();
+    renderAvailSavedView();  // show collapsed view since they have prior hours saved
   }
 
   document.getElementById('portal-success-name').textContent=first;
@@ -2984,6 +3150,7 @@ function submitPortalForm(){
     checkinFeedback=mc.weeklyCheckin.feedback||'';
   }
   renderCheckinCard();
+  renderPortalHistory();
 }
 function editPortalForm(){
   document.getElementById('portal-form-wrap').style.display='block';
@@ -3051,6 +3218,55 @@ function toggleHour(h){const allOn=DAYS_FULL.every(day=>coachAvail[day]?.include
 function updateDayHeaders(){DAYS_FULL.forEach((day,i)=>{const btn=document.getElementById(`daybtn-${i}`);if(!btn)return;btn.classList.toggle('day-full',coachAvail[day]?.length===HOURS.length);btn.style.opacity=coachAvail[day]?.length>0?'1':'0.7';});}
 function updateAvailSummary(){let total=0;DAYS_FULL.forEach(day=>{total+=(coachAvail[day]?.length||0);});const el=document.getElementById('avail-summary');if(!el)return;if(!total){el.textContent='No hours selected';return;}const dc=DAYS_FULL.filter(d=>coachAvail[d]?.length>0).length;el.textContent=`${total} hour${total!==1?'s':''} across ${dc} day${dc!==1?'s':''}`;}
 function clearAvailability(){coachAvail={};document.querySelectorAll('.avail-cell').forEach(el=>el.classList.remove('on'));updateDayHeaders();updateAvailSummary();showToast('Availability cleared');}
+
+function renderAvailSavedView(){
+  const editView=document.getElementById('avail-section-edit');
+  const savedView=document.getElementById('avail-saved-view');
+  const sub=document.getElementById('avail-card-sub');
+  const savedSub=document.getElementById('avail-saved-sub');
+  const daysWrap=document.getElementById('avail-saved-days');
+  if(!editView||!savedView)return;
+
+  let total=0;
+  const perDay={};
+  DAYS_FULL.forEach(day=>{
+    const hrs=coachAvail[day]?.length||0;
+    total+=hrs;
+    if(hrs>0)perDay[day]=hrs;
+  });
+
+  if(total===0){
+    // Nothing saved — keep edit view open
+    editView.style.display='block';
+    savedView.style.display='none';
+    if(sub)sub.textContent='Click hours · drag to select';
+    return;
+  }
+
+  editView.style.display='none';
+  savedView.style.display='flex';
+  if(sub)sub.textContent='Saved — tap Edit to change';
+  const dayCount=Object.keys(perDay).length;
+  if(savedSub)savedSub.textContent=`${total} hour${total!==1?'s':''} across ${dayCount} day${dayCount!==1?'s':''}`;
+  if(daysWrap){
+    daysWrap.innerHTML=DAYS_FULL.filter(d=>perDay[d]).map(d=>{
+      const short=d.slice(0,3);
+      return`<span class="avail-saved-day-chip">${short} · ${perDay[d]}h</span>`;
+    }).join('');
+  }
+}
+
+function editAvailability(){
+  const editView=document.getElementById('avail-section-edit');
+  const savedView=document.getElementById('avail-saved-view');
+  const sub=document.getElementById('avail-card-sub');
+  if(editView)editView.style.display='block';
+  if(savedView)savedView.style.display='none';
+  if(sub)sub.textContent='Click hours · drag to select';
+  // Re-render the grid in case it wasn't visible before
+  renderAvailGrid();
+}
+
 function saveAvailability(){
   let total=0;
   DAYS_FULL.forEach(day=>{total+=(coachAvail[day]?.length||0);});
@@ -3067,6 +3283,8 @@ function saveAvailability(){
     }
   }
   showToast(total?`Availability saved — ${total} hour${total!==1?'s':''} set`:'Availability cleared');
+  // Collapse the card to show the saved summary
+  renderAvailSavedView();
 }
 
 /* ══ SEASON MANAGEMENT ══ */
@@ -3286,6 +3504,7 @@ function exportPaySummaryCSV(){
   const rows=[['Coach','Sport','Phone','Pay Rate','Total Sessions','Completed','Incidents','Total Earned ($)','Paid Out ($)','Outstanding ($)']];
   coaches.forEach(c=>{
     const mine=sessionLog.filter(s=>s.coachId===c.id);
+    if(!mine.length)return; // skip coaches with no session history
     const comp=mine.filter(s=>s.status==='completed');
     const inc=mine.filter(s=>s.status!=='completed');
     const earned=comp.reduce((sum,s)=>sum+sessionAmount(s),0);
