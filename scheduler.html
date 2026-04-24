@@ -395,6 +395,11 @@
   .portal-field input,.portal-field select{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius);font-size:13px;font-family:inherit;color:var(--text);background:var(--surface);outline:none;}
   .portal-field input:focus,.portal-field select:focus{border-color:var(--brand);}
   .portal-field input::placeholder{color:var(--text-tertiary);}
+  /* ── INPUT VALIDATION ── */
+  .field-error{font-size:10px;font-weight:600;color:#b91c1c;margin-top:3px;min-height:14px;}
+  input.invalid,select.invalid{border-color:#f87171 !important;background:#fff5f5 !important;}
+  input.valid{border-color:var(--brand-mid) !important;}
+  .input-hint{font-size:10px;color:var(--text-tertiary);margin-top:3px;}
   .portal-submit-row{display:flex;align-items:center;justify-content:space-between;margin-top:18px;padding-top:16px;border-top:1px solid var(--border);}
   .portal-submit-hint{font-size:12px;color:var(--text-tertiary);}
   .portal-submit-btn{background:var(--brand);color:white;border:none;border-radius:var(--radius);padding:10px 22px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
@@ -521,6 +526,43 @@
   .avail-saved-day-chip{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;background:var(--brand-light);color:var(--brand-dark);border:1px solid var(--brand-mid);letter-spacing:0.02em;}
   .avail-edit-btn{font-size:11px;font-weight:500;color:var(--text-secondary);background:none;border:1px solid var(--border);border-radius:8px;padding:5px 12px;cursor:pointer;font-family:inherit;flex-shrink:0;transition:all 0.12s;}
   .avail-edit-btn:hover{border-color:var(--brand);color:var(--brand-dark);}
+
+  /* ── COACH DOCUMENTS (portal + admin) ── */
+  .doc-upload-zone{border:2px dashed var(--border);border-radius:var(--radius-lg);padding:22px 18px;text-align:center;cursor:pointer;transition:all 0.15s;margin:16px 18px 0;}
+  .doc-upload-zone:hover,.doc-upload-zone.drag-over{border-color:var(--brand);background:var(--brand-light);}
+  .doc-upload-icon{font-size:24px;margin-bottom:6px;}
+  .doc-upload-label{font-size:13px;font-weight:600;color:var(--text);}
+  .doc-upload-sub{font-size:11px;color:var(--text-tertiary);margin-top:3px;}
+  .doc-upload-btn{display:inline-flex;align-items:center;gap:6px;margin-top:10px;background:var(--brand);color:white;border:none;border-radius:var(--radius);padding:8px 18px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;}
+  .doc-upload-btn:hover{background:var(--brand-dark);}
+  .doc-list{padding:0 0 8px;}
+  .doc-row{display:flex;align-items:flex-start;gap:12px;padding:12px 18px;border-top:1px solid var(--border);}
+  .doc-row:first-child{border-top:none;}
+  .doc-icon{width:36px;height:36px;border-radius:var(--radius);background:var(--brand-light);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+  .doc-info{flex:1;min-width:0;}
+  .doc-name{font-size:13px;font-weight:600;}
+  .doc-type{font-size:11px;color:var(--text-secondary);margin-top:1px;}
+  .doc-dates{font-size:10px;font-family:'DM Mono',monospace;color:var(--text-tertiary);margin-top:4px;}
+  .doc-status-pill{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;margin-top:5px;}
+  .doc-pill-valid{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;}
+  .doc-pill-expiring{background:var(--amber-light);color:#b45309;border:1px solid #fde68a;}
+  .doc-pill-expired{background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5;}
+  .doc-pill-unknown{background:var(--bg);color:var(--text-tertiary);border:1px solid var(--border);}
+  .doc-processing{padding:14px 18px;font-size:12px;color:var(--text-secondary);font-style:italic;display:flex;align-items:center;gap:8px;}
+  .doc-processing-dot{width:8px;height:8px;border-radius:50%;background:var(--brand);animation:pulse 1.2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+  .doc-remove-btn{background:none;border:none;font-size:16px;color:var(--text-tertiary);cursor:pointer;padding:2px;line-height:1;flex-shrink:0;}
+  .doc-remove-btn:hover{color:#b91c1c;}
+  /* Admin docs tab */
+  .docs-coach-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);margin-bottom:14px;}
+  .docs-coach-hd{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg);border-bottom:1px solid var(--border);}
+  .docs-coach-name{font-size:13px;font-weight:600;flex:1;}
+  .docs-coach-count{font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+  .docs-alert-badge{font-size:10px;font-weight:700;background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5;border-radius:20px;padding:2px 8px;}
+  .docs-admin-row{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border);}
+  .docs-admin-row:last-child{border-bottom:none;}
+  .docs-empty{padding:32px;text-align:center;font-size:13px;color:var(--text-tertiary);font-style:italic;}
+  .docs-filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
 
   /* ── SEASON EDIT ── */
   .season-layout{display:flex;flex:1;overflow:hidden;}
@@ -836,6 +878,9 @@
       <span>Confirmations</span><span class="badge-count" id="pending-badge">0</span>
     </button>
     <button class="nav-tab" onclick="switchTab('payroll')"><span>Payroll</span></button>
+    <button class="nav-tab" id="nav-docs-tab" style="display:none" onclick="switchTab('docs')">
+      <span>Documents</span><span class="badge-count" id="docs-badge">0</span>
+    </button>
   </div>
   <div class="topbar-right">
     <button class="coach-portal-btn" onclick="openPortal()">
@@ -919,8 +964,30 @@
     </div>
   </div>
 
-  <!-- CHECK-IN -->
-  <div class="view" id="view-checkin">
+  <!-- DOCUMENTS (sports vertical only) -->
+  <div class="view" id="view-docs">
+    <div class="coaches-header">
+      <div><div class="page-title">Coach documents</div><div class="page-sub">School clearances, certifications &amp; permits · all coaches</div></div>
+    </div>
+    <div class="docs-filter-bar">
+      <select class="pay-filter-select" id="docs-type-filter" onchange="renderDocsTab()">
+        <option value="">All document types</option>
+        <option value="School clearance">School clearances</option>
+        <option value="Background check">Background checks</option>
+        <option value="Certification">Certifications</option>
+        <option value="Permit">Permits</option>
+        <option value="Other">Other</option>
+      </select>
+      <select class="pay-filter-select" id="docs-status-filter" onchange="renderDocsTab()">
+        <option value="">All statuses</option>
+        <option value="valid">Valid</option>
+        <option value="expiring">Expiring soon</option>
+        <option value="expired">Expired</option>
+        <option value="unknown">No dates found</option>
+      </select>
+    </div>
+    <div id="docs-tab-body"></div>
+  </div>
     <div class="coaches-header">
       <div>
         <div class="page-title">Weekly check-in</div>
@@ -1078,14 +1145,28 @@
       <div class="portal-card-header"><div class="portal-card-title">Your information</div><div class="portal-card-sub">Required to receive assignments</div></div>
       <div id="portal-form-wrap" class="portal-card-body">
         <div class="portal-form-row two">
-          <div class="portal-field"><label>First name</label><input type="text" id="p-first" placeholder="e.g. Marcus"></div>
-          <div class="portal-field"><label>Last name</label><input type="text" id="p-last" placeholder="e.g. Johnson"></div>
+          <div class="portal-field">
+            <label>First name *</label>
+            <input type="text" id="p-first" placeholder="e.g. Marcus" oninput="validateName(this,'p-first-err')" onblur="validateName(this,'p-first-err')">
+            <div class="field-error" id="p-first-err"></div>
+          </div>
+          <div class="portal-field">
+            <label>Last name</label>
+            <input type="text" id="p-last" placeholder="e.g. Johnson" oninput="validateNameOptional(this,'p-last-err')" onblur="validateNameOptional(this,'p-last-err')">
+            <div class="field-error" id="p-last-err"></div>
+          </div>
         </div>
         <div class="portal-form-row two">
-          <div class="portal-field"><label>Sport specialty</label>
-            <select id="p-sport"><option value="">— Select sport —</option></select>
+          <div class="portal-field">
+            <label>Sport specialty *</label>
+            <select id="p-sport" onchange="validateSelect(this,'p-sport-err')"><option value="">— Select sport —</option></select>
+            <div class="field-error" id="p-sport-err"></div>
           </div>
-          <div class="portal-field"><label>Phone number</label><input type="tel" id="p-phone" placeholder="(301) 555-0100"></div>
+          <div class="portal-field">
+            <label>Phone number *</label>
+            <input type="tel" id="p-phone" placeholder="(301) 555-0100" oninput="validatePhone(this,'p-phone-err')" onblur="validatePhone(this,'p-phone-err')">
+            <div class="field-error" id="p-phone-err"></div>
+          </div>
         </div>
         <div class="portal-submit-row"><div class="portal-submit-hint">Only shared with coordinators.</div><button class="portal-submit-btn" onclick="submitPortalForm()">Save my information</button></div>
       </div>
@@ -1135,6 +1216,24 @@
     <div class="portal-card">
       <div class="portal-card-header"><div class="portal-card-title">Your scheduled classes</div><div class="portal-conf-count" id="portal-conf-count"></div></div>
       <div id="portal-conf-list"></div>
+    </div>
+    <div class="portal-card" id="portal-docs-card" style="display:none">
+      <div class="portal-card-header">
+        <div class="portal-card-title">Your documents</div>
+        <div class="portal-card-sub">School clearances, certifications &amp; permits</div>
+      </div>
+      <div id="portal-doc-list"></div>
+      <div class="doc-upload-zone" id="doc-upload-zone"
+        ondragover="event.preventDefault();this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="handleDocDrop(event)">
+        <div class="doc-upload-icon">📎</div>
+        <div class="doc-upload-label">Upload a document</div>
+        <div class="doc-upload-sub">School clearance, certification, background check, permit…</div>
+        <button class="doc-upload-btn" onclick="document.getElementById('doc-file-input').click()">Choose file</button>
+      </div>
+      <input type="file" id="doc-file-input" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" style="display:none" onchange="handleDocFile(event)">
+      <div style="height:16px"></div>
     </div>
     <div class="portal-card" id="portal-history-card" style="display:none">
       <div class="portal-card-header"><div class="portal-card-title">Your session history</div><div class="portal-card-sub" id="portal-history-count"></div></div>
@@ -1644,6 +1743,7 @@ function init(){
   populatePayrollFilters();renderPayroll();
   updateCheckinBadge();
   updateDashboard();
+  updateDocsBadge();
   /* Restore daily note — clear if from a previous day */
   const today=todayStr();
   const noteEl=document.getElementById('daily-note-input');
@@ -2277,16 +2377,149 @@ function renderRoster(filter=''){
   const toggleHtml=inactiveCoaches.length?`<label class="show-inactive-toggle"><input type="checkbox" ${showInactive?'checked':''} onchange="toggleShowInactive(this.checked)"> Show ${inactiveCoaches.length} inactive ${V('worker').toLowerCase()}${inactiveCoaches.length!==1?'s':''}</label>`:'';
   list.innerHTML=rows+toggleHtml;
 }
+/* ══ INPUT VALIDATION ══ */
+function setFieldState(input,errId,msg){
+  input.classList.toggle('invalid',!!msg);
+  input.classList.toggle('valid',!msg&&input.value.trim().length>0);
+  const el=errId?document.getElementById(errId):input.nextElementSibling;
+  if(el&&el.classList.contains('field-error'))el.textContent=msg||'';
+  return!msg;
+}
+function validateName(input,errId){
+  const v=input.value.trim();
+  if(!v)return setFieldState(input,errId,'Required');
+  if(!/^[A-Za-zÀ-ÖØ-öø-ÿ\s'\-]+$/.test(v))return setFieldState(input,errId,'Letters only please');
+  if(v.length<2)return setFieldState(input,errId,'Too short');
+  return setFieldState(input,errId,'');
+}
+function validateNameOptional(input,errId){
+  const v=input.value.trim();
+  if(!v)return setFieldState(input,errId,'');  // optional
+  if(!/^[A-Za-zÀ-ÖØ-öø-ÿ\s'\-]+$/.test(v))return setFieldState(input,errId,'Letters only please');
+  return setFieldState(input,errId,'');
+}
+function validatePhone(input,errId){
+  const v=input.value.trim();
+  if(!v)return setFieldState(input,errId,'Required');
+  const digits=v.replace(/\D/g,'');
+  if(digits.length<10)return setFieldState(input,errId,'Enter at least 10 digits');
+  if(digits.length>11)return setFieldState(input,errId,'Too many digits');
+  // Auto-format as (XXX) XXX-XXXX on blur
+  if(document.activeElement!==input&&digits.length===10){
+    input.value=`(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6)}`;
+  }
+  return setFieldState(input,errId,'');
+}
+function validatePhoneOptional(input,errId){
+  const v=input.value.trim();
+  if(!v)return setFieldState(input,errId,'');
+  const digits=v.replace(/\D/g,'');
+  if(digits.length<10)return setFieldState(input,errId,'Enter at least 10 digits');
+  if(digits.length>11)return setFieldState(input,errId,'Too many digits');
+  if(document.activeElement!==input&&digits.length===10){
+    input.value=`(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6)}`;
+  }
+  return setFieldState(input,errId,'');
+}
+function validateSelect(input,errId){
+  const v=input.value;
+  if(!v)return setFieldState(input,errId,'Please select an option');
+  return setFieldState(input,errId,'');
+}
+function validatePositiveNum(input,errId){
+  const v=parseFloat(input.value);
+  if(isNaN(v)||v<0)return setFieldState(input,errId,'Enter a valid number');
+  return setFieldState(input,errId,'');
+}
+
 function toggleShowInactive(val){showInactive=val;renderRoster(document.getElementById('search-input')?.value||'');}
 function showForm(){
   if(formVisible)return;formVisible=true;
   const isHourly=V('payModel')==='hourly';
   const certField=V('showCertifications')?`<div class="field"><label>Certification / license</label><input id="f-cert" type="text" placeholder="e.g. OSHA-30, Master Electrician"></div>`:'';
   const dressField=V('showDressCode')?`<div class="field"><label>Dress code</label><input id="f-dress" type="text" placeholder="e.g. Black shirt, black pants"></div>`:'';
-  document.getElementById('add-form-wrap').innerHTML=`<div class="add-form"><div class="form-title">${V('addWorkerTitle')}</div><div class="form-row two"><div class="field"><label>First name</label><input id="f-first" type="text" placeholder="Marcus" autofocus></div><div class="field"><label>Last name / initial</label><input id="f-last" type="text" placeholder="Johnson"></div></div><div class="form-row three"><div class="field"><label>${V('skill')}</label><select id="f-sport"><option value="">— Select —</option>${getActivityOptions()}</select></div><div class="field"><label>Phone number</label><input id="f-phone" type="text" placeholder="(301) 555-0100"></div><div class="field"><label>Pay rate (${isHourly?'$/hr':'$/session'})</label><input id="f-pay" type="number" placeholder="${DEFAULT_PAY}" min="0" step="${isHourly?'0.25':'1'}"></div></div>${certField||dressField?`<div class="form-row two">${certField}${dressField}</div>`:''}  <div class="form-row two"><div class="field"><label>Notes (optional)</label><input id="f-notes" type="text" placeholder="Any relevant info..."></div><div class="field"><label>Role</label><select id="f-sub"><option value="0">${V('primary')} ${V('worker').toLowerCase()}</option><option value="1">${V('subBench')}</option></select></div></div><div class="form-actions"><button class="btn-ghost" onclick="cancelForm()">Cancel</button><button class="btn-save" onclick="addCoach()">Add ${V('worker').toLowerCase()}</button></div></div>`;
+  document.getElementById('add-form-wrap').innerHTML=`<div class="add-form">
+    <div class="form-title">${V('addWorkerTitle')}</div>
+    <div class="form-row two">
+      <div class="field">
+        <label>First name *</label>
+        <input id="f-first" type="text" placeholder="Marcus" autofocus
+          oninput="validateName(this,'f-first-err')" onblur="validateName(this,'f-first-err')">
+        <div class="field-error" id="f-first-err"></div>
+      </div>
+      <div class="field">
+        <label>Last name / initial</label>
+        <input id="f-last" type="text" placeholder="Johnson"
+          oninput="validateNameOptional(this,'f-last-err')" onblur="validateNameOptional(this,'f-last-err')">
+        <div class="field-error" id="f-last-err"></div>
+      </div>
+    </div>
+    <div class="form-row three">
+      <div class="field">
+        <label>${V('skill')} *</label>
+        <select id="f-sport" onchange="validateSelect(this,'f-sport-err')">
+          <option value="">— Select —</option>${getActivityOptions()}
+        </select>
+        <div class="field-error" id="f-sport-err"></div>
+      </div>
+      <div class="field">
+        <label>Phone number</label>
+        <input id="f-phone" type="tel" placeholder="(301) 555-0100"
+          oninput="validatePhoneOptional(this,'f-phone-err')" onblur="validatePhoneOptional(this,'f-phone-err')">
+        <div class="field-error" id="f-phone-err"></div>
+      </div>
+      <div class="field">
+        <label>Pay rate (${isHourly?'$/hr':'$/session'}) *</label>
+        <input id="f-pay" type="number" placeholder="${DEFAULT_PAY}" min="0" step="${isHourly?'0.25':'1'}"
+          oninput="validatePositiveNum(this,'f-pay-err')" onblur="validatePositiveNum(this,'f-pay-err')">
+        <div class="field-error" id="f-pay-err"></div>
+      </div>
+    </div>
+    ${certField||dressField?`<div class="form-row two">${certField}${dressField}</div>`:''}
+    <div class="form-row two">
+      <div class="field"><label>Notes (optional)</label><input id="f-notes" type="text" placeholder="Any relevant info..."></div>
+      <div class="field"><label>Role</label><select id="f-sub"><option value="0">${V('primary')} ${V('worker').toLowerCase()}</option><option value="1">${V('subBench')}</option></select></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-ghost" onclick="cancelForm()">Cancel</button>
+      <button class="btn-save" onclick="addCoach()">Add ${V('worker').toLowerCase()}</button>
+    </div>
+  </div>`;
 }
 function cancelForm(){formVisible=false;document.getElementById('add-form-wrap').innerHTML='';}
-function addCoach(){const first=document.getElementById('f-first').value.trim();const last=document.getElementById('f-last').value.trim();const sport=document.getElementById('f-sport').value;const phone=document.getElementById('f-phone').value.trim()||'(no phone)';const payRate=parseFloat(document.getElementById('f-pay').value)||DEFAULT_PAY;const notes=document.getElementById('f-notes').value.trim();const isSub=document.getElementById('f-sub').value==='1';const certification=document.getElementById('f-cert')?.value.trim()||'';const dressCode=document.getElementById('f-dress')?.value.trim()||'';if(!first){document.getElementById('f-first').focus();return;}const name=last?`${first} ${last.charAt(0)}.`:first;coaches.push({id:'c'+nextId++,name,sport,phone,initials:mkInitials(name),av:avColor(coaches.length),available:true,isSub,payRate,certification,dressCode,stats:{confirmed:0,noShows:0,lateCancels:0},notes});cancelForm();persist();renderRoster(document.getElementById('search-input').value);renderPool();updateStats();populatePayrollFilters();showToast(`${name} added`);}
+function addCoach(){
+  const firstEl=document.getElementById('f-first');
+  const lastEl=document.getElementById('f-last');
+  const sportEl=document.getElementById('f-sport');
+  const phoneEl=document.getElementById('f-phone');
+  const payEl=document.getElementById('f-pay');
+  // Run all validations and collect results
+  const ok=[
+    validateName(firstEl,'f-first-err'),
+    validateNameOptional(lastEl,'f-last-err'),
+    validateSelect(sportEl,'f-sport-err'),
+    phoneEl.value.trim()?validatePhoneOptional(phoneEl,'f-phone-err'):true,
+    validatePositiveNum(payEl,'f-pay-err'),
+  ];
+  if(ok.includes(false)){
+    // Scroll to first invalid field
+    const inv=document.querySelector('#add-form-wrap .invalid');
+    if(inv)inv.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  const first=firstEl.value.trim();
+  const last=lastEl.value.trim();
+  const sport=sportEl.value;
+  const phone=phoneEl.value.trim()||'(no phone)';
+  const payRate=parseFloat(payEl.value)||DEFAULT_PAY;
+  const notes=document.getElementById('f-notes').value.trim();
+  const isSub=document.getElementById('f-sub').value==='1';
+  const certification=document.getElementById('f-cert')?.value.trim()||'';
+  const dressCode=document.getElementById('f-dress')?.value.trim()||'';
+  const name=last?`${first} ${last.charAt(0)}.`:first;
+  coaches.push({id:'c'+nextId++,name,sport,phone,initials:mkInitials(name),av:avColor(coaches.length),available:true,isSub,payRate,certification,dressCode,stats:{confirmed:0,noShows:0,lateCancels:0},notes});
+  cancelForm();persist();renderRoster(document.getElementById('search-input').value);renderPool();updateStats();populatePayrollFilters();showToast(`${name} added`);
+}
 function deleteCoach(id){
   const c=getCoach(id);if(!c)return;
   const hasLog=sessionLog.some(s=>s.coachId===id);
@@ -2320,14 +2553,18 @@ function restoreCoach(id){
 function toggleAvail(id){const c=getCoach(id);if(!c)return;c.available=!c.available;if(c.available)c.fromPortal=false;if(!c.available){Object.keys(assignments).forEach(pid=>{assignments[pid]=(assignments[pid]||[]).filter(x=>x!==id);if(!assignments[pid].length)delete assignments[pid];});}persist();renderRoster(document.getElementById('search-input').value);renderPool();renderSchools();updateStats();showToast(`${c.name} marked ${c.available?'available':'unavailable'}`);}
 function toggleSub(id){const c=getCoach(id);if(!c)return;c.isSub=!c.isSub;persist();renderRoster(document.getElementById('search-input').value);renderPool();showToast(`${c.name} moved to ${c.isSub?'sub bench':'primary roster'}`);}
 function switchTab(tab){
-  ['schedule','checkin','coaches','confirm','payroll'].forEach((t,i)=>{
-    document.getElementById('view-'+t).classList.toggle('active',t===tab);
-    document.querySelectorAll('.nav-tab')[i].classList.toggle('active',t===tab);
+  const allTabs=['schedule','checkin','coaches','confirm','payroll','docs'];
+  allTabs.forEach((t,i)=>{
+    const view=document.getElementById('view-'+t);
+    const navBtn=document.querySelectorAll('.nav-tab')[i];
+    if(view)view.classList.toggle('active',t===tab);
+    if(navBtn)navBtn.classList.toggle('active',t===tab);
   });
   if(tab==='confirm')renderConfirmations();
   if(tab==='coaches')renderRoster(document.getElementById('search-input')?.value||'');
   if(tab==='payroll'){populatePayrollFilters();renderPayroll();}
   if(tab==='checkin')renderCheckinTab();
+  if(tab==='docs')renderDocsTab();
 }
 
 /* ══ PAYROLL ══ */
@@ -3081,17 +3318,33 @@ function openPortal(){
       }
       renderCheckinCard();
       renderPortalHistory();
+      renderPortalDocs();
     }
   }
   renderPortalConfirmations();
 }
 function closePortal(){document.getElementById('portal-page').classList.remove('active');}
 function submitPortalForm(){
-  const first=document.getElementById('p-first').value.trim();
-  const last=document.getElementById('p-last').value.trim();
-  const sport=document.getElementById('p-sport').value;
-  const phone=document.getElementById('p-phone').value.trim();
-  if(!first||!sport||!phone)return;
+  const firstEl=document.getElementById('p-first');
+  const lastEl=document.getElementById('p-last');
+  const sportEl=document.getElementById('p-sport');
+  const phoneEl=document.getElementById('p-phone');
+  // Run all validations — show inline errors for every failing field
+  const ok=[
+    validateName(firstEl,'p-first-err'),
+    validateNameOptional(lastEl,'p-last-err'),
+    validateSelect(sportEl,'p-sport-err'),
+    validatePhone(phoneEl,'p-phone-err'),
+  ];
+  if(ok.includes(false)){
+    const inv=document.querySelector('#portal-form-wrap .invalid');
+    if(inv)inv.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  const first=firstEl.value.trim();
+  const last=lastEl.value.trim();
+  const sport=sportEl.value;
+  const phone=phoneEl.value.trim();
   portalCoach={first,last,sport,phone};
   // Persist portal session so coach is recognized on next open
   try{localStorage.setItem('ez_portal_session',JSON.stringify(portalCoach));}catch(e){}
@@ -3212,12 +3465,66 @@ function availDragEnter(di,h){if(!availDragging)return;toggleCell(di,h,availDrag
 function availDragEnd(){availDragging=false;availDragMode=null;}
 function availTapCell(di,h){toggleCell(di,h);}
 document.addEventListener('mouseup',()=>availDragEnd());
+
+/* ══ KEYBOARD SHORTCUTS ══ */
+document.addEventListener('keydown',e=>{
+  /* Escape — close whatever is open, in priority order */
+  if(e.key==='Escape'){
+    // Roster modal (highest z-index concern)
+    if(document.getElementById('roster-modal-backdrop')?.classList.contains('show')){
+      closeRosterModal();return;
+    }
+    // Broadcast modal
+    if(document.getElementById('broadcast-backdrop')?.classList.contains('show')){
+      closeBroadcast();return;
+    }
+    // SMS/confirmations modal
+    if(document.getElementById('modal-backdrop')?.classList.contains('show')){
+      closeModal();return;
+    }
+    // Program picker
+    if(document.getElementById('picker-backdrop')?.classList.contains('show')){
+      closePicker();return;
+    }
+    // Settings panel
+    if(document.getElementById('settings-backdrop')?.classList.contains('show')){
+      closeSettings();return;
+    }
+    // Season manager overlay
+    if(document.getElementById('season-page')?.classList.contains('active')){
+      closeSeasonEdit();return;
+    }
+    // Coach portal overlay
+    if(document.getElementById('portal-page')?.classList.contains('active')){
+      closePortal();return;
+    }
+  }
+
+  /* Enter — confirm the picker when it's open and focus isn't on an input */
+  if(e.key==='Enter'){
+    const activeEl=document.activeElement;
+    const isInput=activeEl&&(activeEl.tagName==='INPUT'||activeEl.tagName==='TEXTAREA'||activeEl.tagName==='SELECT'||activeEl.tagName==='BUTTON');
+    if(!isInput&&document.getElementById('picker-backdrop')?.classList.contains('show')){
+      // Click the first non-disabled program option
+      const firstOption=document.querySelector('.program-option:not(.is-disabled)');
+      if(firstOption){firstOption.click();return;}
+    }
+  }
+});
 function toggleCell(di,h,forceMode=null){const day=DAYS_FULL[di];if(!coachAvail[day])coachAvail[day]=[];const on=coachAvail[day].includes(h);const setOn=forceMode?forceMode==='on':!on;if(setOn&&!coachAvail[day].includes(h))coachAvail[day].push(h);else if(!setOn)coachAvail[day]=coachAvail[day].filter(x=>x!==h);const el=document.getElementById(`ac-${di}-${h}`);if(el)el.classList.toggle('on',setOn);updateDayHeaders();updateAvailSummary();}
 function toggleDay(di){const day=DAYS_FULL[di];if(!coachAvail[day])coachAvail[day]=[];const allOn=HOURS.every(h=>coachAvail[day].includes(h));if(allOn)coachAvail[day]=[];else coachAvail[day]=[...HOURS];HOURS.forEach(h=>{const el=document.getElementById(`ac-${di}-${h}`);if(el)el.classList.toggle('on',!allOn);});updateDayHeaders();updateAvailSummary();}
 function toggleHour(h){const allOn=DAYS_FULL.every(day=>coachAvail[day]?.includes(h));DAYS_FULL.forEach((day,di)=>{if(!coachAvail[day])coachAvail[day]=[];if(allOn)coachAvail[day]=coachAvail[day].filter(x=>x!==h);else if(!coachAvail[day].includes(h))coachAvail[day].push(h);const el=document.getElementById(`ac-${di}-${h}`);if(el)el.classList.toggle('on',!allOn);});updateDayHeaders();updateAvailSummary();}
 function updateDayHeaders(){DAYS_FULL.forEach((day,i)=>{const btn=document.getElementById(`daybtn-${i}`);if(!btn)return;btn.classList.toggle('day-full',coachAvail[day]?.length===HOURS.length);btn.style.opacity=coachAvail[day]?.length>0?'1':'0.7';});}
 function updateAvailSummary(){let total=0;DAYS_FULL.forEach(day=>{total+=(coachAvail[day]?.length||0);});const el=document.getElementById('avail-summary');if(!el)return;if(!total){el.textContent='No hours selected';return;}const dc=DAYS_FULL.filter(d=>coachAvail[d]?.length>0).length;el.textContent=`${total} hour${total!==1?'s':''} across ${dc} day${dc!==1?'s':''}`;}
-function clearAvailability(){coachAvail={};document.querySelectorAll('.avail-cell').forEach(el=>el.classList.remove('on'));updateDayHeaders();updateAvailSummary();showToast('Availability cleared');}
+function clearAvailability(){
+  coachAvail={};
+  document.querySelectorAll('.avail-cell').forEach(el=>el.classList.remove('on'));
+  updateDayHeaders();
+  updateAvailSummary();
+  // If previously in collapsed view, go back to edit view since there's nothing to show
+  renderAvailSavedView();
+  showToast('Availability cleared');
+}
 
 function renderAvailSavedView(){
   const editView=document.getElementById('avail-section-edit');
@@ -3870,6 +4177,263 @@ function updateDashboard(){
     {num:`$${outstandingPay.toLocaleString()}`,lbl:'Payroll owed',sub:`${sessionLog.filter(s=>s.status==='completed'&&!s.paid).length} unpaid sessions`,cls:outstandingPay>0?'alert':'',tab:'payroll'},
   ];
   strip.innerHTML=tiles.map(t=>`<div class="dash-tile ${t.cls}" onclick="switchTab('${t.tab}')"><div class="dash-num">${t.num}</div><div class="dash-lbl">${t.lbl}</div><div class="dash-sub">${t.sub}</div></div>`).join('');
+}
+
+/* ══ COACH DOCUMENTS ══ */
+
+function docStatus(doc){
+  if(!doc.expiryDate)return'unknown';
+  const exp=new Date(doc.expiryDate);
+  const now=new Date();
+  const daysLeft=Math.round((exp-now)/(1000*60*60*24));
+  if(daysLeft<0)return'expired';
+  if(daysLeft<=30)return'expiring';
+  return'valid';
+}
+
+function docStatusPill(doc){
+  const s=docStatus(doc);
+  const map={
+    valid:  ['doc-pill-valid',  '✓ Valid'],
+    expiring:['doc-pill-expiring','⚠ Expiring soon'],
+    expired: ['doc-pill-expired', '✕ Expired'],
+    unknown: ['doc-pill-unknown', '— No dates found'],
+  };
+  const [cls,label]=map[s]||map.unknown;
+  return`<span class="doc-status-pill ${cls}">${label}</span>`;
+}
+
+function docIcon(type){
+  const icons={'School clearance':'🏫','Background check':'🔍','Certification':'🎓','Permit':'📋','Other':'📄'};
+  return icons[type]||'📄';
+}
+
+async function classifyDocument(base64Data,mimeType,fileName){
+  /* Call Anthropic API to read the document and extract structured info */
+  try{
+    const isImage=mimeType.startsWith('image/');
+    const contentBlock=isImage
+      ?{type:'image',source:{type:'base64',media_type:mimeType,data:base64Data}}
+      :{type:'document',source:{type:'base64',media_type:mimeType,data:base64Data}};
+
+    const prompt=`You are reviewing a document uploaded by a coach or staff member for an after-school sports program. 
+Analyze this document and return ONLY a valid JSON object (no markdown, no explanation) with these fields:
+{
+  "type": one of "School clearance" | "Background check" | "Certification" | "Permit" | "Other",
+  "name": a short human-readable name for this document (e.g. "DC School Clearance", "CPR Certification", "FBI Background Check"),
+  "issuingAuthority": the organization or agency that issued this (e.g. "DC Public Schools", "American Red Cross") or null,
+  "issuedDate": ISO date string YYYY-MM-DD or null,
+  "expiryDate": ISO date string YYYY-MM-DD or null,
+  "summary": one sentence describing what this document is and what it allows
+}
+If you cannot determine a field, use null. Be conservative with dates — only extract them if clearly stated.`;
+
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:400,
+        messages:[{role:'user',content:[contentBlock,{type:'text',text:prompt}]}],
+      }),
+    });
+    const data=await resp.json();
+    const text=(data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+    const clean=text.replace(/```json|```/g,'').trim();
+    return JSON.parse(clean);
+  }catch(e){
+    console.warn('Document classification failed:',e);
+    // Fallback — use filename as a hint
+    const lower=fileName.toLowerCase();
+    const type=lower.includes('clear')?'School clearance':lower.includes('back')?'Background check':lower.includes('cert')?'Certification':'Other';
+    return{type,name:fileName.replace(/\.[^.]+$/,''),issuingAuthority:null,issuedDate:null,expiryDate:null,summary:'Document uploaded — could not be automatically classified.'};
+  }
+}
+
+function handleDocDrop(e){
+  e.preventDefault();
+  document.getElementById('doc-upload-zone')?.classList.remove('drag-over');
+  const file=e.dataTransfer?.files?.[0];
+  if(file)processDocFile(file);
+}
+
+function handleDocFile(e){
+  const file=e.target?.files?.[0];
+  if(file)processDocFile(file);
+  e.target.value='';
+}
+
+async function processDocFile(file){
+  if(!portalCoach?.phone){showToast('Please save your info first');return;}
+  const matched=coaches.find(c=>c.phone===portalCoach.phone);
+  if(!matched){showToast('Coach record not found');return;}
+
+  const allowed=['application/pdf','image/jpeg','image/png','image/jpg','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+  if(!allowed.includes(file.type)&&!file.name.match(/\.(pdf|jpg|jpeg|png|doc|docx)$/i)){
+    showToast('Please upload a PDF, image, or Word document');return;
+  }
+
+  // Show processing state
+  const list=document.getElementById('portal-doc-list');
+  const processingId='proc-'+Date.now();
+  if(list){
+    const div=document.createElement('div');
+    div.className='doc-processing';
+    div.id=processingId;
+    div.innerHTML='<div class="doc-processing-dot"></div>Reading document…';
+    list.appendChild(div);
+  }
+
+  // Read file as base64
+  const base64=await new Promise((res,rej)=>{
+    const reader=new FileReader();
+    reader.onload=()=>res(reader.result.split(',')[1]);
+    reader.onerror=rej;
+    // For non-images/PDFs, just read as text fallback
+    reader.readAsDataURL(file);
+  });
+
+  // Determine mime type — Word docs can't be sent to Claude vision, treat as text
+  const mime=file.type||'application/octet-stream';
+  const usable=mime==='application/pdf'||mime.startsWith('image/');
+
+  let classified;
+  if(usable){
+    classified=await classifyDocument(base64,mime,file.name);
+  } else {
+    // Word doc — just use filename heuristics
+    const lower=file.name.toLowerCase();
+    const type=lower.includes('clear')?'School clearance':lower.includes('back')?'Background check':lower.includes('cert')?'Certification':'Other';
+    classified={type,name:file.name.replace(/\.[^.]+$/,''),issuingAuthority:null,issuedDate:null,expiryDate:null,summary:'Document stored — open file to review contents.'};
+  }
+
+  // Remove processing indicator
+  document.getElementById(processingId)?.remove();
+
+  // Save to coach record
+  if(!matched.documents)matched.documents=[];
+  const doc={
+    id:'doc'+Date.now(),
+    fileName:file.name,
+    fileSize:file.size,
+    mimeType:mime,
+    uploadedAt:new Date().toISOString(),
+    ...classified,
+  };
+  matched.documents.push(doc);
+  persist();
+
+  renderPortalDocs();
+  updateDocsBadge();
+  showToast('Document saved — '+doc.name);
+}
+
+function removeDoc(coachId,docId){
+  const c=getCoach(coachId);if(!c)return;
+  c.documents=(c.documents||[]).filter(d=>d.id!==docId);
+  persist();
+  renderPortalDocs();
+  updateDocsBadge();
+  showToast('Document removed');
+}
+
+function renderPortalDocs(){
+  const card=document.getElementById('portal-docs-card');
+  const list=document.getElementById('portal-doc-list');
+  if(!card||!list)return;
+
+  /* Show documents card for the after-school sports vertical — all activity types */
+  const vertical=ORG_CFG?.vertical||'sports';
+  if(vertical!=='sports'){card.style.display='none';return;}
+  if(!portalCoach?.phone){card.style.display='none';return;}
+
+  card.style.display='block';
+  const matched=coaches.find(c=>c.phone===portalCoach.phone);
+  const docs=matched?.documents||[];
+
+  if(!docs.length){list.innerHTML='';return;}
+
+  list.innerHTML='<div class="doc-list">'+docs.map(doc=>`
+    <div class="doc-row">
+      <div class="doc-icon">${docIcon(doc.type)}</div>
+      <div class="doc-info">
+        <div class="doc-name">${doc.name}</div>
+        <div class="doc-type">${doc.type}${doc.issuingAuthority?' · '+doc.issuingAuthority:''}</div>
+        <div class="doc-dates">
+          ${doc.issuedDate?'Issued: '+formatDate(doc.issuedDate):''}
+          ${doc.issuedDate&&doc.expiryDate?' · ':''}
+          ${doc.expiryDate?'Expires: '+formatDate(doc.expiryDate):''}
+          ${!doc.issuedDate&&!doc.expiryDate?'No dates extracted':''}
+        </div>
+        ${docStatusPill(doc)}
+        ${doc.summary?`<div style="font-size:11px;color:var(--text-tertiary);margin-top:4px;font-style:italic">${doc.summary}</div>`:''}
+      </div>
+      <button class="doc-remove-btn" onclick="removeDoc('${matched.id}','${doc.id}')" title="Remove document">×</button>
+    </div>`).join('')+'</div>';
+}
+
+/* ── Admin documents tab ── */
+function updateDocsBadge(){
+  const vertical=ORG_CFG?.vertical||'sports';
+  const navTab=document.getElementById('nav-docs-tab');
+  if(!navTab)return;
+  if(vertical!=='sports'){navTab.style.display='none';return;}
+  navTab.style.display='';
+
+  // Badge = coaches with expired or expiring docs
+  const alertCount=coaches.filter(c=>(c.documents||[]).some(d=>docStatus(d)==='expired'||docStatus(d)==='expiring')).length;
+  const badge=document.getElementById('docs-badge');
+  if(badge){badge.textContent=alertCount;badge.classList.toggle('show',alertCount>0);}
+}
+
+function renderDocsTab(){
+  const body=document.getElementById('docs-tab-body');
+  if(!body)return;
+  const typeFilter=document.getElementById('docs-type-filter')?.value||'';
+  const statusFilter=document.getElementById('docs-status-filter')?.value||'';
+
+  const coachesWithDocs=coaches.filter(c=>!c.inactive&&(c.documents||[]).length>0);
+
+  if(!coachesWithDocs.length){
+    body.innerHTML='<div class="docs-empty">No documents uploaded yet. Coaches can upload documents through their portal.</div>';
+    return;
+  }
+
+  let html='';
+  coachesWithDocs.forEach(c=>{
+    let docs=c.documents||[];
+    if(typeFilter)docs=docs.filter(d=>d.type===typeFilter);
+    if(statusFilter)docs=docs.filter(d=>docStatus(d)===statusFilter);
+    if(!docs.length)return;
+
+    const hasAlert=docs.some(d=>docStatus(d)==='expired'||docStatus(d)==='expiring');
+    html+=`<div class="docs-coach-section">
+      <div class="docs-coach-hd">
+        <div class="avatar ${c.av}" style="width:28px;height:28px;font-size:9px">${c.initials}</div>
+        <div class="docs-coach-name">${c.name}</div>
+        <div class="docs-coach-count">${docs.length} doc${docs.length!==1?'s':''}</div>
+        ${hasAlert?'<span class="docs-alert-badge">⚠ Action needed</span>':''}
+      </div>
+      ${docs.map(doc=>`
+      <div class="docs-admin-row">
+        <div class="doc-icon">${docIcon(doc.type)}</div>
+        <div class="doc-info" style="flex:1">
+          <div class="doc-name">${doc.name}</div>
+          <div class="doc-type">${doc.type}${doc.issuingAuthority?' · '+doc.issuingAuthority:''}</div>
+          <div class="doc-dates">
+            ${doc.issuedDate?'Issued: '+formatDate(doc.issuedDate):''}
+            ${doc.issuedDate&&doc.expiryDate?' · ':''}
+            ${doc.expiryDate?'Expires: '+formatDate(doc.expiryDate):''}
+            ${!doc.issuedDate&&!doc.expiryDate?'Uploaded '+formatDate(doc.uploadedAt?.split('T')[0]||''):''}
+          </div>
+          ${docStatusPill(doc)}
+          ${doc.summary?`<div style="font-size:11px;color:var(--text-tertiary);margin-top:4px;font-style:italic">${doc.summary}</div>`:''}
+        </div>
+      </div>`).join('')}
+    </div>`;
+  });
+
+  body.innerHTML=html||'<div class="docs-empty">No documents match the current filter.</div>';
 }
 
 init();
