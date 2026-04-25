@@ -637,6 +637,76 @@
   .by-day-prog-name{font-size:12px;font-weight:600;}
   .by-day-time{font-size:10px;color:var(--text-tertiary);font-family:'DM Mono',monospace;margin-top:2px;}
   .by-day-none{font-size:11px;color:var(--text-tertiary);font-style:italic;padding:8px;}
+
+  /* ── SEASONAL COACH ASSIGNMENTS ── */
+  .se-assign-hd{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);}
+  .se-assign-title{font-size:14px;font-weight:600;flex:1;}
+  .se-assign-sub{font-size:12px;color:var(--text-secondary);margin-top:2px;font-weight:400;}
+  .efficiency-gauge{display:flex;align-items:center;gap:14px;}
+  .gauge-circle{position:relative;width:56px;height:56px;flex-shrink:0;}
+  .gauge-circle svg{transform:rotate(-90deg);width:56px;height:56px;}
+  .gauge-bg{fill:none;stroke:var(--border);stroke-width:6;}
+  .gauge-fg{fill:none;stroke:var(--brand);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset 0.6s ease, stroke 0.3s;}
+  .gauge-fg.alert{stroke:var(--amber);}
+  .gauge-fg.bad{stroke:#ef4444;}
+  .gauge-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--text);font-family:'DM Mono',monospace;}
+  .gauge-info{display:flex;flex-direction:column;gap:2px;}
+  .gauge-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-tertiary);}
+  .gauge-status{font-size:12px;font-weight:600;}
+  .gauge-status.good{color:var(--brand-dark);}
+  .gauge-status.alert{color:#b45309;}
+  .gauge-status.bad{color:#b91c1c;}
+  .se-suggest-btn{background:var(--brand);color:white;border:none;border-radius:var(--radius);padding:9px 16px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;transition:background 0.15s;flex-shrink:0;}
+  .se-suggest-btn:hover{background:var(--brand-dark);}
+  .se-suggest-btn svg{width:13px;height:13px;}
+  .se-clear-btn{background:none;color:var(--text-secondary);border:1px solid var(--border);border-radius:var(--radius);padding:9px 14px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;}
+  .se-clear-btn:hover{border-color:#ef4444;color:#b91c1c;}
+  .gauge-detail{padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:18px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;font-size:11px;}
+  .gauge-detail-item{display:flex;flex-direction:column;gap:2px;padding:5px 8px;border-right:1px solid var(--border);}
+  .gauge-detail-item:last-child{border-right:none;}
+  .gauge-detail-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-tertiary);}
+  .gauge-detail-val{font-size:14px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text);}
+  .gauge-detail-weight{font-size:9px;color:var(--text-tertiary);font-style:italic;}
+  .seasonal-grid-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);}
+  .seasonal-grid{display:grid;grid-template-columns:240px repeat(5,minmax(140px,1fr));min-width:1000px;}
+  .sg-hd{padding:10px 12px;background:var(--bg);border-bottom:2px solid var(--border);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-secondary);position:sticky;top:0;z-index:1;}
+  .sg-hd:not(:last-child){border-right:1px solid var(--border);}
+  .sg-school-row{display:contents;}
+  .sg-school-hd{grid-column:1/-1;padding:10px 14px;background:var(--brand-light);border-bottom:1px solid var(--brand-mid);border-top:1px solid var(--border);font-size:12px;font-weight:700;color:var(--brand-dark);}
+  .sg-prog-cell{padding:10px 12px;border-bottom:1px solid var(--border);background:var(--bg);}
+  .sg-prog-cell:not(:last-child){border-right:1px solid var(--border);}
+  .sg-prog-label{font-size:13px;font-weight:600;}
+  .sg-prog-time{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;margin-top:2px;}
+  .sg-prog-max{font-size:10px;color:var(--text-tertiary);margin-top:1px;}
+  .sg-day-cell{padding:8px;border-bottom:1px solid var(--border);min-height:54px;display:flex;flex-direction:column;gap:4px;cursor:pointer;transition:background 0.12s;}
+  .sg-day-cell:not(:last-child){border-right:1px solid var(--border);}
+  .sg-day-cell.empty{background:repeating-linear-gradient(45deg,transparent,transparent 6px,rgba(0,0,0,0.015) 6px,rgba(0,0,0,0.015) 12px);}
+  .sg-day-cell:hover{background:var(--brand-light);}
+  .sg-day-cell.no-day{background:var(--bg);cursor:default;opacity:0.4;}
+  .sg-day-cell.no-day:hover{background:var(--bg);}
+  .sg-coach-chip{display:flex;align-items:center;gap:6px;padding:3px 6px 3px 4px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:11px;font-weight:500;}
+  .sg-coach-chip .sm-av{width:16px;height:16px;font-size:7px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;flex-shrink:0;}
+  .sg-coach-chip .chip-name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .sg-coach-chip .chip-x{cursor:pointer;color:var(--text-tertiary);font-size:13px;line-height:1;padding:0 2px;}
+  .sg-coach-chip .chip-x:hover{color:#b91c1c;}
+  .sg-add-hint{font-size:10px;color:var(--text-tertiary);font-style:italic;}
+  .sg-suggested{border-color:var(--amber)!important;background:#fffbeb!important;}
+  .sg-suggested-tag{font-size:8px;font-weight:700;color:#b45309;letter-spacing:0.04em;text-transform:uppercase;margin-left:auto;}
+  .sg-conflict{background:#fee2e2!important;}
+  /* Coach picker for seasonal cell */
+  .sa-picker-list{padding:8px;max-height:60vh;overflow-y:auto;}
+  .sa-picker-coach{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;border:1px solid transparent;}
+  .sa-picker-coach:hover{background:var(--brand-light);border-color:var(--brand-mid);}
+  .sa-picker-coach.unavailable{opacity:0.5;cursor:not-allowed;}
+  .sa-picker-coach.unavailable:hover{background:transparent;border-color:transparent;}
+  .sa-picker-info{flex:1;}
+  .sa-picker-name{font-size:13px;font-weight:600;}
+  .sa-picker-meta{font-size:11px;color:var(--text-secondary);margin-top:1px;}
+  .sa-picker-score{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;font-family:'DM Mono',monospace;}
+  .sa-score-bar{width:36px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+  .sa-score-fill{height:100%;background:var(--brand);transition:width 0.2s;}
+  .sa-score-fill.medium{background:var(--amber);}
+  .sa-score-fill.low{background:#ef4444;}
   .season-placeholder{display:flex;align-items:center;justify-content:center;flex:1;color:var(--text-tertiary);font-size:14px;font-style:italic;}
 
   /* ── PER-SCHOOL COORDINATOR ── */
@@ -1615,6 +1685,7 @@ function persist(){
       nextId,nextSeasonId,nextSchoolId,nextProgId,nextCoordId,
       dailyNote,dailyNoteDate,
       orgDefaultPayRate: DEFAULT_PAY,
+      seasonalAssignments,
     }));
   }catch(e){console.warn('persist failed',e);}
 }
@@ -1674,6 +1745,8 @@ nextCoordId       = _SAVED?.nextCoordId   ?? 10;
 let dailyNote     = _SAVED?.dailyNote     ?? '';
 let dailyNoteDate = _SAVED?.dailyNoteDate ?? '';
 let showInactive  = false; /* Fix 6 — toggle to show/hide inactive coaches */
+/* Standing seasonal assignments — { seasonId: { pid: [coachId, ...] } } */
+let seasonalAssignments = _SAVED?.seasonalAssignments ?? {};
 /* Restore coordinators — overwrite defaults if we have saved ones */
 if(_SAVED?.coordinators?.length) coordinators = _SAVED.coordinators;
 let dragging=null,formVisible=false,pickerCoachId=null,pickerSchoolId=null;
@@ -1702,7 +1775,24 @@ function getEditSeason(){return seasons.find(s=>s.id===editSeasonId);}
 function getSchools(){return getCurrentSeason().schools;}
 function availableCoaches(){return coaches.filter(c=>c.available&&!c.inactive);}
 function getCoach(id){return coaches.find(c=>c.id===id);} // intentionally finds inactive too (for payroll/log lookups)
-function assignedIds(){return Object.values(assignments).flat();}
+/* Daily assignments fall back to seasonal standing assignments for the current season */
+function getEffectiveAssigned(pid){
+  if(assignments[pid]!==undefined)return assignments[pid];
+  const seasonId=getCurrentSeason()?.id;
+  if(!seasonId)return [];
+  return seasonalAssignments[seasonId]?.[pid]||[];
+}
+function assignedIds(){
+  const ids=new Set();
+  // Get all programs in current season + day
+  const tomorrow=getTomorrowDayName();
+  getSchools().forEach(s=>s.programs.forEach(p=>{
+    if(!p.days.includes(tomorrow))return;
+    getEffectiveAssigned(p.id).forEach(cid=>ids.add(cid));
+  }));
+  return [...ids];
+}
+function progCount(pid){return getEffectiveAssigned(pid).length;}
 function poolCoaches(){
   const a=assignedIds();
   const tomorrow=getTomorrowDayName();
@@ -1720,7 +1810,6 @@ function mkInitials(n){return n.trim().split(' ').map(w=>w[0]).join('').toUpperC
 function avColor(i){return AV_COLORS[i%AV_COLORS.length];}
 function getSchool(id){return getSchools().find(s=>s.id===id);}
 function getProgramInfo(pid){for(const s of getSchools()){const p=s.programs.find(p=>p.id===pid);if(p)return{school:s,program:p};}return null;}
-function progCount(pid){return(assignments[pid]||[]).length;}
 function getTomorrowDayName(){const d=new Date();d.setDate(d.getDate()+1);const js=d.getDay();return DAYS_FULL[js===0?6:js-1];}
 function hourLabel(h){if(h===12)return'12:00 PM';return h<12?`${h}:00 AM`:`${h-12}:00 PM`;}
 function showToast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2600);}
@@ -1733,6 +1822,343 @@ function todayStr(){return new Date().toISOString().split('T')[0];}
 function sportPillClass(sport){return SPORT_PILL[sport]||'pill-default';}
 
 /* ══ INIT ══ */
+/* ══ SEASONAL ASSIGNMENTS ══ */
+
+function getSAssign(seasonId,pid){
+  return seasonalAssignments[seasonId]?.[pid]||[];
+}
+function setSAssign(seasonId,pid,coachIds){
+  if(!seasonalAssignments[seasonId])seasonalAssignments[seasonId]={};
+  seasonalAssignments[seasonId][pid]=coachIds;
+  if(!coachIds.length)delete seasonalAssignments[seasonId][pid];
+  persist();
+}
+
+/* Score how well a coach matches a program — 0–100 */
+function scoreCoachForProgram(coach,program,school){
+  if(!coach||coach.inactive||!coach.available)return 0;
+  let score=0;
+  // Sport/expertise match (40)
+  if(coach.sport===school.sport)score+=40;
+  else score+=8; // partial credit for any coach
+  // Reliability (25) — based on confirmed/no-show ratio
+  const total=(coach.stats?.confirmed||0)+(coach.stats?.noShows||0)+(coach.stats?.lateCancels||0);
+  if(total===0)score+=18; // new coach — neutral
+  else{
+    const reliability=(coach.stats.confirmed||0)/total;
+    score+=Math.round(reliability*25);
+  }
+  // Transportation (20) — placeholder, full credit until field added
+  score+=20;
+  // Availability bonus (10) — does the coach's weeklyAvailability cover any of the program's days?
+  if(coach.weeklyAvailability && Object.keys(coach.weeklyAvailability).length){
+    const covers=program.days.some(d=>coach.weeklyAvailability[d]?.length>0);
+    if(covers)score+=10;
+    else score+=2;
+  } else score+=7; // no availability set — assume flexible
+  // Conflict-free (5) — checked separately at slot level
+  score+=5;
+  return Math.min(100,Math.round(score));
+}
+
+/* Compute the efficiency score for a season */
+function computeEfficiency(season){
+  if(!season)return{total:0,expertise:0,reliability:0,transport:0,coverage:0,conflicts:0,details:{}};
+  const allPrograms=season.schools.flatMap(s=>s.programs.map(p=>({pid:p.id,prog:p,school:s})));
+  let totalSlots=0,filledSlots=0;
+  let expertiseHits=0,expertiseTotal=0;
+  let reliabilitySum=0,reliabilityCount=0;
+  let transportSum=0,transportCount=0;
+  const conflictsByDay={};
+  let conflictCount=0,assignedSlotCount=0;
+
+  allPrograms.forEach(({pid,prog,school})=>{
+    const cids=getSAssign(season.id,pid);
+    totalSlots+=prog.max;
+    filledSlots+=Math.min(cids.length,prog.max);
+    cids.forEach(cid=>{
+      const c=getCoach(cid);if(!c)return;
+      assignedSlotCount++;
+      // Expertise
+      expertiseTotal++;
+      if(c.sport===school.sport)expertiseHits++;
+      // Reliability
+      const total=(c.stats?.confirmed||0)+(c.stats?.noShows||0)+(c.stats?.lateCancels||0);
+      if(total>0){reliabilitySum+=(c.stats.confirmed||0)/total;reliabilityCount++;}
+      else{reliabilitySum+=0.7;reliabilityCount++;} // assume 70% for new coaches
+      // Transportation — placeholder full credit
+      transportSum+=1;transportCount++;
+      // Conflict detection — track coach by day
+      prog.days.forEach(day=>{
+        const k=cid+':'+day+':'+prog.time;
+        if(!conflictsByDay[k])conflictsByDay[k]=[];
+        conflictsByDay[k].push(pid);
+      });
+    });
+  });
+  Object.values(conflictsByDay).forEach(arr=>{if(arr.length>1)conflictCount+=arr.length;});
+
+  const expertisePct=expertiseTotal?(expertiseHits/expertiseTotal):1;
+  const reliabilityPct=reliabilityCount?(reliabilitySum/reliabilityCount):1;
+  const transportPct=transportCount?(transportSum/transportCount):1;
+  const coveragePct=totalSlots?(filledSlots/totalSlots):0;
+  const conflictPct=assignedSlotCount?Math.max(0,1-(conflictCount/assignedSlotCount)):1;
+
+  // Weighted: 40 expertise, 25 reliability, 20 transport, 10 coverage, 5 conflicts
+  const total=Math.round(expertisePct*40+reliabilityPct*25+transportPct*20+coveragePct*10+conflictPct*5);
+
+  return{
+    total,
+    details:{
+      expertise:{score:Math.round(expertisePct*100),weight:40,label:'Expertise match',hits:expertiseHits,total:expertiseTotal},
+      reliability:{score:Math.round(reliabilityPct*100),weight:25,label:'Reliability'},
+      transport:{score:Math.round(transportPct*100),weight:20,label:'Transportation'},
+      coverage:{score:Math.round(coveragePct*100),weight:10,label:'Coverage',filled:filledSlots,total:totalSlots},
+      conflicts:{score:Math.round(conflictPct*100),weight:5,label:'No conflicts',count:conflictCount},
+    },
+  };
+}
+
+/* Greedy schedule suggester */
+function suggestSchedule(seasonId){
+  const season=seasons.find(s=>s.id===seasonId);if(!season)return;
+  const allPrograms=season.schools.flatMap(s=>s.programs.map(p=>({pid:p.id,prog:p,school:s})));
+  const activeCoaches=coaches.filter(c=>!c.inactive&&c.available!==false);
+  // Track assignments built up — clone existing first so manual entries are preserved
+  const newAssign=JSON.parse(JSON.stringify(seasonalAssignments[seasonId]||{}));
+  // Coach load tracker (count of programs assigned per coach to spread the load)
+  const coachLoad={};
+  Object.values(newAssign).forEach(cids=>cids.forEach(cid=>{coachLoad[cid]=(coachLoad[cid]||0)+1;}));
+
+  // Pre-sort programs: those with the rarest sports first (harder to match)
+  const sportRarity={};
+  activeCoaches.forEach(c=>{sportRarity[c.sport]=(sportRarity[c.sport]||0)+1;});
+  const sortedPrograms=[...allPrograms].sort((a,b)=>(sportRarity[a.school.sport]||999)-(sportRarity[b.school.sport]||999));
+
+  sortedPrograms.forEach(({pid,prog,school})=>{
+    const existing=newAssign[pid]||[];
+    const slotsToFill=prog.max-existing.length;
+    if(slotsToFill<=0)return;
+
+    // Score every available coach not already assigned to this program
+    const candidates=activeCoaches
+      .filter(c=>!existing.includes(c.id))
+      .filter(c=>{
+        // Skip if this coach has a time conflict with another program on the same days
+        return !prog.days.some(day=>{
+          return Object.entries(newAssign).some(([otherPid,otherCids])=>{
+            if(otherPid===pid)return false;
+            if(!otherCids.includes(c.id))return false;
+            const otherInfo=allPrograms.find(p=>p.pid===otherPid);
+            if(!otherInfo)return false;
+            return otherInfo.prog.days.includes(day)&&otherInfo.prog.time===prog.time;
+          });
+        });
+      })
+      .map(c=>({
+        coach:c,
+        score:scoreCoachForProgram(c,prog,school)-(coachLoad[c.id]||0)*2, // gentle load penalty
+      }))
+      .sort((a,b)=>b.score-a.score);
+
+    // Pick top N
+    const picks=candidates.slice(0,slotsToFill);
+    if(picks.length){
+      newAssign[pid]=[...existing,...picks.map(p=>p.coach.id)];
+      picks.forEach(p=>{coachLoad[p.coach.id]=(coachLoad[p.coach.id]||0)+1;});
+    }
+  });
+
+  seasonalAssignments[seasonId]=newAssign;
+  persist();
+}
+
+function clearSeasonalAssignments(seasonId){
+  if(!confirm('Clear all coach assignments for this season? Daily overrides will not be affected.'))return;
+  delete seasonalAssignments[seasonId];
+  persist();
+  renderSeasonDetail();
+  showToast('Coach assignments cleared');
+}
+
+function runSuggester(){
+  if(!editSeasonId)return;
+  if(Object.keys(seasonalAssignments[editSeasonId]||{}).length){
+    if(!confirm('This will fill in remaining slots while preserving your existing assignments. Continue?'))return;
+  }
+  suggestSchedule(editSeasonId);
+  renderSeasonDetail();
+  const eff=computeEfficiency(getEditSeason());
+  showToast(`Suggested schedule generated · efficiency ${eff.total}%`);
+}
+
+/* Render the seasonal grid view */
+function renderSeasonalAssignments(season){
+  const eff=computeEfficiency(season);
+  const cls=eff.total>=85?'':eff.total>=60?'alert':'bad';
+  const status=eff.total>=85?'Excellent fit':eff.total>=60?'Room to improve':'Needs attention';
+  const statusCls=eff.total>=85?'good':eff.total>=60?'alert':'bad';
+  const r=24,c=2*Math.PI*r;
+  const offset=c-(eff.total/100)*c;
+
+  const headerHtml=`<div class="se-assign-hd">
+    <div class="efficiency-gauge">
+      <div class="gauge-circle">
+        <svg viewBox="0 0 56 56">
+          <circle class="gauge-bg" cx="28" cy="28" r="${r}"/>
+          <circle class="gauge-fg ${cls}" cx="28" cy="28" r="${r}" stroke-dasharray="${c}" stroke-dashoffset="${offset}"/>
+        </svg>
+        <div class="gauge-pct">${eff.total}%</div>
+      </div>
+      <div class="gauge-info">
+        <div class="gauge-label">Efficiency Score</div>
+        <div class="gauge-status ${statusCls}">${status}</div>
+      </div>
+    </div>
+    <div style="flex:1">
+      <div class="se-assign-title">Standing coach assignments</div>
+      <div class="se-assign-sub">Coaches assigned here will run the program for the entire ${V('seasonNoun').toLowerCase()}. Daily views still allow overrides for any specific day.</div>
+    </div>
+    <button class="se-clear-btn" onclick="clearSeasonalAssignments('${season.id}')">Clear all</button>
+    <button class="se-suggest-btn" onclick="runSuggester()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L19 12l-5.714 2.143L11 21l-2.286-6.857L3 12l5.714-2.143z"/></svg>
+      Suggest schedule
+    </button>
+  </div>`;
+
+  // Detail breakdown
+  const d=eff.details;
+  const breakdownHtml=`<div class="gauge-detail">
+    ${Object.entries(d).map(([key,info])=>{
+      const extra=info.hits!==undefined?`${info.hits}/${info.total} matched`
+        :info.filled!==undefined?`${info.filled}/${info.total} slots`
+        :info.count!==undefined?`${info.count} found`
+        :'';
+      return`<div class="gauge-detail-item">
+        <div class="gauge-detail-label">${info.label}</div>
+        <div class="gauge-detail-val">${info.score}%</div>
+        <div class="gauge-detail-weight">${info.weight}% weight${extra?' · '+extra:''}</div>
+      </div>`;
+    }).join('')}
+  </div>`;
+
+  // Build the grid
+  const days=DAYS_FULL.slice(0,5); // Mon–Fri
+  const headers=`<div class="sg-hd">Program</div>${days.map(d=>`<div class="sg-hd">${d}</div>`).join('')}`;
+
+  const rows=season.schools.length?season.schools.map(school=>{
+    if(!school.programs.length)return '';
+    const schoolHd=`<div class="sg-school-hd">${school.name} · ${school.sport}</div>`;
+    const progRows=school.programs.map(p=>{
+      const cell=`<div class="sg-prog-cell">
+        <div class="sg-prog-label">${p.label}</div>
+        <div class="sg-prog-time">${p.time}</div>
+        <div class="sg-prog-max">max ${p.max} ${V('worker').toLowerCase()}${p.max!==1?'s':''}</div>
+      </div>`;
+      const dayCells=days.map(day=>{
+        if(!p.days.includes(day)){
+          return`<div class="sg-day-cell no-day"><span class="sg-add-hint">—</span></div>`;
+        }
+        const cids=getSAssign(season.id,p.id);
+        const chips=cids.map(cid=>{
+          const c=getCoach(cid);if(!c)return'';
+          return`<div class="sg-coach-chip">
+            <div class="sm-av ${c.av}">${c.initials}</div>
+            <span class="chip-name">${c.name}</span>
+            <span class="chip-x" onclick="event.stopPropagation();removeSeasonalCoach('${season.id}','${p.id}','${cid}')">×</span>
+          </div>`;
+        }).join('');
+        const empty=cids.length<p.max?`<span class="sg-add-hint">${cids.length?'+ Add another':'+ Assign coach'}</span>`:'';
+        const cellCls=cids.length===0?' empty':'';
+        return`<div class="sg-day-cell${cellCls}" onclick="openSeasonalPicker('${season.id}','${p.id}','${day}')">${chips}${empty}</div>`;
+      }).join('');
+      return`<div class="sg-school-row">${cell}${dayCells}</div>`;
+    }).join('');
+    return schoolHd+progRows;
+  }).join(''):'<div style="padding:32px;text-align:center;color:var(--text-tertiary);font-style:italic">Add sites and programs in the "By Site" view first.</div>';
+
+  return`${headerHtml}${breakdownHtml}<div class="seasonal-grid-wrap"><div class="seasonal-grid">${headers}${rows}</div></div>`;
+}
+
+function removeSeasonalCoach(seasonId,pid,coachId){
+  const cids=getSAssign(seasonId,pid).filter(c=>c!==coachId);
+  setSAssign(seasonId,pid,cids);
+  renderSeasonDetail();
+}
+
+function openSeasonalPicker(seasonId,pid,day){
+  const season=seasons.find(s=>s.id===seasonId);if(!season)return;
+  let prog=null,school=null;
+  for(const sc of season.schools){
+    const p=sc.programs.find(p=>p.id===pid);
+    if(p){prog=p;school=sc;break;}
+  }
+  if(!prog||!school)return;
+  const existing=getSAssign(seasonId,pid);
+  if(existing.length>=prog.max){showToast(`This program is full (${prog.max} ${V('worker').toLowerCase()}${prog.max!==1?'s':''} max)`);return;}
+
+  // Build candidate list scored
+  const activeCoaches=coaches.filter(c=>!c.inactive&&c.available!==false);
+  const candidates=activeCoaches.filter(c=>!existing.includes(c.id)).map(c=>{
+    const score=scoreCoachForProgram(c,prog,school);
+    // Detect time conflict on this day
+    let conflict=false;
+    Object.entries(seasonalAssignments[seasonId]||{}).forEach(([otherPid,otherCids])=>{
+      if(otherPid===pid||!otherCids.includes(c.id))return;
+      let otherProg=null;
+      for(const sc of season.schools){
+        const p=sc.programs.find(p=>p.id===otherPid);
+        if(p){otherProg=p;break;}
+      }
+      if(otherProg&&otherProg.days.includes(day)&&otherProg.time===prog.time)conflict=true;
+    });
+    return{coach:c,score,conflict};
+  }).sort((a,b)=>{
+    if(a.conflict!==b.conflict)return a.conflict?1:-1;
+    return b.score-a.score;
+  });
+
+  // Render picker into existing modal infrastructure
+  const backdrop=document.getElementById('picker-backdrop');
+  const modal=backdrop?.querySelector('.picker-modal');
+  if(!backdrop||!modal)return;
+
+  modal.innerHTML=`
+    <div class="picker-head">
+      <div class="picker-eyebrow">${school.name} · ${day}</div>
+      <div class="picker-title">${prog.label}</div>
+      <div class="picker-sub">${prog.time} · ${existing.length}/${prog.max} assigned · ranked by match score</div>
+    </div>
+    <div class="sa-picker-list">
+      ${candidates.length?candidates.map(({coach:c,score,conflict})=>{
+        const scoreCls=score>=70?'':score>=40?'medium':'low';
+        return`<div class="sa-picker-coach ${conflict?'unavailable':''}" ${conflict?'':`onclick="confirmSeasonalAssign('${seasonId}','${pid}','${c.id}')"`}>
+          <div class="avatar ${c.av}">${c.initials}</div>
+          <div class="sa-picker-info">
+            <div class="sa-picker-name">${c.name}${conflict?' <span style="font-size:10px;color:#b91c1c;font-weight:600">· time conflict</span>':''}</div>
+            <div class="sa-picker-meta">${c.sport}${c.sport===school.sport?' ✓':''} · ${(c.stats?.confirmed||0)} sessions completed</div>
+          </div>
+          <div class="sa-picker-score">
+            <span>${score}%</span>
+            <div class="sa-score-bar"><div class="sa-score-fill ${scoreCls}" style="width:${score}%"></div></div>
+          </div>
+        </div>`;
+      }).join(''):'<div style="padding:24px;text-align:center;color:var(--text-tertiary);font-style:italic">No available coaches.</div>'}
+    </div>
+    <div class="picker-foot"><button class="btn-ghost" onclick="closePicker()">Cancel</button></div>`;
+  backdrop.classList.add('show');
+}
+
+function confirmSeasonalAssign(seasonId,pid,coachId){
+  const cids=getSAssign(seasonId,pid);
+  if(!cids.includes(coachId))cids.push(coachId);
+  setSAssign(seasonId,pid,cids);
+  closePicker();
+  renderSeasonDetail();
+  const c=getCoach(coachId);
+  showToast(`${c?.name||'Coach'} assigned for the season`);
+}
+
 function init(){
   applyOrgConfig();
   const d=new Date();d.setDate(d.getDate()+1);
@@ -1958,7 +2384,7 @@ function getConflicts(){
     const coachMap={};
     schools.forEach(school=>{
       school.programs.filter(p=>p.days.includes(day)).forEach(p=>{
-        (assignments[p.id]||[]).forEach(coachId=>{
+        getEffectiveAssigned(p.id).forEach(coachId=>{
           if(!coachMap[coachId])coachMap[coachId]=[];
           coachMap[coachId].push({pid:p.id,time:p.time,coachId});
         });
@@ -2014,7 +2440,7 @@ function renderWeekView(){
       const progRows=school.programs.map(p=>{
         const hasConflict=conflicts.has(p.id+':'+day);
         const subReqsForProg=daySubReqs.filter(r=>r.pid===p.id);
-        const chips=(assignments[p.id]||[]).map(cid=>{
+        const chips=getEffectiveAssigned(p.id).map(cid=>{
           const c=getCoach(cid);if(!c)return'';
           const needsSub=subReqsForProg.some(r=>r.coachId===cid);
           const chipStyle=hasConflict?'border-color:#fde68a;background:var(--amber-light)':needsSub?'border-color:#fde68a;background:#fffbeb':'';
@@ -2073,7 +2499,7 @@ function openPickerForDay(coachId,day){
     daySchools.forEach(s=>{
       bodyHtml+=`<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-tertiary);padding:8px 13px 4px">${s.name}</div>`;
       s.programs.forEach(p=>{
-        const count=progCount(p.id),full=count>=p.max,already=(assignments[p.id]||[]).includes(coachId);
+        const count=progCount(p.id),full=count>=p.max,already=getEffectiveAssigned(p.id).includes(coachId);
         const disabled=full||already;
         const sportMatch=c.sport===s.sport;
         const matchTag=(!disabled&&sportMatch)?`<span class="match-tag">Skill match</span>`:'';
@@ -2102,7 +2528,7 @@ function renderSchools(){
     const subReqsForSchool=getSubRequestsForDay(tomorrow).filter(r=>s.programs.some(p=>p.id===r.pid));
     const rows=s.programs.map(p=>{
       const subReqsForProg=getSubRequestsForDay(tomorrow).filter(r=>r.pid===p.id);
-      const chips=(assignments[p.id]||[]).map(cid=>{
+      const chips=getEffectiveAssigned(p.id).map(cid=>{
         const c=getCoach(cid);
         const needsSub=subReqsForProg.some(r=>r.coachId===cid);
         return`<div class="assigned-chip${needsSub?' needs-sub':''}">
@@ -2180,8 +2606,10 @@ function removeAssignment(pid,cid){
   const c=getCoach(cid);
   const info=getProgramInfoFromSeasons(pid)||getProgramInfo(pid);
   saveUndo('Removed '+(c?.name||'coach')+(info?' from '+info.program.label:''));
-  assignments[pid]=(assignments[pid]||[]).filter(x=>x!==cid);
-  if(!assignments[pid].length)delete assignments[pid];
+  // Seed daily override from current effective list if no override exists yet
+  if(assignments[pid]===undefined) assignments[pid]=[...getEffectiveAssigned(pid)];
+  assignments[pid]=assignments[pid].filter(x=>x!==cid);
+  // Keep empty array as explicit "no one for this day" override (don't delete)
   persist();renderPool();renderSchools();updateStats();
 }
 function updateStats(){
@@ -2216,7 +2644,7 @@ function onSchoolDragOver(e,sid){e.preventDefault();document.getElementById('dro
 function onSchoolDragLeave(sid){document.getElementById('dropzone-'+sid)?.classList.remove('over');document.getElementById('scard-'+sid)?.classList.remove('drop-active');}
 function onSchoolDrop(e,sid){e.preventDefault();onSchoolDragLeave(sid);if(!dragging)return;openPicker(dragging,sid);}
 function openPicker(coachId,schoolId){pickerCoachId=coachId;pickerSchoolId=schoolId;const c=getCoach(coachId);const s=getSchool(schoolId);const tomorrow=getTomorrowDayName();const todayProgs=s.programs.filter(p=>p.days.includes(tomorrow));document.getElementById('picker-school-name').textContent=s.name;document.getElementById('picker-school-sub').textContent=`Which ${V('shift').toLowerCase()} should ${c.name.split(' ')[0]} cover tomorrow?`;document.getElementById('picker-coach-name').textContent=c.name;document.getElementById('picker-coach-sport').textContent=c.sport;const av=document.getElementById('picker-av');av.className='avatar '+c.av;av.textContent=c.initials;const sportMatch=c.sport===s.sport;document.getElementById('picker-body').innerHTML=todayProgs.map(p=>{
-    const count=progCount(p.id);const full=count>=p.max;const already=(assignments[p.id]||[]).includes(coachId);
+    const count=progCount(p.id);const full=count>=p.max;const already=getEffectiveAssigned(p.id).includes(coachId);
     const disabled=full||already;
     const matchClass=(!disabled&&sportMatch)?'sport-match':'';
     const matchTag=(!disabled&&sportMatch)?`<span class="match-tag">Sport match</span>`:'';
@@ -2225,7 +2653,8 @@ function openPicker(coachId,schoolId){pickerCoachId=coachId;pickerSchoolId=schoo
     return`<div class="program-option ${disabled?'is-disabled':''} ${matchClass}" onclick="${disabled?'':` assignToProgram('${p.id}')`}"><div><div class="prog-opt-name">${p.label}${matchTag}${studTag}</div><div class="prog-opt-time">${p.time}</div></div><div class="prog-spots ${full?'is-full':''}">${already?'already here':full?'full':`${count}/${p.max} filled`}</div></div>`;
   }).join('');document.getElementById('picker-backdrop').classList.add('show');}
 function assignToProgram(pid){
-  if(!assignments[pid])assignments[pid]=[];
+  // Seed daily override from seasonal if no override exists yet
+  if(assignments[pid]===undefined) assignments[pid]=[...getEffectiveAssigned(pid)];
   if(!assignments[pid].includes(pickerCoachId))assignments[pid].push(pickerCoachId);
   const c=getCoach(pickerCoachId);
   // Use cross-season lookup so week-view assignments (non-tomorrow days) resolve correctly
@@ -3607,7 +4036,7 @@ function renderSeasonDetail(){
   const siteCount=s.schools.length;
   const activeLbl=`✓ Active ${V('seasonNoun').toLowerCase()}`;
   const setCurrent=!s.current?`<button class="btn-xs-save" onclick="setCurrentSeason('${s.id}')">Set as current</button>`:`<span style="font-size:11px;font-weight:600;color:var(--brand-dark)">${activeLbl}</span>`;
-  detail.innerHTML=`<div class="season-detail-hd"><div><div class="season-detail-name">${s.name}</div><div class="season-detail-period">${s.period} · ${siteCount} ${V('site').toLowerCase()}${siteCount!==1?'s':''}</div></div><div style="display:flex;align-items:center;gap:10px">${setCurrent}<div class="view-toggle"><button class="vtbtn ${detailView==='school'?'act':''}" onclick="setDetailView('school')">By ${V('site')}</button><button class="vtbtn ${detailView==='day'?'act':''}" onclick="setDetailView('day')">By Day</button></div></div></div>${detailView==='school'?renderBySchool(s):renderByDay(s)}`;
+  detail.innerHTML=`<div class="season-detail-hd"><div><div class="season-detail-name">${s.name}</div><div class="season-detail-period">${s.period} · ${siteCount} ${V('site').toLowerCase()}${siteCount!==1?'s':''}</div></div><div style="display:flex;align-items:center;gap:10px">${setCurrent}<div class="view-toggle"><button class="vtbtn ${detailView==='school'?'act':''}" onclick="setDetailView('school')">By ${V('site')}</button><button class="vtbtn ${detailView==='day'?'act':''}" onclick="setDetailView('day')">By Day</button><button class="vtbtn ${detailView==='assign'?'act':''}" onclick="setDetailView('assign')">Coach Assignments</button></div></div></div>${detailView==='school'?renderBySchool(s):detailView==='day'?renderByDay(s):renderSeasonalAssignments(s)}`;
 }
 function setDetailView(v){detailView=v;renderSeasonDetail();}
 function setCurrentSeason(id){seasons.forEach(s=>s.current=s.id===id);assignments={};confirmations={};sent=false;sentDate='';persist();showToast(`${getEditSeason().name} set as current season`);renderSeasonList();renderSeasonDetail();}
@@ -3976,7 +4405,7 @@ function printDailySchedule(){
       ?`<div class="coord-line">Coordinator: ${coord.name}${coord.phone?` · ${coord.phone}`:''}</div>`:'';
 
     const programRows=s.programs.map(p=>{
-      const coaches=(assignments[p.id]||[]).map(cid=>{
+      const coaches=getEffectiveAssigned(p.id).map(cid=>{
         const c=getCoach(cid);
         return c?`<div class="coach-row">
           <div class="coach-dot" style="background:${brand}"></div>
@@ -4100,7 +4529,7 @@ function printDailySchedule(){
 
 /* helper used inside printDailySchedule */
 function coaches_arr_for_sub_check(pid){
-  return (assignments[pid]||[]).map(cid=>getCoach(cid)).filter(Boolean);
+  return getEffectiveAssigned(pid).map(cid=>getCoach(cid)).filter(Boolean);
 }
 </script>
 <!-- ROSTER UPLOAD MODAL -->
