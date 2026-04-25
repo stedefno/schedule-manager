@@ -693,6 +693,47 @@
   .sg-suggested{border-color:var(--amber)!important;background:#fffbeb!important;}
   .sg-suggested-tag{font-size:8px;font-weight:700;color:#b45309;letter-spacing:0.04em;text-transform:uppercase;margin-left:auto;}
   .sg-conflict{background:#fee2e2!important;}
+
+  /* ── SCHOOL DETAIL MODAL ── */
+  .sd-modal{background:var(--surface);border-radius:var(--radius-lg);width:560px;max-width:92vw;max-height:84vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow-lg);}
+  .sd-head{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:14px;}
+  .sd-title-wrap{flex:1;min-width:0;}
+  .sd-eyebrow{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-tertiary);margin-bottom:4px;}
+  .sd-title{font-size:18px;font-weight:600;line-height:1.2;}
+  .sd-meta{font-size:12px;color:var(--text-secondary);margin-top:5px;line-height:1.5;}
+  .sd-meta-line{display:flex;align-items:center;gap:6px;}
+  .sd-meta-line svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
+  .sd-close-btn{background:none;border:none;cursor:pointer;font-size:20px;color:var(--text-tertiary);padding:0;line-height:1;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.12s;}
+  .sd-close-btn:hover{color:var(--text);background:var(--bg);}
+  .sd-body{padding:14px 22px 22px;overflow-y:auto;flex:1;}
+  .sd-prog-card{border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:10px;background:var(--surface);}
+  .sd-prog-card:last-child{margin-bottom:0;}
+  .sd-prog-card.empty{border-style:dashed;background:var(--bg);}
+  .sd-prog-card.cancelled{background:#fef2f2;border-color:#fca5a5;opacity:0.85;}
+  .sd-prog-card.cancelled .sd-prog-name{text-decoration:line-through;color:var(--text-secondary);}
+  .sd-cancel-btn{font-size:10px;font-weight:600;background:none;border:1px solid var(--border);color:var(--text-secondary);border-radius:6px;padding:3px 8px;cursor:pointer;font-family:inherit;transition:all 0.12s;}
+  .sd-cancel-btn:hover{border-color:#ef4444;color:#b91c1c;background:#fee2e2;}
+  .sd-cancel-btn.reinstate{border-color:var(--brand-mid);color:var(--brand-dark);background:var(--brand-light);}
+  .sd-cancel-btn.reinstate:hover{background:var(--brand);color:white;border-color:var(--brand);}
+  .sd-cancelled-badge{font-size:9px;font-weight:700;color:#b91c1c;background:#fee2e2;border:1px solid #fca5a5;border-radius:4px;padding:2px 6px;letter-spacing:0.04em;text-transform:uppercase;}
+  .sd-prog-hd{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px;}
+  .sd-prog-name{font-size:13px;font-weight:600;}
+  .sd-prog-time{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+  .sd-prog-spots{font-size:10px;font-weight:700;color:var(--text-tertiary);background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:2px 8px;}
+  .sd-prog-spots.full{background:var(--brand-light);color:var(--brand-dark);border-color:var(--brand-mid);}
+  .sd-coach-row{display:flex;align-items:center;gap:10px;padding:7px 9px;border-radius:8px;background:var(--bg);margin-bottom:5px;}
+  .sd-coach-row:last-child{margin-bottom:0;}
+  .sd-coach-row .avatar{width:26px;height:26px;font-size:9px;flex-shrink:0;}
+  .sd-coach-info{flex:1;min-width:0;}
+  .sd-coach-name{font-size:12px;font-weight:600;}
+  .sd-coach-meta{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;margin-top:1px;}
+  .sd-needs-sub{font-size:9px;font-weight:700;color:#b45309;background:var(--amber-light);border:1px solid #fde68a;border-radius:4px;padding:2px 5px;margin-left:5px;}
+  .sd-remove-btn{background:none;border:1px solid var(--border);color:var(--text-tertiary);border-radius:6px;width:24px;height:24px;cursor:pointer;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.12s;font-family:inherit;}
+  .sd-remove-btn:hover{border-color:#ef4444;color:#b91c1c;background:#fee2e2;}
+  .sd-no-coach{font-size:11px;color:var(--text-tertiary);font-style:italic;padding:6px 9px;}
+  .sd-trigger{cursor:pointer;background:none;border:1px solid var(--border);color:var(--text-secondary);border-radius:6px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;transition:all 0.12s;padding:0;}
+  .sd-trigger:hover{border-color:var(--brand);color:var(--brand-dark);background:var(--brand-light);}
+  .sd-trigger svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;}
   /* Coach picker for seasonal cell */
   .sa-picker-list{padding:8px;max-height:60vh;overflow-y:auto;}
   .sa-picker-coach{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;border:1px solid transparent;}
@@ -1058,6 +1099,9 @@
     </div>
     <div id="docs-tab-body"></div>
   </div>
+
+  <!-- CHECK-IN -->
+  <div class="view" id="view-checkin">
     <div class="coaches-header">
       <div>
         <div class="page-title">Weekly check-in</div>
@@ -1316,6 +1360,13 @@
 <div class="undo-toast" id="undo-toast">
   <span id="undo-toast-msg">Assignment removed</span>
   <button class="undo-toast-btn" onclick="undoAssignment()">Undo</button>
+</div>
+
+<!-- SCHOOL DETAIL MODAL -->
+<div class="modal-backdrop" id="sd-backdrop" onclick="if(event.target===this)closeSchoolDetail()">
+  <div class="sd-modal" id="sd-modal">
+    <!-- contents rendered by openSchoolDetail() -->
+  </div>
 </div>
 
 <!-- SEASON EDIT -->
@@ -1786,8 +1837,10 @@ function assignedIds(){
   const ids=new Set();
   // Get all programs in current season + day
   const tomorrow=getTomorrowDayName();
+  const tDate=tomorrowDateStr();
   getSchools().forEach(s=>s.programs.forEach(p=>{
     if(!p.days.includes(tomorrow))return;
+    if(isProgramCancelledOn(p,tDate))return;
     getEffectiveAssigned(p.id).forEach(cid=>ids.add(cid));
   }));
   return [...ids];
@@ -1822,6 +1875,45 @@ function todayStr(){return new Date().toISOString().split('T')[0];}
 function sportPillClass(sport){return SPORT_PILL[sport]||'pill-default';}
 
 /* ══ INIT ══ */
+/* ══ PROGRAM SINGLE-DAY CANCELLATION ══ */
+function isProgramCancelledOn(program,dateStr){
+  return Array.isArray(program?.cancelledDates) && program.cancelledDates.includes(dateStr);
+}
+function isProgramCancelledTomorrow(program){
+  const d=new Date();d.setDate(d.getDate()+1);
+  return isProgramCancelledOn(program,d.toISOString().split('T')[0]);
+}
+function toggleProgramCancelled(pid,dateStr){
+  // Find the program across all seasons
+  for(const season of seasons){
+    for(const sc of season.schools){
+      const p=sc.programs.find(p=>p.id===pid);
+      if(p){
+        if(!p.cancelledDates)p.cancelledDates=[];
+        const idx=p.cancelledDates.indexOf(dateStr);
+        if(idx>=0){
+          p.cancelledDates.splice(idx,1);
+          showToast(`${p.label} reinstated for ${formatDate(dateStr)}`);
+        }else{
+          p.cancelledDates.push(dateStr);
+          showToast(`${p.label} cancelled for ${formatDate(dateStr)}`);
+        }
+        persist();
+        renderSchools();renderPool();updateStats();updateDashboard();
+        // Re-render the school detail modal if it's showing this school
+        if(document.getElementById('sd-backdrop')?.classList.contains('show')&&activeSchoolDetailId===sc.id){
+          renderSchoolDetail(activeSchoolDetailId);
+        }
+        return;
+      }
+    }
+  }
+}
+function tomorrowDateStr(){
+  const d=new Date();d.setDate(d.getDate()+1);
+  return d.toISOString().split('T')[0];
+}
+
 /* ══ SEASONAL ASSIGNMENTS ══ */
 
 function getSAssign(seasonId,pid){
@@ -1943,6 +2035,16 @@ function suggestSchedule(seasonId){
     // Score every available coach not already assigned to this program
     const candidates=activeCoaches
       .filter(c=>!existing.includes(c.id))
+      .filter(c=>{
+        /* Hard constraint: coaches who have explicitly set their portal availability
+           must have free hours on every day this program runs. Coaches with no availability
+           data set are coordinator-managed and remain unrestricted. */
+        if(c.weeklyAvailability && Object.keys(c.weeklyAvailability).length>0){
+          const blocked=prog.days.some(day=>!(c.weeklyAvailability[day]?.length>0));
+          if(blocked)return false;
+        }
+        return true;
+      })
       .filter(c=>{
         // Skip if this coach has a time conflict with another program on the same days
         return !prog.days.some(day=>{
@@ -2520,7 +2622,8 @@ function renderSchools(){
     return;
   }
   const tomorrow=getTomorrowDayName(),list=document.getElementById('school-list');
-  const filtered=getSchools().map(s=>({...s,programs:s.programs.filter(p=>p.days.includes(tomorrow))})).filter(s=>s.programs.length>0);
+  const tomorrowDate=tomorrowDateStr();
+  const filtered=getSchools().map(s=>({...s,programs:s.programs.filter(p=>p.days.includes(tomorrow)&&!isProgramCancelledOn(p,tomorrowDate))})).filter(s=>s.programs.length>0);
   if(!filtered.length){list.innerHTML=`<div class="card" style="padding:32px;text-align:center;color:var(--text-tertiary);font-size:13px;font-style:italic">No ${V('shifts').toLowerCase()} scheduled for ${tomorrow}.</div>`;return;}
   list.innerHTML=filtered.map(s=>{
     const pill=sportPillClass(s.sport);
@@ -2563,13 +2666,16 @@ function renderSchools(){
       :'';
     return`<div class="school-card" id="scard-${s.id}">
       <div class="school-header">
-        <div>
+        <div style="cursor:pointer;flex:1;min-width:0" onclick="openSchoolDetail('${s.id}')">
           <div class="school-name-text">${s.name}</div>
           <div class="school-sub">${s.programs.length} ${V('shift').toLowerCase()}${s.programs.length!==1?'s':''} today · ${s.sport}${s.contactName?` · 📞 ${s.contactName}`:''}</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
           ${studentHeader}
           <div class="sport-pill ${pill}">${s.sport}</div>
+          <button class="sd-trigger" onclick="openSchoolDetail('${s.id}')" title="View all classes for this ${V('site').toLowerCase()}">
+            <svg viewBox="0 0 24 24"><path d="M15 3h6v6M14 10l6.16-6.16M9 21H3v-6M10 14l-6.16 6.16"/></svg>
+          </button>
         </div>
       </div>
       ${subBanner}
@@ -2611,6 +2717,102 @@ function removeAssignment(pid,cid){
   assignments[pid]=assignments[pid].filter(x=>x!==cid);
   // Keep empty array as explicit "no one for this day" override (don't delete)
   persist();renderPool();renderSchools();updateStats();
+  // Re-render the school detail modal if it's showing for this coach's school
+  if(document.getElementById('sd-backdrop')?.classList.contains('show')&&info?.school?.id){
+    renderSchoolDetail(info.school.id);
+  }
+}
+
+/* ══ SCHOOL DETAIL MODAL ══ */
+let activeSchoolDetailId=null;
+function openSchoolDetail(schoolId){
+  activeSchoolDetailId=schoolId;
+  renderSchoolDetail(schoolId);
+  document.getElementById('sd-backdrop')?.classList.add('show');
+}
+function closeSchoolDetail(){
+  document.getElementById('sd-backdrop')?.classList.remove('show');
+  activeSchoolDetailId=null;
+}
+function renderSchoolDetail(schoolId){
+  const modal=document.getElementById('sd-modal');
+  if(!modal)return;
+  const school=getSchool(schoolId);
+  if(!school){modal.innerHTML='';return;}
+  const tomorrow=getTomorrowDayName();
+  const todaysPrograms=school.programs.filter(p=>p.days.includes(tomorrow));
+  const subReqsForSchool=getSubRequestsForDay(tomorrow).filter(r=>school.programs.some(p=>p.id===r.pid));
+  const coord=coordinators.find(c=>c.id===school.coordinatorId);
+
+  // Format tomorrow's date for the eyebrow
+  const d=new Date();d.setDate(d.getDate()+1);
+  const dateStr=d.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'});
+
+  const head=`<div class="sd-head">
+    <div class="sd-title-wrap">
+      <div class="sd-eyebrow">${dateStr} · ${school.sport}</div>
+      <div class="sd-title">${school.name}</div>
+      <div class="sd-meta">
+        ${school.contactName?`<div class="sd-meta-line">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.63 19.79 19.79 0 010 1.18 2 2 0 012 -1h3a2 2 0 012 1.72c.13.96.37 1.9.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.27-1.52a2 2 0 012.11-.45c.91.33 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+          ${school.contactName}${school.contactPhone?' · '+school.contactPhone:''}
+        </div>`:''}
+        ${coord?`<div class="sd-meta-line" style="margin-top:3px">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          Coordinator: ${coord.name}
+        </div>`:''}
+      </div>
+    </div>
+    <button class="sd-close-btn" onclick="closeSchoolDetail()" title="Close">×</button>
+  </div>`;
+
+  let body='';
+  if(!todaysPrograms.length){
+    body=`<div style="padding:32px 16px;text-align:center;font-size:13px;color:var(--text-tertiary);font-style:italic">No ${V('shifts').toLowerCase()} scheduled for ${tomorrow.toLowerCase()}.</div>`;
+  } else {
+    const tDate=tomorrowDateStr();
+    body=todaysPrograms.map(p=>{
+      const cancelled=isProgramCancelledOn(p,tDate);
+      const cids=getEffectiveAssigned(p.id);
+      const subReqs=subReqsForSchool.filter(r=>r.pid===p.id);
+      const full=cids.length>=p.max;
+      const empty=cids.length===0;
+      const spotsCls=full?'full':'';
+      const coachRows=cancelled
+        ?`<div class="sd-no-coach">${V('shift')} cancelled — coaches will not be notified.</div>`
+        :cids.length?cids.map(cid=>{
+          const c=getCoach(cid);if(!c)return '';
+          const needsSub=subReqs.some(r=>r.coachId===cid);
+          return`<div class="sd-coach-row">
+            <div class="avatar ${c.av}">${c.initials}</div>
+            <div class="sd-coach-info">
+              <div class="sd-coach-name">${c.name}${needsSub?'<span class="sd-needs-sub">needs sub</span>':''}</div>
+              <div class="sd-coach-meta">${c.sport}${c.phone?' · '+c.phone:''}</div>
+            </div>
+            <button class="sd-remove-btn" onclick="removeAssignment('${p.id}','${cid}')" title="Remove ${c.name} from this ${V('shift').toLowerCase()}">×</button>
+          </div>`;
+        }).join(''):`<div class="sd-no-coach">No ${V('worker').toLowerCase()} assigned yet.</div>`;
+      const cancelBtn=cancelled
+        ?`<button class="sd-cancel-btn reinstate" onclick="toggleProgramCancelled('${p.id}','${tDate}')">↻ Reinstate</button>`
+        :`<button class="sd-cancel-btn" onclick="toggleProgramCancelled('${p.id}','${tDate}')" title="Cancel this ${V('shift').toLowerCase()} for tomorrow only">Cancel for ${formatDate(tDate)}</button>`;
+      const statusBadge=cancelled?`<span class="sd-cancelled-badge">Cancelled</span>`:`<span class="sd-prog-spots ${spotsCls}">${cids.length}/${p.max}</span>`;
+      return`<div class="sd-prog-card${empty&&!cancelled?' empty':''}${cancelled?' cancelled':''}">
+        <div class="sd-prog-hd">
+          <div>
+            <div class="sd-prog-name">${p.label}</div>
+            <div class="sd-prog-time">${p.time}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            ${statusBadge}
+            ${cancelBtn}
+          </div>
+        </div>
+        ${coachRows}
+      </div>`;
+    }).join('');
+  }
+
+  modal.innerHTML=head+`<div class="sd-body">${body}</div>`;
 }
 function updateStats(){
   const a=assignedIds();
@@ -2666,7 +2868,15 @@ function assignToProgram(pid){
 }
 function closePicker(){document.getElementById('picker-backdrop').classList.remove('show');pickerCoachId=pickerSchoolId=null;}
 function sendAssignments(){
-  const all=Object.entries(assignments).flatMap(([pid,cids])=>cids.map(cid=>({pid,cid})));
+  // Use effective assignments (seasonal + daily overrides) and skip cancelled programs
+  const tDate=tomorrowDateStr();
+  const tomorrow=getTomorrowDayName();
+  const all=[];
+  getSchools().forEach(s=>s.programs.forEach(p=>{
+    if(!p.days.includes(tomorrow))return;
+    if(isProgramCancelledOn(p,tDate))return;
+    getEffectiveAssigned(p.id).forEach(cid=>all.push({pid:p.id,cid}));
+  }));
   if(!all.length)return;
 
   // If already sent, warn before re-sending
@@ -3903,6 +4113,10 @@ document.addEventListener('keydown',e=>{
     if(document.getElementById('roster-modal-backdrop')?.classList.contains('show')){
       closeRosterModal();return;
     }
+    // School detail modal
+    if(document.getElementById('sd-backdrop')?.classList.contains('show')){
+      closeSchoolDetail();return;
+    }
     // Broadcast modal
     if(document.getElementById('broadcast-backdrop')?.classList.contains('show')){
       closeBroadcast();return;
@@ -4388,8 +4602,9 @@ function printDailySchedule(){
   const brandLight=ORG_CFG?.brandColor?.light||'#e6f7f1';
 
   // Build schedule data — schools with programs and assigned coaches
+  const tDate=tomorrowDateStr();
   const schools=getSchools()
-    .map(s=>({...s,programs:s.programs.filter(p=>p.days.includes(tomorrow))}))
+    .map(s=>({...s,programs:s.programs.filter(p=>p.days.includes(tomorrow)&&!isProgramCancelledOn(p,tDate))}))
     .filter(s=>s.programs.length>0);
 
   const totalAssigned=assignedIds().length;
@@ -4588,7 +4803,8 @@ function updateDashboard(){
   const tomorrow=getTomorrowDayName();
   const activeCoaches=coaches.filter(c=>!c.inactive);
   const weekOf=getCheckinWeekOf();
-  const tomorrowSchools=getSchools().map(s=>({...s,programs:s.programs.filter(p=>p.days.includes(tomorrow))})).filter(s=>s.programs.length>0);
+  const tomorrowDate=tomorrowDateStr();
+  const tomorrowSchools=getSchools().map(s=>({...s,programs:s.programs.filter(p=>p.days.includes(tomorrow)&&!isProgramCancelledOn(p,tomorrowDate))})).filter(s=>s.programs.length>0);
   const totalSlots=tomorrowSchools.reduce((n,s)=>n+s.programs.reduce((m,p)=>m+p.max,0),0);
   const filledSlots=tomorrowSchools.reduce((n,s)=>n+s.programs.reduce((m,p)=>m+Math.min(progCount(p.id),p.max),0),0);
   const pendingConf=Object.values(confirmations).filter(v=>v==='pending').length;
