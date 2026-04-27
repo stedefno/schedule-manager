@@ -564,6 +564,44 @@
   .docs-empty{padding:32px;text-align:center;font-size:13px;color:var(--text-tertiary);font-style:italic;}
   .docs-filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
 
+  /* ── COLLAPSIBLE DOCS PANEL (inside Coaches tab) ── */
+  .docs-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden;}
+  .docs-panel-hd{width:100%;display:flex;align-items:center;gap:12px;padding:12px 16px;background:none;border:none;cursor:pointer;font-family:inherit;text-align:left;transition:background 0.12s;}
+  .docs-panel-hd:hover{background:var(--bg);}
+  .docs-panel-chev{width:14px;height:14px;color:var(--text-tertiary);transition:transform 0.2s;flex-shrink:0;}
+  .docs-panel.open .docs-panel-chev{transform:rotate(90deg);}
+  .docs-panel-icon{width:20px;height:20px;color:var(--brand-dark);flex-shrink:0;}
+  .docs-panel-title-wrap{flex:1;min-width:0;}
+  .docs-panel-title{font-size:13px;font-weight:600;color:var(--text);}
+  .docs-panel-sub{font-size:11px;color:var(--text-secondary);margin-top:2px;}
+  .docs-panel-alert{font-size:10px;font-weight:700;background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5;border-radius:20px;padding:3px 9px;letter-spacing:0.04em;flex-shrink:0;}
+  .docs-panel-alert.warn{background:var(--amber-light);color:#b45309;border-color:#fde68a;}
+  .docs-panel-body{border-top:1px solid var(--border);padding:14px 16px 16px;}
+
+  /* Folder breadcrumb */
+  .docs-breadcrumb{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary);margin-bottom:12px;flex-wrap:wrap;}
+  .docs-bc-link{background:none;border:none;color:var(--brand-dark);font-size:11px;font-weight:500;cursor:pointer;padding:2px 4px;border-radius:5px;font-family:inherit;}
+  .docs-bc-link:hover{background:var(--brand-light);}
+  .docs-bc-sep{color:var(--text-tertiary);}
+  .docs-bc-current{font-weight:600;color:var(--text);}
+
+  /* Folder grid */
+  .docs-folder-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;}
+  .docs-folder{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;cursor:pointer;transition:all 0.15s;text-align:left;font-family:inherit;width:100%;}
+  .docs-folder:hover{border-color:var(--brand-mid);background:var(--brand-light);transform:translateY(-1px);}
+  .docs-folder-row{display:flex;align-items:flex-start;gap:10px;}
+  .docs-folder-icon{font-size:24px;line-height:1;flex-shrink:0;}
+  .docs-folder-info{flex:1;min-width:0;}
+  .docs-folder-name{font-size:12px;font-weight:600;color:var(--text);}
+  .docs-folder-count{font-size:11px;color:var(--text-secondary);margin-top:2px;font-family:'DM Mono',monospace;}
+  .docs-folder-status{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap;}
+  .docs-folder-pill{font-size:9px;font-weight:700;padding:2px 6px;border-radius:20px;letter-spacing:0.02em;}
+  .docs-folder-pill.expired{background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5;}
+  .docs-folder-pill.expiring{background:var(--amber-light);color:#b45309;border:1px solid #fde68a;}
+  .docs-folder-pill.valid{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;}
+
+  .docs-empty-folder{padding:32px 16px;text-align:center;font-size:13px;color:var(--text-tertiary);font-style:italic;}
+
   /* ── SEASON EDIT ── */
   .season-layout{display:flex;flex:1;overflow:hidden;}
   .season-sidebar{width:258px;flex-shrink:0;border-right:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;overflow:hidden;}
@@ -693,6 +731,15 @@
   .sg-suggested{border-color:var(--amber)!important;background:#fffbeb!important;}
   .sg-suggested-tag{font-size:8px;font-weight:700;color:#b45309;letter-spacing:0.04em;text-transform:uppercase;margin-left:auto;}
   .sg-conflict{background:#fee2e2!important;}
+  .sg-override-badge{display:inline-flex;align-items:center;gap:3px;font-size:8px;font-weight:700;color:#b45309;background:var(--amber-light);border:1px solid #fde68a;border-radius:4px;padding:1px 5px;letter-spacing:0.04em;text-transform:uppercase;align-self:flex-start;margin-top:2px;}
+  .sg-override-badge svg{width:8px;height:8px;stroke:currentColor;fill:none;stroke-width:2.5;flex-shrink:0;}
+
+  /* Week view cancelled program */
+  .wk-prog-row.cancelled{background:#fef2f2!important;border-radius:6px;padding:4px 5px;margin:0 -5px 3px;}
+  .wk-prog-row.cancelled .wk-prog-label{text-decoration:line-through;color:var(--text-tertiary);}
+  .wk-prog-row.cancelled .wk-prog-time{text-decoration:line-through;}
+  .wk-cancelled-tag{font-size:9px;font-weight:700;color:#b91c1c;background:#fee2e2;border:1px solid #fca5a5;border-radius:4px;padding:1px 6px;letter-spacing:0.04em;text-transform:uppercase;display:inline-block;margin-top:2px;}
+  .wk-cancelled-count{background:#fee2e2!important;color:#b91c1c!important;border-color:#fca5a5!important;}
 
   /* ── SCHOOL DETAIL MODAL ── */
   .sd-modal{background:var(--surface);border-radius:var(--radius-lg);width:560px;max-width:92vw;max-height:84vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow-lg);}
@@ -989,9 +1036,6 @@
       <span>Confirmations</span><span class="badge-count" id="pending-badge">0</span>
     </button>
     <button class="nav-tab" onclick="switchTab('payroll')"><span>Payroll</span></button>
-    <button class="nav-tab" id="nav-docs-tab" style="display:none" onclick="switchTab('docs')">
-      <span>Documents</span><span class="badge-count" id="docs-badge">0</span>
-    </button>
   </div>
   <div class="topbar-right">
     <button class="coach-portal-btn" onclick="openPortal()">
@@ -1075,31 +1119,6 @@
     </div>
   </div>
 
-  <!-- DOCUMENTS (sports vertical only) -->
-  <div class="view" id="view-docs">
-    <div class="coaches-header">
-      <div><div class="page-title">Coach documents</div><div class="page-sub">School clearances, certifications &amp; permits · all coaches</div></div>
-    </div>
-    <div class="docs-filter-bar">
-      <select class="pay-filter-select" id="docs-type-filter" onchange="renderDocsTab()">
-        <option value="">All document types</option>
-        <option value="School clearance">School clearances</option>
-        <option value="Background check">Background checks</option>
-        <option value="Certification">Certifications</option>
-        <option value="Permit">Permits</option>
-        <option value="Other">Other</option>
-      </select>
-      <select class="pay-filter-select" id="docs-status-filter" onchange="renderDocsTab()">
-        <option value="">All statuses</option>
-        <option value="valid">Valid</option>
-        <option value="expiring">Expiring soon</option>
-        <option value="expired">Expired</option>
-        <option value="unknown">No dates found</option>
-      </select>
-    </div>
-    <div id="docs-tab-body"></div>
-  </div>
-
   <!-- CHECK-IN -->
   <div class="view" id="view-checkin">
     <div class="coaches-header">
@@ -1124,7 +1143,20 @@
     <div id="add-form-wrap"></div>
     <div class="search-wrap">
       <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="text" placeholder="Search by name or sport..." id="search-input" oninput="renderRoster(this.value)">
+      <input type="text" placeholder="Search by name, sport, or phone..." id="search-input" oninput="renderRoster(this.value)">
+    </div>
+    <!-- ── COLLAPSIBLE DOCUMENTS PANEL (sports vertical only) ── -->
+    <div class="docs-panel" id="docs-panel" style="display:none">
+      <button class="docs-panel-hd" onclick="toggleDocsPanel()" id="docs-panel-hd">
+        <svg class="docs-panel-chev" id="docs-panel-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        <svg class="docs-panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <div class="docs-panel-title-wrap">
+          <div class="docs-panel-title">Coach documents</div>
+          <div class="docs-panel-sub" id="docs-panel-sub">Click to manage clearances, certifications &amp; permits</div>
+        </div>
+        <span class="docs-panel-alert" id="docs-panel-alert" style="display:none"></span>
+      </button>
+      <div class="docs-panel-body" id="docs-panel-body" style="display:none"></div>
     </div>
     <div class="card"><div id="roster-list"></div></div>
   </div>
@@ -1926,6 +1958,33 @@ function setSAssign(seasonId,pid,coachIds){
   persist();
 }
 
+/* Returns { hasOverride:bool, dateStr:string, label:string } if a daily override is active
+   for this program on the given day-of-week within the current week. Returns null otherwise. */
+function getOverrideInfoForCell(seasonId,pid,dayName){
+  // Only meaningful for the current season
+  const currentSeason=getCurrentSeason();
+  if(!currentSeason||currentSeason.id!==seasonId)return null;
+  // Compute the date that falls on dayName within the current calendar week (Mon..Fri only)
+  const dayIdx=DAYS_FULL.indexOf(dayName);
+  if(dayIdx<0||dayIdx>4)return null;
+  const today=new Date();
+  const dow=today.getDay(); // 0=Sun..6=Sat
+  const monday=new Date(today);
+  monday.setDate(today.getDate()-(dow===0?6:dow-1));
+  const cellDate=new Date(monday);
+  cellDate.setDate(monday.getDate()+dayIdx);
+  const dateStr=cellDate.toISOString().split('T')[0];
+  // Check if there's an explicit override that differs from the seasonal assignment
+  if(assignments[pid]===undefined)return null;
+  const seasonal=getSAssign(seasonId,pid);
+  const override=assignments[pid];
+  // Compare arrays — order-independent
+  const same=seasonal.length===override.length && seasonal.every(id=>override.includes(id));
+  if(same)return null;
+  const label=cellDate.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  return{hasOverride:true,dateStr,label};
+}
+
 /* Score how well a coach matches a program — 0–100 */
 function scoreCoachForProgram(coach,program,school){
   if(!coach||coach.inactive||!coach.available)return 0;
@@ -2172,7 +2231,12 @@ function renderSeasonalAssignments(season){
         }).join('');
         const empty=cids.length<p.max?`<span class="sg-add-hint">${cids.length?'+ Add another':'+ Assign coach'}</span>`:'';
         const cellCls=cids.length===0?' empty':'';
-        return`<div class="sg-day-cell${cellCls}" onclick="openSeasonalPicker('${season.id}','${p.id}','${day}')">${chips}${empty}</div>`;
+        const ov=getOverrideInfoForCell(season.id,p.id,day);
+        const overrideBadge=ov?`<span class="sg-override-badge" title="A daily override is active for ${ov.label}">
+          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Override · ${ov.label}
+        </span>`:'';
+        return`<div class="sg-day-cell${cellCls}" onclick="openSeasonalPicker('${season.id}','${p.id}','${day}')">${chips}${empty}${overrideBadge}</div>`;
       }).join('');
       return`<div class="sg-school-row">${cell}${dayCells}</div>`;
     }).join('');
@@ -2532,29 +2596,39 @@ function renderWeekView(){
     const isTomorrow=date.toDateString()===new Date(today.getFullYear(),today.getMonth(),today.getDate()+1).toDateString();
     const dateStr=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
     const dayLabel=isToday?'Today ·':isTomorrow?'Tomorrow ·':DAYS_SHORT[di]+' ·';
+    const dayDateISO=date.toISOString().split('T')[0]; /* for cancellation lookup */
 
     const daySchools=schools.map(s=>({...s,programs:s.programs.filter(p=>p.days.includes(day))})).filter(s=>s.programs.length>0);
     const dayConflictCount=[...conflicts].filter(k=>k.endsWith(':'+day)).length;
     const daySubReqs=getSubRequestsForDay(day);
     const daySubCount=daySubReqs.length;
+    let dayCancelledCount=0;
 
     const schoolsHtml=daySchools.length?daySchools.map(school=>{
       const progRows=school.programs.map(p=>{
-        const hasConflict=conflicts.has(p.id+':'+day);
-        const subReqsForProg=daySubReqs.filter(r=>r.pid===p.id);
-        const chips=getEffectiveAssigned(p.id).map(cid=>{
+        const cancelled=isProgramCancelledOn(p,dayDateISO);
+        if(cancelled)dayCancelledCount++;
+        const hasConflict=conflicts.has(p.id+':'+day)&&!cancelled;
+        const subReqsForProg=cancelled?[]:daySubReqs.filter(r=>r.pid===p.id);
+        const chips=cancelled?'':getEffectiveAssigned(p.id).map(cid=>{
           const c=getCoach(cid);if(!c)return'';
           const needsSub=subReqsForProg.some(r=>r.coachId===cid);
           const chipStyle=hasConflict?'border-color:#fde68a;background:var(--amber-light)':needsSub?'border-color:#fde68a;background:#fffbeb':'';
           return`<div class="assigned-chip" style="font-size:10px;padding:2px 6px 2px 4px;${chipStyle}"><div class="sm-av ${c.av}" style="width:14px;height:14px;font-size:6px">${c.initials}</div><span>${c.name}</span>${needsSub?`<span style="font-size:8px;color:#b45309;margin-left:2px">⚠sub</span>`:''}<span class="remove-x" onclick="removeAssignment('${p.id}','${cid}')">×</span></div>`;
         }).join('');
         const full=progCount(p.id)>=p.max;
-        return`<div class="wk-prog-row${hasConflict?' has-conflict':''}">
+        const rowCls=cancelled?' cancelled':hasConflict?' has-conflict':'';
+        const statusTag=cancelled?`<div class="wk-cancelled-tag">✕ Cancelled</div>`
+          :hasConflict?`<div class="wk-conflict-tag">⚠ ${V('worker')} conflict</div>`
+          :subReqsForProg.length?`<div class="wk-conflict-tag" style="color:#b45309">🔄 Sub needed</div>`:'';
+        const chipsArea=cancelled
+          ?`<div class="wk-prog-chips"><span class="prog-hint" style="font-size:10px;color:#b91c1c">No coaches notified</span></div>`
+          :`<div class="wk-prog-chips">${chips||`<span class="prog-hint" style="font-size:10px">${full?'Full':`No ${V('worker').toLowerCase()}`}</span>`}</div>`;
+        return`<div class="wk-prog-row${rowCls}">
           <div class="wk-prog-label">${p.label}</div>
           <div class="wk-prog-time">${p.time}</div>
-          ${hasConflict?`<div class="wk-conflict-tag">⚠ ${V('worker')} conflict</div>`:''}
-          ${subReqsForProg.length&&!hasConflict?`<div class="wk-conflict-tag" style="color:#b45309">🔄 Sub needed</div>`:''}
-          <div class="wk-prog-chips">${chips||`<span class="prog-hint" style="font-size:10px">${full?'Full':`No ${V('worker').toLowerCase()}`}</span>`}</div>
+          ${statusTag}
+          ${chipsArea}
         </div>`;
       }).join('');
       return`<div class="wk-school"><div class="wk-school-name">${school.name}</div>${progRows}</div>`;
@@ -2565,6 +2639,7 @@ function renderWeekView(){
         <div class="wk-day-name">${dayLabel} <span style="font-weight:400;color:var(--text-tertiary)">${dateStr}</span></div>
         ${dayConflictCount>0?`<div class="wk-conflict-badge">⚠ ${dayConflictCount} conflict${dayConflictCount!==1?'s':''}</div>`:''}
         ${daySubCount>0?`<div class="wk-conflict-badge" style="background:#fffbeb;color:#b45309;border-color:#fde68a">🔄 ${daySubCount} sub${daySubCount!==1?'s':''} needed</div>`:''}
+        ${dayCancelledCount>0?`<div class="wk-conflict-badge wk-cancelled-count">✕ ${dayCancelledCount} cancelled</div>`:''}
       </div>
       <div class="wk-col-body">${schoolsHtml}<div class="wk-drop-hint">Drop a ${V('worker').toLowerCase()} here</div></div>
     </div>`;
@@ -2892,59 +2967,145 @@ function sendAssignments(){
   const toSend=sent ? all.filter(({pid,cid})=>confirmations[cid+pid]!=='confirmed') : all;
   if(!toSend.length){showToast('All assigned coaches have already confirmed.');return;}
 
+  // Set the modal head — sendAssignments has its own title, separate from check-in/nudge
+  const head=document.querySelector('.modal-head');
+  if(head)head.textContent='Sending assignments via SMS';
+  const closeBtn=document.querySelector('.modal-close');
+  if(closeBtn)closeBtn.textContent='Done — view confirmations →';
+
+  // Build the message body for each coach (extracted so it can be passed to dispatchSMS)
+  const buildAssignmentMessage=(c,info)=>{
+    const contactLine=info.school.contactName?` ${V('siteContactLabel')}: ${info.school.contactName}${info.school.contactPhone?' ('+info.school.contactPhone+')':''}.`:'';
+    return `Hi ${c.name.split(' ')[0]}! Tomorrow: ${info.school.name} · ${info.program.label} · ${info.program.time}.${contactLine} Reply YES to confirm. — ${smsSender}`;
+  };
+
   document.getElementById('modal-body').innerHTML=toSend.map(({pid,cid})=>{
     const info=getProgramInfo(pid);const c=getCoach(cid);
-    const contactLine=info.school.contactName?` ${V('siteContactLabel')}: ${info.school.contactName}${info.school.contactPhone?' ('+info.school.contactPhone+')':''}.`:'';
-    return`<div class="sms-item"><div class="sms-av ${c.av}">${c.initials}</div><div style="flex:1"><div class="sms-coach">${c.name} <span class="sms-phone">${c.phone}</span></div><div class="sms-bubble">"Hi ${c.name.split(' ')[0]}! Tomorrow: ${info.school.name} · ${info.program.label} · ${info.program.time}.${contactLine} Reply YES to confirm. — ${smsSender}"</div><div class="sms-status" id="st-${cid}${pid}"><div class="dot dot-sending"></div><span style="color:#b45309">Sending...</span></div></div></div>`;
+    const msg=buildAssignmentMessage(c,info);
+    return`<div class="sms-item"><div class="sms-av ${c.av}">${c.initials}</div><div style="flex:1"><div class="sms-coach">${c.name} <span class="sms-phone">${c.phone}</span></div><div class="sms-bubble">"${msg}"</div><div class="sms-status" id="st-${cid}${pid}"><div class="dot dot-sending"></div><span style="color:#b45309">Queuing...</span></div></div></div>`;
   }).join('');
   document.getElementById('modal-backdrop').classList.add('show');
   sent=true;sentDate=todayStr();persist();
 
+  // Stage each dispatch — production path: dispatchSMS handles real Twilio call
   toSend.forEach(({pid,cid},i)=>{
     setTimeout(()=>{
-      const el=document.getElementById('st-'+cid+pid);
-      if(el)el.innerHTML='<div class="dot dot-sent"></div><span style="color:var(--brand-dark)">Sent</span>';
-      setTimeout(()=>{
-        const confirmed=Math.random()>0.3;
-        confirmations[cid+pid]=confirmed?'confirmed':'pending';
-        if(confirmed){
-          // Only add session log entry if one doesn't already exist for this coach+program+day
-          const alreadyLogged=sessionLog.some(s=>s.coachId===cid&&s.pid===pid&&s.date===todayStr());
-          if(!alreadyLogged){
-            sessionLog.push({id:'sl'+sessionLogNext++,coachId:cid,date:todayStr(),pid,status:'completed',paid:false});
-            const c=getCoach(cid);if(c)c.stats.confirmed++;
-          }
+      const c=getCoach(cid);const info=getProgramInfo(pid);
+      if(!c||!info)return;
+      const msg=buildAssignmentMessage(c,info);
+
+      dispatchSMS(c.phone,msg,(status)=>{
+        const el=document.getElementById('st-'+cid+pid);
+        if(!el)return;
+        if(status==='sent'){
+          el.innerHTML='<div class="dot dot-sent"></div><span style="color:var(--brand-dark)">Sent</span>';
+        } else if(status==='delivered'){
+          // In production, this branch is the OUTBOUND confirmation only.
+          // The reply (YES/NO) arrives later via inbound SMS webhook.
+          // Here, simulateReply mimics that webhook so the prototype demonstrates the full loop.
+          simulateAssignmentReply(pid,cid);
         }
-        persist();
-        const el2=document.getElementById('st-'+cid+pid);
-        if(el2){
-          if(confirmed){
-            const info2=getProgramInfo(pid);
-            const sc=info2?.program?.students?.length||0;
-            const rosterLine=sc>0
-              ?`<div class="sms-followup-label">Auto follow-up sent</div>
-                 <div class="sms-bubble followup">"Great, you're confirmed! Here's your class roster (${sc} student${sc!==1?'s':''}) for ${info2.program.label}: [roster link] — ${smsSender}"</div>
-                 <button class="roster-link-btn" onclick="openCoachRosterPage('${pid}','${getCoach(cid)?.name||''}')">
-                   <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                   View roster
-                 </button>`
-              :`<div class="sms-followup-label">Auto follow-up sent</div>
-                 <div class="sms-bubble followup">"Great, you're confirmed for ${info2?.program?.label||'your class'} tomorrow. See you there! — ${smsSender}"</div>`;
-            el2.innerHTML=`<div class="dot dot-sent"></div><span style="color:var(--brand-dark)">Confirmed ✓</span>${rosterLine}`;
-          } else {
-            el2.innerHTML='<div class="dot dot-sending"></div><span style="color:#b45309">No reply yet</span>';
-          }
-        }
-        updateStats();renderPortalConfirmations();
-      },800+Math.random()*1400);
-    },350+i*400);
+      });
+    },120*i); // small stagger so deliveries appear sequential
   });
+}
+
+/* Simulates an inbound SMS reply from a coach.
+   Production replacement: a real webhook handler that receives the coach's YES/NO text
+   and calls handleAssignmentReply(pid,cid,confirmed) directly. */
+function simulateAssignmentReply(pid,cid){
+  const replyDelay=600+Math.random()*1400;
+  setTimeout(()=>{
+    const confirmed=Math.random()>0.3;
+    handleAssignmentReply(pid,cid,confirmed);
+  },replyDelay);
+}
+
+/* Pure handler — called by simulator now, by webhook in production.
+   Updates state, session log, stats, and the modal UI. */
+function handleAssignmentReply(pid,cid,confirmed){
+  confirmations[cid+pid]=confirmed?'confirmed':'pending';
+  if(confirmed){
+    const alreadyLogged=sessionLog.some(s=>s.coachId===cid&&s.pid===pid&&s.date===todayStr());
+    if(!alreadyLogged){
+      sessionLog.push({id:'sl'+sessionLogNext++,coachId:cid,date:todayStr(),pid,status:'completed',paid:false});
+      const c=getCoach(cid);if(c)c.stats.confirmed++;
+    }
+  }
+  persist();
+  const el2=document.getElementById('st-'+cid+pid);
+  if(el2){
+    if(confirmed){
+      const info2=getProgramInfo(pid);
+      const sc=info2?.program?.students?.length||0;
+      const rosterLine=sc>0
+        ?`<div class="sms-followup-label">Auto follow-up sent</div>
+           <div class="sms-bubble followup">"Great, you're confirmed! Here's your class roster (${sc} student${sc!==1?'s':''}) for ${info2.program.label}: [roster link] — ${smsSender}"</div>
+           <button class="roster-link-btn" onclick="openCoachRosterPage('${pid}','${getCoach(cid)?.name||''}')">
+             <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+             View roster
+           </button>`
+        :`<div class="sms-followup-label">Auto follow-up sent</div>
+           <div class="sms-bubble followup">"Great, you're confirmed for ${info2?.program?.label||'your class'} tomorrow. See you there! — ${smsSender}"</div>`;
+      el2.innerHTML=`<div class="dot dot-sent"></div><span style="color:var(--brand-dark)">Confirmed ✓</span>${rosterLine}`;
+    } else {
+      el2.innerHTML='<div class="dot dot-sending"></div><span style="color:#b45309">No reply yet</span>';
+    }
+  }
+  updateStats();renderPortalConfirmations();
 }
 function closeModal(){document.getElementById('modal-backdrop').classList.remove('show');renderPayroll();switchTab('confirm');}
 function renderConfirmations(){const all=Object.entries(assignments).flatMap(([pid,cids])=>cids.map(cid=>({pid,cid})));const list=document.getElementById('confirm-list');if(!all.length){list.innerHTML='<div class="empty-state">No assignments sent yet.</div>';return;}list.innerHTML=all.map(({pid,cid})=>{const info=getProgramInfo(pid);const c=getCoach(cid);const status=confirmations[cid+pid];const pill=sent?(status==='confirmed'?'<span class="status-pill pill-confirmed">Confirmed</span>':'<span class="status-pill pill-pending">Pending</span>'):'<span class="status-pill pill-notsent">Not sent</span>';const sc=info?.program?.students?.length||0;const rosterBtn=sent&&status==='confirmed'&&sc>0?`<button class="roster-link-btn" style="margin-left:6px" onclick="openCoachRosterPage('${pid}','${c.name}')"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Roster (${sc})</button>`:'';const ir=sent&&status==='confirmed'?`<div class="incident-row"><span class="incident-label">Log incident:</span><button class="incident-btn inc-noshow" onclick="logIncident('${cid}','${pid}','no-show')">No-show</button><button class="incident-btn inc-latecancel" onclick="logIncident('${cid}','${pid}','late-cancel')">Late cancel</button></div>`:'';return`<div class="roster-row"><div class="conf-row" style="border:none;padding-bottom:0"><div class="conf-left"><div class="avatar ${c.av}">${c.initials}</div><div><div class="conf-name">${c.name} ${relBadgeHtml(c)}</div><div class="conf-detail">${info.school.name} · ${info.program.label} · ${info.program.time}</div></div></div><div style="display:flex;align-items:center">${pill}${rosterBtn}</div></div>${ir}</div>`;}).join('');}
 function logIncident(coachId,pid,type){const c=getCoach(coachId);if(!c)return;if(type==='no-show')c.stats.noShows++;else c.stats.lateCancels++;const ex=sessionLog.find(s=>s.coachId===coachId&&s.pid===pid&&s.date===todayStr());if(ex)ex.status=type;else sessionLog.push({id:'sl'+sessionLogNext++,coachId,date:todayStr(),pid,status:type,paid:false});persist();renderConfirmations();renderPayroll();renderRoster(document.getElementById('search-input')?.value||'');showToast(`${c.name} — ${type==='no-show'?'No-show':'Late cancel'} logged`);}
 function openBroadcast(pid,removedCid){broadcastPid=pid;broadcastRemovedCid=removedCid;broadcastFired=false;const info=getProgramInfo(pid);const c=getCoach(removedCid);document.getElementById('broadcast-title').textContent=`${c.name} — find replacement`;document.getElementById('broadcast-sub').textContent=`${info.school.name} · ${info.program.label} · ${info.program.time}`;document.getElementById('broadcast-winner-wrap').innerHTML='';document.getElementById('broadcast-actions').style.display='flex';const assigned=assignedIds();const candidates=[...coaches.filter(c2=>c2.isSub&&c2.available&&!assigned.includes(c2.id)&&c2.id!==removedCid),...coaches.filter(c2=>!c2.isSub&&c2.available&&!assigned.includes(c2.id)&&c2.id!==removedCid)];document.getElementById('broadcast-coach-list').innerHTML=candidates.length?candidates.map(c2=>`<div class="broadcast-coach-option" id="bco-${c2.id}"><div class="avatar ${c2.av}" style="width:30px;height:30px;font-size:10px">${c2.initials}</div><div class="bco-info"><div class="bco-name">${c2.name} ${relBadgeHtml(c2)}</div><div class="bco-meta">${c2.sport} · ${c2.isSub?'Sub bench':'Primary'}</div></div><span class="bco-status bco-waiting" id="bco-st-${c2.id}">Waiting</span></div>`).join(''):'<div style="padding:12px;font-size:12px;color:var(--text-tertiary);font-style:italic">No coaches available.</div>';document.getElementById('broadcast-backdrop').classList.add('show');}
-function sendBroadcast(){if(broadcastFired)return;broadcastFired=true;document.getElementById('broadcast-send-btn').disabled=true;const assigned=assignedIds();const candidates=coaches.filter(c=>c.available&&!assigned.includes(c.id)&&c.id!==broadcastRemovedCid);if(!candidates.length){showToast('No available coaches');closeBroadcast();return;}candidates.forEach((c,i)=>setTimeout(()=>{const el=document.getElementById('bco-st-'+c.id);if(el){el.className='bco-status bco-sending';el.textContent='Text sent...';}},300+i*250));const winner=candidates.find(c=>c.isSub)||candidates[Math.floor(Math.random()*candidates.length)];setTimeout(()=>{candidates.filter(c=>c.id!==winner.id).forEach(c=>{const el=document.getElementById('bco-st-'+c.id);if(el){el.className='bco-status bco-waiting';el.textContent='No reply';}});const el=document.getElementById('bco-st-'+winner.id);if(el){el.className='bco-status bco-replied';el.textContent='✓ Replied YES';}document.getElementById('broadcast-actions').style.display='none';document.getElementById('broadcast-winner-wrap').innerHTML=`<div class="broadcast-winner-banner"><div class="broadcast-winner-icon"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="broadcast-winner-text">${winner.name} is confirmed!</div><button class="broadcast-winner-btn" onclick="acceptBroadcastWinner('${winner.id}')">Assign them →</button></div>`;},1200+candidates.length*200);}
+function sendBroadcast(){
+  if(broadcastFired)return;
+  broadcastFired=true;
+  document.getElementById('broadcast-send-btn').disabled=true;
+
+  const assigned=assignedIds();
+  const candidates=coaches.filter(c=>c.available&&!assigned.includes(c.id)&&c.id!==broadcastRemovedCid);
+  if(!candidates.length){showToast('No available coaches');closeBroadcast();return;}
+
+  const info=getProgramInfo(broadcastPid)||getProgramInfoFromSeasons(broadcastPid);
+  const slot=info?`${info.school.name} · ${info.program.label} · ${info.program.time}`:'a coverage slot';
+  const buildBroadcastMessage=(c)=>`Hi ${c.name.split(' ')[0]}! Sub needed for ${slot} tomorrow. Reply YES to take it. — ${smsSender}`;
+
+  // Dispatch through the unified SMS layer
+  candidates.forEach((c,i)=>{
+    setTimeout(()=>{
+      const msg=buildBroadcastMessage(c);
+      dispatchSMS(c.phone,msg,(status)=>{
+        const el=document.getElementById('bco-st-'+c.id);
+        if(!el)return;
+        if(status==='sent'){
+          el.className='bco-status bco-sending';
+          el.textContent='Text sent...';
+        }
+        // delivered status is informational here — the "winner" is picked separately below
+      });
+    },120*i);
+  });
+
+  // Simulate the inbound reply — production replaces this with a webhook handler
+  // that listens for the first YES reply and calls handleBroadcastWinner(coachId).
+  // Sub bench coaches respond first, otherwise random.
+  const winner=candidates.find(c=>c.isSub)||candidates[Math.floor(Math.random()*candidates.length)];
+  const replyDelay=1200+candidates.length*200;
+  setTimeout(()=>handleBroadcastWinner(winner,candidates),replyDelay);
+}
+
+/* Pure handler — called by simulator now, by webhook in production. */
+function handleBroadcastWinner(winner,candidates){
+  candidates.filter(c=>c.id!==winner.id).forEach(c=>{
+    const el=document.getElementById('bco-st-'+c.id);
+    if(el){el.className='bco-status bco-waiting';el.textContent='No reply';}
+  });
+  const wEl=document.getElementById('bco-st-'+winner.id);
+  if(wEl){wEl.className='bco-status bco-replied';wEl.textContent='✓ Replied YES';}
+  document.getElementById('broadcast-actions').style.display='none';
+  document.getElementById('broadcast-winner-wrap').innerHTML=`<div class="broadcast-winner-banner"><div class="broadcast-winner-icon"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="broadcast-winner-text">${winner.name} is confirmed!</div><button class="broadcast-winner-btn" onclick="acceptBroadcastWinner('${winner.id}')">Assign them →</button></div>`;
+}
 function acceptBroadcastWinner(winnerId){
   const pid=broadcastPid;
   const removedCid=broadcastRemovedCid;
@@ -3192,7 +3353,7 @@ function restoreCoach(id){
 function toggleAvail(id){const c=getCoach(id);if(!c)return;c.available=!c.available;if(c.available)c.fromPortal=false;if(!c.available){Object.keys(assignments).forEach(pid=>{assignments[pid]=(assignments[pid]||[]).filter(x=>x!==id);if(!assignments[pid].length)delete assignments[pid];});}persist();renderRoster(document.getElementById('search-input').value);renderPool();renderSchools();updateStats();showToast(`${c.name} marked ${c.available?'available':'unavailable'}`);}
 function toggleSub(id){const c=getCoach(id);if(!c)return;c.isSub=!c.isSub;persist();renderRoster(document.getElementById('search-input').value);renderPool();showToast(`${c.name} moved to ${c.isSub?'sub bench':'primary roster'}`);}
 function switchTab(tab){
-  const allTabs=['schedule','checkin','coaches','confirm','payroll','docs'];
+  const allTabs=['schedule','checkin','coaches','confirm','payroll'];
   allTabs.forEach((t,i)=>{
     const view=document.getElementById('view-'+t);
     const navBtn=document.querySelectorAll('.nav-tab')[i];
@@ -3200,10 +3361,12 @@ function switchTab(tab){
     if(navBtn)navBtn.classList.toggle('active',t===tab);
   });
   if(tab==='confirm')renderConfirmations();
-  if(tab==='coaches')renderRoster(document.getElementById('search-input')?.value||'');
+  if(tab==='coaches'){
+    renderRoster(document.getElementById('search-input')?.value||'');
+    renderDocsPanel();
+  }
   if(tab==='payroll'){populatePayrollFilters();renderPayroll();}
   if(tab==='checkin')renderCheckinTab();
-  if(tab==='docs')renderDocsTab();
 }
 
 /* ══ PAYROLL ══ */
@@ -3638,18 +3801,161 @@ function resolveCheckinFeedback(coachId,reviewed){
   showToast(reviewed?'Feedback marked reviewed':'Marked as unread');
 }
 
-function nudgeCoach(coachId){
-  const c=getCoach(coachId);if(!c)return;
-  showToast(`Reminder sent to ${c.name} — check-in link included`);
+/* ══ SMS DISPATCH ══
+   Single point that simulates SMS sending. In production, this is the only
+   function that needs to be replaced with a real Twilio/Telnyx/Sinch API call.
+   The on() callback is invoked with the delivery status as it progresses. */
+function dispatchSMS(phone, message, on) {
+  /* Simulated send — staged delays mimic real SMS provider latency.
+     Real production would replace this body with:
+       fetch('/api/sms/send', { method:'POST', body: JSON.stringify({to:phone, body:message}) })
+         .then(r=>r.json()).then(r => on('delivered', r))
+  */
+  on?.('queuing');
+  const sendDelay = 200 + Math.random() * 600;
+  const deliverDelay = 400 + Math.random() * 1200;
+  setTimeout(() => {
+    on?.('sent');
+    setTimeout(() => on?.('delivered'), deliverDelay);
+  }, sendDelay);
 }
 
-function sendCheckinBroadcast(){
-  const weekOf=getCheckinWeekOf();
-  const activeCoaches=coaches.filter(c=>!c.inactive);
-  const pending=activeCoaches.filter(c=>c.weeklyCheckin?.weekOf!==weekOf);
-  if(!pending.length){showToast('All coaches have already submitted their check-in 👍');return;}
-  if(!confirm(`Send weekly check-in request to ${pending.length} coach${pending.length!==1?'es':''}?`))return;
-  showToast(`Check-in sent to ${pending.length} coach${pending.length!==1?'es':''} via SMS`);
+/* Build the personalized check-in message for a given coach */
+function buildCheckinMessage(coach) {
+  const sender = ORG_CFG?.smsSender || ORG_CFG?.shortName || 'EZScheduler';
+  const orgName = ORG_CFG?.orgName || 'EZScheduler';
+  const weekLabel = checkinWeekLabel(getCheckinWeekOf());
+  // Count assigned sessions for next week so the coach knows what to confirm
+  const matchedCoach = coach;
+  let sessionCount = 0;
+  Object.entries(assignments).forEach(([pid, cids]) => {
+    if (cids.includes(matchedCoach.id)) {
+      const info = getProgramInfo(pid);
+      if (info) sessionCount += info.program.days.length;
+    }
+  });
+  // Fallback to seasonal standing assignments
+  if (!sessionCount) {
+    Object.entries(seasonalAssignments[getCurrentSeason()?.id] || {}).forEach(([pid, cids]) => {
+      if (cids.includes(matchedCoach.id)) {
+        const info = getProgramInfoFromSeasons(pid);
+        if (info) sessionCount += info.program.days.length;
+      }
+    });
+  }
+  const sessionLine = sessionCount
+    ? `You have ${sessionCount} session${sessionCount !== 1 ? 's' : ''} scheduled.`
+    : `You have no sessions scheduled — please mark your sub availability.`;
+  const portalLink = `https://ezsched.app/portal/${matchedCoach.id}`;
+  return `Hi ${matchedCoach.name.split(' ')[0]}, ${weekLabel}. ${sessionLine} Please confirm or request a sub: ${portalLink} — ${sender}`;
+}
+
+function nudgeCoach(coachId) {
+  const c = getCoach(coachId);
+  if (!c) return;
+  // Rate-limit: 1 nudge per hour per coach
+  const lastNudge = c.lastCheckinNudge ? new Date(c.lastCheckinNudge).getTime() : 0;
+  const oneHourAgo = Date.now() - 60 * 60 * 1000;
+  if (lastNudge > oneHourAgo) {
+    const minsAgo = Math.round((Date.now() - lastNudge) / 60000);
+    showToast(`Already nudged ${c.name.split(' ')[0]} ${minsAgo} min${minsAgo !== 1 ? 's' : ''} ago — please wait`);
+    return;
+  }
+
+  const msg = buildCheckinMessage(c);
+
+  // Render minimal SMS modal for the single coach
+  const body = document.getElementById('modal-body');
+  const head = document.querySelector('.modal-head');
+  const closeBtn = document.querySelector('.modal-close');
+  if (!body || !head || !closeBtn) {
+    showToast(`Reminder sent to ${c.name}`);
+    return;
+  }
+  head.textContent = `Nudging ${c.name}`;
+  closeBtn.textContent = 'Done';
+  body.innerHTML = `
+    <div class="sms-item">
+      <div class="avatar ${c.av}">${c.initials}</div>
+      <div style="flex:1;min-width:0">
+        <div class="sms-coach">${c.name}<span style="font-weight:400;color:var(--text-tertiary);margin-left:6px;font-size:11px">${c.phone || ''}</span></div>
+        <div class="sms-bubble" style="margin-top:6px;white-space:pre-wrap">${msg}</div>
+        <div id="nudge-status-${c.id}" style="font-size:11px;font-weight:600;color:var(--text-tertiary);margin-top:6px;display:flex;align-items:center;gap:6px">
+          <div class="dot dot-sending"></div><span>Queuing…</span>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('modal-backdrop')?.classList.add('show');
+
+  dispatchSMS(c.phone, msg, (status) => {
+    const el = document.getElementById(`nudge-status-${c.id}`);
+    if (!el) return;
+    if (status === 'sent') {
+      el.innerHTML = '<div class="dot dot-sent"></div><span style="color:var(--brand-dark)">Sent ✓</span>';
+    } else if (status === 'delivered') {
+      el.innerHTML = '<div class="dot dot-sent"></div><span style="color:var(--brand-dark)">Delivered ✓</span>';
+      // Stamp the nudge timestamp once delivered
+      c.lastCheckinNudge = new Date().toISOString();
+      persist();
+    }
+  });
+}
+
+function sendCheckinBroadcast() {
+  const weekOf = getCheckinWeekOf();
+  const activeCoaches = coaches.filter(c => !c.inactive);
+  const pending = activeCoaches.filter(c => c.weeklyCheckin?.weekOf !== weekOf);
+  if (!pending.length) {
+    showToast('All coaches have already submitted their check-in 👍');
+    return;
+  }
+  if (!confirm(`Send weekly check-in request to ${pending.length} coach${pending.length !== 1 ? 'es' : ''}?\n\nEach coach will receive a personalized text with a link to their portal.`)) return;
+
+  // Render the full broadcast in the SMS modal
+  const body = document.getElementById('modal-body');
+  const head = document.querySelector('.modal-head');
+  const closeBtn = document.querySelector('.modal-close');
+  if (!body || !head || !closeBtn) {
+    showToast(`Check-in sent to ${pending.length} coach${pending.length !== 1 ? 'es' : ''}`);
+    return;
+  }
+  head.textContent = `Sending check-in requests · ${pending.length} coach${pending.length !== 1 ? 'es' : ''}`;
+  closeBtn.textContent = 'Done';
+
+  // Build the rows with the personalized message preview
+  body.innerHTML = pending.map(c => {
+    const msg = buildCheckinMessage(c);
+    return `
+      <div class="sms-item">
+        <div class="avatar ${c.av}">${c.initials}</div>
+        <div style="flex:1;min-width:0">
+          <div class="sms-coach">${c.name}<span style="font-weight:400;color:var(--text-tertiary);margin-left:6px;font-size:11px">${c.phone || ''}</span></div>
+          <div class="sms-bubble" style="margin-top:6px;white-space:pre-wrap">${msg}</div>
+          <div id="ci-status-${c.id}" style="font-size:11px;font-weight:600;color:var(--text-tertiary);margin-top:6px;display:flex;align-items:center;gap:6px">
+            <div class="dot dot-sending"></div><span>Queuing…</span>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+  document.getElementById('modal-backdrop')?.classList.add('show');
+
+  // Dispatch each one with a small stagger so the UI feels alive rather than batch-instant
+  pending.forEach((c, idx) => {
+    setTimeout(() => {
+      const msg = buildCheckinMessage(c);
+      dispatchSMS(c.phone, msg, (status) => {
+        const el = document.getElementById(`ci-status-${c.id}`);
+        if (!el) return;
+        if (status === 'sent') {
+          el.innerHTML = '<div class="dot dot-sent"></div><span style="color:var(--brand-dark)">Sent ✓</span>';
+        } else if (status === 'delivered') {
+          el.innerHTML = '<div class="dot dot-sent"></div><span style="color:var(--brand-dark)">Delivered ✓</span>';
+          c.lastCheckinNudge = new Date().toISOString();
+          persist();
+        }
+      });
+    }, idx * 120);
+  });
 }
 
 function updateCheckinBadge(){
@@ -4852,6 +5158,17 @@ function docIcon(type){
   const icons={'School clearance':'🏫','Background check':'🔍','Certification':'🎓','Permit':'📋','Other':'📄'};
   return icons[type]||'📄';
 }
+function docPlural(type){
+  /* Folder/category labels — plain English plurals */
+  const plurals={
+    'School clearance':'School Clearances',
+    'Background check':'Background Checks',
+    'Certification':'Certifications',
+    'Permit':'Permits',
+    'Other':'Other Documents',
+  };
+  return plurals[type]||type;
+}
 
 async function classifyDocument(base64Data,mimeType,fileName){
   /* Call Anthropic API to read the document and extract structured info */
@@ -5017,42 +5334,137 @@ function renderPortalDocs(){
     </div>`).join('')+'</div>';
 }
 
-/* ── Admin documents tab ── */
-function updateDocsBadge(){
-  const vertical=ORG_CFG?.vertical||'sports';
-  const navTab=document.getElementById('nav-docs-tab');
-  if(!navTab)return;
-  if(vertical!=='sports'){navTab.style.display='none';return;}
-  navTab.style.display='';
+/* ── Collapsible Documents panel (inside Coaches tab) ── */
+let docsPanelOpen=false;
+let docsPanelFolder=null;  // null = folder grid view, "School clearance" etc = drill-in view
 
-  // Badge = coaches with expired or expiring docs
-  const alertCount=coaches.filter(c=>(c.documents||[]).some(d=>docStatus(d)==='expired'||docStatus(d)==='expiring')).length;
-  const badge=document.getElementById('docs-badge');
-  if(badge){badge.textContent=alertCount;badge.classList.toggle('show',alertCount>0);}
+function toggleDocsPanel(){
+  docsPanelOpen=!docsPanelOpen;
+  const panel=document.getElementById('docs-panel');
+  const body=document.getElementById('docs-panel-body');
+  if(panel)panel.classList.toggle('open',docsPanelOpen);
+  if(body)body.style.display=docsPanelOpen?'block':'none';
+  if(docsPanelOpen){
+    docsPanelFolder=null;  // reset to folder grid every time panel opens
+    renderDocsPanelBody();
+  }
 }
 
-function renderDocsTab(){
-  const body=document.getElementById('docs-tab-body');
+function openDocsFolder(type){
+  docsPanelFolder=type;
+  renderDocsPanelBody();
+}
+
+function clearDocsFolder(){
+  docsPanelFolder=null;
+  renderDocsPanelBody();
+}
+
+function updateDocsBadge(){
+  /* Updates the panel container visibility + alert badge */
+  const vertical=ORG_CFG?.vertical||'sports';
+  const panel=document.getElementById('docs-panel');
+  if(!panel)return;
+  if(vertical!=='sports'){panel.style.display='none';return;}
+  panel.style.display='block';
+
+  // Build summary stats
+  const allDocs=coaches.filter(c=>!c.inactive).flatMap(c=>(c.documents||[]).map(d=>({...d,coachName:c.name})));
+  const expired=allDocs.filter(d=>docStatus(d)==='expired').length;
+  const expiring=allDocs.filter(d=>docStatus(d)==='expiring').length;
+  const sub=document.getElementById('docs-panel-sub');
+  if(sub){
+    if(!allDocs.length)sub.textContent='No documents uploaded yet';
+    else sub.textContent=`${allDocs.length} document${allDocs.length!==1?'s':''} uploaded${expiring||expired?` · ${expired+expiring} need${expired+expiring!==1?'':'s'} attention`:''}`;
+  }
+  const alert=document.getElementById('docs-panel-alert');
+  if(alert){
+    if(expired){
+      alert.style.display='inline-block';
+      alert.classList.remove('warn');
+      alert.textContent=`⚠ ${expired} expired`;
+    } else if(expiring){
+      alert.style.display='inline-block';
+      alert.classList.add('warn');
+      alert.textContent=`⚠ ${expiring} expiring`;
+    } else {
+      alert.style.display='none';
+    }
+  }
+}
+
+function renderDocsPanel(){
+  /* Called when the Coaches tab opens — refreshes everything */
+  updateDocsBadge();
+  if(docsPanelOpen)renderDocsPanelBody();
+}
+
+function renderDocsPanelBody(){
+  const body=document.getElementById('docs-panel-body');
   if(!body)return;
-  const typeFilter=document.getElementById('docs-type-filter')?.value||'';
-  const statusFilter=document.getElementById('docs-status-filter')?.value||'';
+  const allDocs=coaches.filter(c=>!c.inactive).flatMap(c=>(c.documents||[]).map(d=>({doc:d,coach:c})));
 
-  const coachesWithDocs=coaches.filter(c=>!c.inactive&&(c.documents||[]).length>0);
-
-  if(!coachesWithDocs.length){
-    body.innerHTML='<div class="docs-empty">No documents uploaded yet. Coaches can upload documents through their portal.</div>';
+  if(!allDocs.length){
+    body.innerHTML='<div class="docs-empty-folder">No documents uploaded yet. Coaches can upload documents through their portal.</div>';
     return;
   }
 
-  let html='';
-  coachesWithDocs.forEach(c=>{
-    let docs=c.documents||[];
-    if(typeFilter)docs=docs.filter(d=>d.type===typeFilter);
-    if(statusFilter)docs=docs.filter(d=>docStatus(d)===statusFilter);
-    if(!docs.length)return;
+  if(docsPanelFolder===null){
+    // ── Folder grid view ──
+    const docTypes=['School clearance','Background check','Certification','Permit','Other'];
+    const folders=docTypes.map(type=>{
+      const docs=allDocs.filter(({doc})=>doc.type===type);
+      const expired=docs.filter(({doc})=>docStatus(doc)==='expired').length;
+      const expiring=docs.filter(({doc})=>docStatus(doc)==='expiring').length;
+      const valid=docs.filter(({doc})=>docStatus(doc)==='valid').length;
+      return{type,count:docs.length,expired,expiring,valid};
+    }).filter(f=>f.count>0);
 
+    if(!folders.length){
+      body.innerHTML='<div class="docs-empty-folder">No documents to organize yet.</div>';
+      return;
+    }
+
+    body.innerHTML=`
+      <div class="docs-folder-grid">
+        ${folders.map(f=>{
+          const pills=[];
+          if(f.expired)pills.push(`<span class="docs-folder-pill expired">⚠ ${f.expired} expired</span>`);
+          if(f.expiring)pills.push(`<span class="docs-folder-pill expiring">${f.expiring} expiring</span>`);
+          if(f.valid&&!f.expired&&!f.expiring)pills.push(`<span class="docs-folder-pill valid">✓ All valid</span>`);
+          return`<button class="docs-folder" onclick="openDocsFolder('${f.type}')">
+            <div class="docs-folder-row">
+              <div class="docs-folder-icon">${docIcon(f.type)}</div>
+              <div class="docs-folder-info">
+                <div class="docs-folder-name">${docPlural(f.type)}</div>
+                <div class="docs-folder-count">${f.count} document${f.count!==1?'s':''}</div>
+                <div class="docs-folder-status">${pills.join('')}</div>
+              </div>
+            </div>
+          </button>`;
+        }).join('')}
+      </div>`;
+    return;
+  }
+
+  // ── Drilled-in folder view ──
+  const folderDocs=allDocs.filter(({doc})=>doc.type===docsPanelFolder);
+  const breadcrumb=`<div class="docs-breadcrumb">
+    <button class="docs-bc-link" onclick="clearDocsFolder()">All folders</button>
+    <span class="docs-bc-sep">›</span>
+    <span class="docs-bc-current">${docIcon(docsPanelFolder)} ${docPlural(docsPanelFolder)}</span>
+  </div>`;
+
+  // Group by coach
+  const byCoach={};
+  folderDocs.forEach(({doc,coach})=>{
+    if(!byCoach[coach.id])byCoach[coach.id]={coach,docs:[]};
+    byCoach[coach.id].docs.push(doc);
+  });
+
+  const sections=Object.values(byCoach).map(({coach:c,docs})=>{
     const hasAlert=docs.some(d=>docStatus(d)==='expired'||docStatus(d)==='expiring');
-    html+=`<div class="docs-coach-section">
+    return`<div class="docs-coach-section">
       <div class="docs-coach-hd">
         <div class="avatar ${c.av}" style="width:28px;height:28px;font-size:9px">${c.initials}</div>
         <div class="docs-coach-name">${c.name}</div>
@@ -5064,7 +5476,7 @@ function renderDocsTab(){
         <div class="doc-icon">${docIcon(doc.type)}</div>
         <div class="doc-info" style="flex:1">
           <div class="doc-name">${doc.name}</div>
-          <div class="doc-type">${doc.type}${doc.issuingAuthority?' · '+doc.issuingAuthority:''}</div>
+          <div class="doc-type">${doc.issuingAuthority||'No issuing authority listed'}</div>
           <div class="doc-dates">
             ${doc.issuedDate?'Issued: '+formatDate(doc.issuedDate):''}
             ${doc.issuedDate&&doc.expiryDate?' · ':''}
@@ -5076,9 +5488,9 @@ function renderDocsTab(){
         </div>
       </div>`).join('')}
     </div>`;
-  });
+  }).join('');
 
-  body.innerHTML=html||'<div class="docs-empty">No documents match the current filter.</div>';
+  body.innerHTML=breadcrumb+sections;
 }
 
 init();
